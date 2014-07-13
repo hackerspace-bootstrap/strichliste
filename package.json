@@ -1,0 +1,44 @@
+{
+  "name": "strichliste",
+  "version": "0.0.0",
+  "description": "keep track of your balance",
+  "main": "server.js",
+  "scripts": {
+    "test": "./node_modules/.bin/mocha tests"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/hackerspace-bootstrap/strichliste.git"
+  },
+  "keywords": [
+    "checlist",
+    "strichliste"
+  ],
+  "author": "Manuel Ernst <zaphod84@gmx.de>",
+  "contributors": [
+    "Christopher Schirner <schinken@hackerspace-bamberg.de>"
+  ],
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/hackerspace-bootstrap/strichliste/issues"
+  },
+  "devDependencies": {
+    "chai": "^1.9.1",
+    "mocha": "^1.20.1",
+    "gulp": "^3.8.6",
+    "sinon": "^1.10.3",
+    "del": "^0.1.1",
+    "gulp-browserify": "^0.5.0",
+    "gulp-concat": "^2.3.3",
+    "merge-stream": "^0.1.5",
+    "gulp-order": "^1.1.1",
+    "gulp-less": "~1.3.1",
+    "gulp-clean": "~0.3.1",
+    "run-sequence": "~0.3.6"
+  },
+  "dependencies": {
+    "configurations": "^0.1.3",
+    "express": "^4.6.1",
+    "yargs": "^1.2.6"
+  }
+}
