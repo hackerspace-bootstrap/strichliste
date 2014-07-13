@@ -48,3 +48,7 @@ This will be fixed in the near future.
 
 ## Run
 The `strichliste` API also serves static files from the build directory (`./frontend`) if present e.g. the frontend has been built.
+
+````bash
+$ node server.js
+````
