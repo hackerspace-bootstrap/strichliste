@@ -1,6 +1,6 @@
 var sinon = require('sinon');
 
-function createRequestMock(options) {
+function createRequestMock (options) {
     options = options || {};
 
     return {
@@ -9,40 +9,40 @@ function createRequestMock(options) {
     }
 }
 
-function createResponseMock() {
+function createResponseMock () {
     return {
         _end: null,
         _status: null,
 
-        end: function(data) {
+        end: function (data) {
             this._end = data;
             return this;
         },
-        status: function(status) {
+        status: function (status) {
             this._status = status;
             return this;
         }
     }
 }
 
-function createUserPersistenceMock(options) {
+function createUserPersistenceMock (options) {
     return {
-        loadUsers: sinon.spy(function(callback) {
+        loadUsers: sinon.spy(function (callback) {
             callback(options.loadUsers.error, options.loadUsers.result);
         }),
-        loadUserById: sinon.spy(function(id, callback) {
+        loadUserById: sinon.spy(function (id, callback) {
             callback(options.loadUserById.error, options.loadUserById.result);
         }),
-        loadUserByName: sinon.spy(function(name, callback) {
+        loadUserByName: sinon.spy(function (name, callback) {
             callback(options.loadUserByName.error, options.loadUserByName.result);
         }),
-        createUser: sinon.spy(function(name, callback) {
+        createUser: sinon.spy(function (name, callback) {
             callback(options.createUser.error, options.createUser.result);
         }),
-        createTransaction: sinon.spy(function(userId, value, callback) {
+        createTransaction: sinon.spy(function (userId, value, callback) {
             callback(options.createTransaction.error, options.createTransaction.result);
         }),
-        loadTransaction: sinon.spy(function(transactionId, callback) {
+        loadTransaction: sinon.spy(function (transactionId, callback) {
             callback(options.loadTransaction.error, options.loadTransaction.result);
         })
     };

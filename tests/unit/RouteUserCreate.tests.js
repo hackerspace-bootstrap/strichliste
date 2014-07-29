@@ -13,7 +13,7 @@ describe('userCreateRoute', function () {
         var res = mocks.createResponseMock();
 
         var error;
-        route.route(req, res, function(_error) {
+        route.route(req, res, function (_error) {
             error = _error;
         });
 
@@ -22,7 +22,7 @@ describe('userCreateRoute', function () {
             expect(error.message).to.equal('name missing');
         });
 
-        it('should not sent any body', function() {
+        it('should not sent any body', function () {
             expect(res._end).to.be.null;
         });
     });
@@ -39,7 +39,7 @@ describe('userCreateRoute', function () {
         var res = mocks.createResponseMock();
 
         var error;
-        route.route(req, res, function(_error) {
+        route.route(req, res, function (_error) {
             error = _error;
         });
 
@@ -48,11 +48,11 @@ describe('userCreateRoute', function () {
             expect(error.message).to.equal('error checking user: caboom');
         });
 
-        it('should not sent any body', function() {
+        it('should not sent any body', function () {
             expect(res._end).to.be.null;
         });
 
-        it('should ask the userLoader', function() {
+        it('should ask the userLoader', function () {
             expect(userLoader.loadUserByName.callCount).to.equal(1);
         });
     });
@@ -69,7 +69,7 @@ describe('userCreateRoute', function () {
         var res = mocks.createResponseMock();
 
         var error;
-        route.route(req, res, function(_error) {
+        route.route(req, res, function (_error) {
             error = _error;
         });
 
@@ -78,11 +78,11 @@ describe('userCreateRoute', function () {
             expect(error.message).to.equal('user bert already exists');
         });
 
-        it('should not sent any body', function() {
+        it('should not sent any body', function () {
             expect(res._end).to.be.null;
         });
 
-        it('should ask the userLoader', function() {
+        it('should ask the userLoader', function () {
             expect(userLoader.loadUserByName.callCount).to.equal(1);
         });
     });
@@ -100,7 +100,7 @@ describe('userCreateRoute', function () {
         var res = mocks.createResponseMock();
 
         var error;
-        route.route(req, res, function(_error) {
+        route.route(req, res, function (_error) {
             error = _error;
         });
 
@@ -109,15 +109,15 @@ describe('userCreateRoute', function () {
             expect(error.message).to.equal('unexpected: caboom');
         });
 
-        it('should not sent any body', function() {
+        it('should not sent any body', function () {
             expect(res._end).to.be.null;
         });
 
-        it('should ask the userLoader for the name', function() {
+        it('should ask the userLoader for the name', function () {
             expect(userLoader.loadUserByName.callCount).to.equal(1);
         });
 
-        it('should call createUser', function() {
+        it('should call createUser', function () {
             expect(userLoader.createUser.callCount).to.equal(1);
             expect(userLoader.createUser.args[0][0]).to.equal('bert');
         });
@@ -137,7 +137,7 @@ describe('userCreateRoute', function () {
         var res = mocks.createResponseMock();
 
         var error;
-        route.route(req, res, function(_error) {
+        route.route(req, res, function (_error) {
             error = _error;
         });
 
@@ -146,20 +146,20 @@ describe('userCreateRoute', function () {
             expect(error.message).to.equal('error retrieving user: bert');
         });
 
-        it('should not sent any body', function() {
+        it('should not sent any body', function () {
             expect(res._end).to.be.null;
         });
 
-        it('should ask the userLoader for the name', function() {
+        it('should ask the userLoader for the name', function () {
             expect(userLoader.loadUserByName.callCount).to.equal(1);
         });
 
-        it('should call createUser', function() {
+        it('should call createUser', function () {
             expect(userLoader.createUser.callCount).to.equal(1);
             expect(userLoader.createUser.args[0][0]).to.equal('bert');
         });
 
-        it('should reload the user', function() {
+        it('should reload the user', function () {
             expect(userLoader.loadUserById.callCount).to.equal(1);
             expect(userLoader.loadUserById.args[0][0]).to.equal(1337);
         });
@@ -181,29 +181,29 @@ describe('userCreateRoute', function () {
         var spy = sinon.spy();
         route.route(req, res, spy);
 
-        it('should not call next', function() {
+        it('should not call next', function () {
             expect(spy.callCount).to.equal(0);
         });
 
-        it('should send a body', function() {
+        it('should send a body', function () {
             expect(res._end).to.equal('{"name":"bert"}');
         });
 
-        it('should send 201 (created)', function() {
+        it('should send 201 (created)', function () {
             expect(res._status).to.equal(201);
         });
 
-        it('should ask the userLoader for the name', function() {
+        it('should ask the userLoader for the name', function () {
             expect(userLoader.loadUserByName.callCount).to.equal(1);
             expect(userLoader.loadUserByName.args[0][0]).to.equal('bert');
         });
 
-        it('should call createUser', function() {
+        it('should call createUser', function () {
             expect(userLoader.createUser.callCount).to.equal(1);
             expect(userLoader.createUser.args[0][0]).to.equal('bert');
         });
 
-        it('should reload the user', function() {
+        it('should reload the user', function () {
             expect(userLoader.loadUserById.callCount).to.equal(1);
             expect(userLoader.loadUserById.args[0][0]).to.equal(1337);
         });

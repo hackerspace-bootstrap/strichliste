@@ -23,11 +23,11 @@ describe('userRoute', function () {
             expect(res._end).to.equal('{"name":"bert"}');
         });
 
-        it('should not call next', function() {
+        it('should not call next', function () {
             expect(spy.callCount).to.equal(0);
         });
 
-        it('should ask the userPersistence with id 1', function() {
+        it('should ask the userPersistence with id 1', function () {
             expect(userLoader.loadUserById.args[0][0]).to.equal(1);
         });
     });
@@ -53,11 +53,11 @@ describe('userRoute', function () {
             expect(error.errorCode).to.equal(404);
         });
 
-        it('should not return a body', function() {
+        it('should not return a body', function () {
             expect(res._end).to.be.null;
         });
 
-        it('should ask the userPersistence with id 1', function() {
+        it('should ask the userPersistence with id 1', function () {
             expect(userLoader.loadUserById.args[0][0]).to.equal(1);
         });
     });
@@ -83,11 +83,11 @@ describe('userRoute', function () {
             expect(error.errorCode).to.equal(500);
         });
 
-        it('should not return a body', function() {
+        it('should not return a body', function () {
             expect(res._end).to.be.null;
         });
 
-        it('should ask the userPersistence with id 1', function() {
+        it('should ask the userPersistence with id 1', function () {
             expect(userLoader.loadUserById.args[0][0]).to.equal(1);
         });
     });

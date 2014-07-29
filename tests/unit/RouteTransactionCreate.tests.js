@@ -14,7 +14,7 @@ describe('transactionCreateRoute', function () {
         var res = mocks.createResponseMock();
 
         var error;
-        route.route(req, res, function(_error) {
+        route.route(req, res, function (_error) {
             error = _error;
         });
 
@@ -23,7 +23,7 @@ describe('transactionCreateRoute', function () {
             expect(error.message).to.equal('not a number: undefined');
         });
 
-        it('should not sent any body', function() {
+        it('should not sent any body', function () {
             expect(res._end).to.be.null;
         });
     });
@@ -32,12 +32,12 @@ describe('transactionCreateRoute', function () {
         var route = new TransactionCreate(null);
         var req = mocks.createRequestMock({
             params: {userId: 1},
-            body: {value:0}
+            body: {value: 0}
         });
         var res = mocks.createResponseMock();
 
         var error;
-        route.route(req, res, function(_error) {
+        route.route(req, res, function (_error) {
             error = _error;
         });
 
@@ -46,7 +46,7 @@ describe('transactionCreateRoute', function () {
             expect(error.message).to.equal('value must not be zero');
         });
 
-        it('should not sent any body', function() {
+        it('should not sent any body', function () {
             expect(res._end).to.be.null;
         });
     });
@@ -63,7 +63,7 @@ describe('transactionCreateRoute', function () {
         var res = mocks.createResponseMock();
 
         var error;
-        route.route(req, res, function(_error) {
+        route.route(req, res, function (_error) {
             error = _error;
         });
 
@@ -72,11 +72,11 @@ describe('transactionCreateRoute', function () {
             expect(error.message).to.equal('error checking user: caboom');
         });
 
-        it('should not sent any body', function() {
+        it('should not sent any body', function () {
             expect(res._end).to.be.null;
         });
 
-        it('should ask the userLoader', function() {
+        it('should ask the userLoader', function () {
             expect(userLoader.loadUserById.callCount).to.equal(1);
         });
     });
@@ -94,7 +94,7 @@ describe('transactionCreateRoute', function () {
         var res = mocks.createResponseMock();
 
         var error;
-        route.route(req, res, function(_error) {
+        route.route(req, res, function (_error) {
             error = _error;
         });
 
@@ -103,18 +103,18 @@ describe('transactionCreateRoute', function () {
             expect(error.message).to.equal('user 100 not found');
         });
 
-        it('should not sent any body', function() {
+        it('should not sent any body', function () {
             expect(res._end).to.be.null;
         });
 
-        it('should ask the userLoader', function() {
+        it('should ask the userLoader', function () {
             expect(userLoader.loadUserById.callCount).to.equal(1);
         });
     });
 
     describe('creation fails', function () {
         var userLoader = mocks.createUserPersistenceMock({
-            loadUserById: { error: null, result: {name:'bert'} },
+            loadUserById: { error: null, result: {name: 'bert'} },
             createTransaction: {error: new Error('caboom'), result: null}
         });
 
@@ -126,7 +126,7 @@ describe('transactionCreateRoute', function () {
         var res = mocks.createResponseMock();
 
         var error;
-        route.route(req, res, function(_error) {
+        route.route(req, res, function (_error) {
             error = _error;
         });
 
@@ -135,16 +135,16 @@ describe('transactionCreateRoute', function () {
             expect(error.message).to.equal('unexpected: caboom');
         });
 
-        it('should not sent any body', function() {
+        it('should not sent any body', function () {
             expect(res._end).to.be.null;
         });
 
-        it('should ask the userLoader for the name', function() {
+        it('should ask the userLoader for the name', function () {
             expect(userLoader.loadUserById.args[0][0]).to.equal(100);
             expect(userLoader.loadUserById.callCount).to.equal(1);
         });
 
-        it('should call creatTransaction with the correct parameters', function() {
+        it('should call creatTransaction with the correct parameters', function () {
             expect(userLoader.createTransaction.callCount).to.equal(1);
             expect(userLoader.createTransaction.args[0][0]).to.equal(100);
             expect(userLoader.createTransaction.args[0][1]).to.equal(42);
@@ -166,7 +166,7 @@ describe('transactionCreateRoute', function () {
         var res = mocks.createResponseMock();
 
         var error;
-        route.route(req, res, function(_error) {
+        route.route(req, res, function (_error) {
             error = _error;
         });
 
@@ -175,22 +175,22 @@ describe('transactionCreateRoute', function () {
             expect(error.message).to.equal('error retrieving transaction: 1337');
         });
 
-        it('should not sent any body', function() {
+        it('should not sent any body', function () {
             expect(res._end).to.be.null;
         });
 
-        it('should ask the userLoader for the name', function() {
+        it('should ask the userLoader for the name', function () {
             expect(userLoader.loadUserById.args[0][0]).to.equal(1000);
             expect(userLoader.loadUserById.callCount).to.equal(1);
         });
 
-        it('should call createUser', function() {
+        it('should call createUser', function () {
             expect(userLoader.createTransaction.callCount).to.equal(1);
             expect(userLoader.createTransaction.args[0][0]).to.equal(1000);
             expect(userLoader.createTransaction.args[0][1]).to.equal(1337);
         });
 
-        it('should reload the user', function() {
+        it('should reload the user', function () {
             expect(userLoader.loadUserById.callCount).to.equal(1);
             expect(userLoader.loadUserById.args[0][0]).to.equal(1000);
         });
@@ -198,45 +198,45 @@ describe('transactionCreateRoute', function () {
 
     describe('success', function () {
         var userLoader = mocks.createUserPersistenceMock({
-            loadUserById: { error: null, result: {name:'bert'} },
+            loadUserById: { error: null, result: {name: 'bert'} },
             createTransaction: {error: null, result: 1337},
-            loadTransaction: {error: null, result: {value:123}}
+            loadTransaction: {error: null, result: {value: 123}}
         });
 
         var route = new TransactionCreate(userLoader);
         var req = mocks.createRequestMock({
             body: {value: 42},
-            params: {userId:100}
+            params: {userId: 100}
         });
         var res = mocks.createResponseMock();
 
         var spy = sinon.spy();
         route.route(req, res, spy);
 
-        it('should not call next', function() {
+        it('should not call next', function () {
             expect(spy.callCount).to.equal(0);
         });
 
-        it('should send a body', function() {
+        it('should send a body', function () {
             expect(res._end).to.equal('{"value":123}');
         });
 
-        it('should send 201 (created)', function() {
+        it('should send 201 (created)', function () {
             expect(res._status).to.equal(201);
         });
 
-        it('should ask the userLoader for the user', function() {
+        it('should ask the userLoader for the user', function () {
             expect(userLoader.loadUserById.callCount).to.equal(1);
             expect(userLoader.loadUserById.args[0][0]).to.equal(100);
         });
 
-        it('should call createTransaction', function() {
+        it('should call createTransaction', function () {
             expect(userLoader.createTransaction.callCount).to.equal(1);
             expect(userLoader.createTransaction.args[0][0]).to.equal(100);
             expect(userLoader.createTransaction.args[0][1]).to.equal(42);
         });
 
-        it('should reload the transaction', function() {
+        it('should reload the transaction', function () {
             expect(userLoader.loadTransaction.callCount).to.equal(1);
             expect(userLoader.loadTransaction.args[0][0]).to.equal(1337);
         });
