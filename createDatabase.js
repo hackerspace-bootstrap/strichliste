@@ -3,8 +3,7 @@ var config = require('./lib/configuration');
 
 Factory.create(config.database, function(error, db) {
     if (error) {
-        console.log(error.message);
-        return;
+        return console.log(error.message);
     }
 
     db.query('create table users (id INTEGER PRIMARY KEY AUTOINCREMENT, name text, createDate date)');
