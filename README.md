@@ -1,4 +1,4 @@
-# strichliste
+# strichliste [![Build Status](https://travis-ci.org/hackerspace-bootstrap/strichliste.png)](https://travis-ci.org/hackerspace-bootstrap/strichliste)
 
 backend service for the strichliste app.
 
