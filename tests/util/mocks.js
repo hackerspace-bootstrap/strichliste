@@ -38,6 +38,12 @@ function createUserPersistenceMock(options) {
         }),
         createUser: sinon.spy(function(name, callback) {
             callback(options.createUser.error, options.createUser.result);
+        }),
+        createTransaction: sinon.spy(function(userId, value, callback) {
+            callback(options.createTransaction.error, options.createTransaction.result);
+        }),
+        loadTransaction: sinon.spy(function(transactionId, callback) {
+            callback(options.loadTransaction.error, options.loadTransaction.result);
         })
     };
 }
