@@ -4,7 +4,8 @@ function createRequestMock(options) {
     options = options || {};
 
     return {
-        params: options.params || {}
+        params: options.params || {},
+        body: options.body || {}
     }
 }
 
