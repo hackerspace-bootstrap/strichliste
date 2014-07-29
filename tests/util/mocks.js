@@ -12,9 +12,15 @@ function createRequestMock(options) {
 function createResponseMock() {
     return {
         _end: null,
+        _status: null,
 
         end: function(data) {
             this._end = data;
+            return this;
+        },
+        status: function(status) {
+            this._status = status;
+            return this;
         }
     }
 }
@@ -29,6 +35,9 @@ function createUserPersistenceMock(options) {
         }),
         loadUserByName: sinon.spy(function(name, callback) {
             callback(options.loadUserByName.error, options.loadUserByName.result);
+        }),
+        createUser: sinon.spy(function(name, callback) {
+            callback(options.createUser.error, options.createUser.result);
         })
     };
 }
