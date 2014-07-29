@@ -26,6 +26,9 @@ function createUserPersistenceMock(options) {
         }),
         loadUserById: sinon.spy(function(id, callback) {
             callback(options.loadUserById.error, options.loadUserById.result);
+        }),
+        loadUserByName: sinon.spy(function(name, callback) {
+            callback(options.loadUserByName.error, options.loadUserByName.result);
         })
     };
 }
