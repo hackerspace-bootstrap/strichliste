@@ -43,10 +43,9 @@ describe('userRoute', function () {
         });
         var res = mocks.createResponseMock();
 
-        var error, result;
-        route.route(req, res, function (_error, _result) {
+        var error;
+        route.route(req, res, function (_error) {
             error = _error;
-            result = _result;
         });
 
         it('should return a not found error', function () {
@@ -75,9 +74,8 @@ describe('userRoute', function () {
         var res = mocks.createResponseMock();
 
         var error, result;
-        route.route(req, res, function (_error, _result) {
+        route.route(req, res, function (_error) {
             error = _error;
-            result = _result;
         });
 
         it('should return a an internal server error', function () {
