@@ -6,5 +6,14 @@ module.exports = {
         options: {
             filename: 'data.sqlite'
         }
+    },
+
+    mqtt: {
+        enable: false,
+        host: 'mqtt',
+        port: 1882,
+        topics: {
+            transaction: 'strichliste/transaction'
+        }
     }
 };
