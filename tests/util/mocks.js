@@ -45,6 +45,9 @@ function createUserPersistenceMock (options) {
         }),
         loadTransaction: sinon.spy(function (transactionId, callback) {
             callback(options.loadTransaction.error, options.loadTransaction.result);
+        }),
+        loadTransactionsByUserId: sinon.spy(function (transactionId, callback) {
+            callback(options.loadTransactionsByUserId.error, options.loadTransactionsByUserId.result);
         })
     };
 }
