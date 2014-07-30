@@ -210,4 +210,96 @@ describe('userCreateRoute', function () {
             expect(userLoader.loadUserById.args[0][0]).to.equal(1337);
         });
     });
+
+    describe('success, name special case (number)', function () {
+        var userLoader = mocks.createUserPersistenceMock({
+            loadUserByName: { error: null, result: null },
+            createUser: {error: null, result: 1337},
+            loadUserById: {error: null, result: {name: 'bert'}}
+        });
+
+        var route = new UserCreateRoute(userLoader);
+        var req = mocks.createRequestMock({
+            body: {name: 10}
+        });
+        var res = mocks.createResponseMock();
+
+        var result;
+        route.route(req, res, function() {
+            result = req.result;
+        });
+
+        it('should send a body', function () {
+            expect(result.content()).to.deep.equal({"name":"bert"});
+        });
+
+        it('should set the correct content type', function() {
+            expect(result.contentType()).to.equal('application/json');
+        });
+
+        it('should set the correct status code', function() {
+            expect(result.statusCode()).to.equal(201);
+        });
+
+        it('should ask the userLoader for the name', function () {
+            expect(userLoader.loadUserByName.callCount).to.equal(1);
+            expect(userLoader.loadUserByName.args[0][0]).to.equal('10');
+        });
+
+        it('should call createUser', function () {
+            expect(userLoader.createUser.callCount).to.equal(1);
+            expect(userLoader.createUser.args[0][0]).to.equal('10');
+        });
+
+        it('should reload the user', function () {
+            expect(userLoader.loadUserById.callCount).to.equal(1);
+            expect(userLoader.loadUserById.args[0][0]).to.equal(1337);
+        });
+    });
+
+    describe('success, name special case (\')', function () {
+        var userLoader = mocks.createUserPersistenceMock({
+            loadUserByName: { error: null, result: null },
+            createUser: {error: null, result: 1337},
+            loadUserById: {error: null, result: {name: 'bert'}}
+        });
+
+        var route = new UserCreateRoute(userLoader);
+        var req = mocks.createRequestMock({
+            body: {name: '\''}
+        });
+        var res = mocks.createResponseMock();
+
+        var result;
+        route.route(req, res, function() {
+            result = req.result;
+        });
+
+        it('should send a body', function () {
+            expect(result.content()).to.deep.equal({"name":"bert"});
+        });
+
+        it('should set the correct content type', function() {
+            expect(result.contentType()).to.equal('application/json');
+        });
+
+        it('should set the correct status code', function() {
+            expect(result.statusCode()).to.equal(201);
+        });
+
+        it('should ask the userLoader for the name', function () {
+            expect(userLoader.loadUserByName.callCount).to.equal(1);
+            expect(userLoader.loadUserByName.args[0][0]).to.equal('\'');
+        });
+
+        it('should call createUser', function () {
+            expect(userLoader.createUser.callCount).to.equal(1);
+            expect(userLoader.createUser.args[0][0]).to.equal('\'');
+        });
+
+        it('should reload the user', function () {
+            expect(userLoader.loadUserById.callCount).to.equal(1);
+            expect(userLoader.loadUserById.args[0][0]).to.equal(1337);
+        });
+    });
 });

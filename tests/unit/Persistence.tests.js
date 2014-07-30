@@ -207,11 +207,11 @@ describe('Persistence', function() {
             });
 
             it('should execute the correct query', function() {
-                expect(db.query.args[0][0]).to.equal("INSERT INTO users (name, createDate) VALUES ('bert', DateTime('now'))");
+                expect(db.query.args[0][0]).to.equal("INSERT INTO users (name) VALUES (?)");
             });
 
             it('should assign the correct arguments', function() {
-                expect(db.query.args[0][1]).to.deep.equal([]);
+                expect(db.query.args[0][1]).to.deep.equal(['bert']);
             });
         });
 
@@ -236,11 +236,11 @@ describe('Persistence', function() {
             });
 
             it('should execute the correct query', function() {
-                expect(db.query.args[0][0]).to.equal("INSERT INTO users (name, createDate) VALUES ('bert', DateTime('now'))");
+                expect(db.query.args[0][0]).to.equal("INSERT INTO users (name) VALUES (?)");
             });
 
             it('should assign the correct arguments', function() {
-                expect(db.query.args[0][1]).to.deep.equal([]);
+                expect(db.query.args[0][1]).to.deep.equal(['bert']);
             });
         });
     });
@@ -267,11 +267,11 @@ describe('Persistence', function() {
             });
 
             it('should execute the correct query', function() {
-                expect(db.query.args[0][0]).to.equal("INSERT INTO transactions (userId, createDate, value) VALUES (42, DateTime('now'), 1337)");
+                expect(db.query.args[0][0]).to.equal("INSERT INTO transactions (userId, value) VALUES (?, ?)");
             });
 
             it('should assign the correct arguments', function() {
-                expect(db.query.args[0][1]).to.deep.equal([]);
+                expect(db.query.args[0][1]).to.deep.equal([42, 1337]);
             });
         });
 
@@ -296,11 +296,11 @@ describe('Persistence', function() {
             });
 
             it('should execute the correct query', function() {
-                expect(db.query.args[0][0]).to.equal("INSERT INTO transactions (userId, createDate, value) VALUES (42, DateTime('now'), 1337)");
+                expect(db.query.args[0][0]).to.equal("INSERT INTO transactions (userId, value) VALUES (?, ?)");
             });
 
             it('should assign the correct arguments', function() {
-                expect(db.query.args[0][1]).to.deep.equal([]);
+                expect(db.query.args[0][1]).to.deep.equal([42, 1337]);
             });
         });
     });

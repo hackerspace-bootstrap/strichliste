@@ -10,10 +10,10 @@ Factory.create(config.database, function(error, db) {
 
     seq()
         .par(function() {
-            db.query('create table users (id INTEGER PRIMARY KEY AUTOINCREMENT, name text, createDate date)', [], this);
+            db.query('create table users (id INTEGER PRIMARY KEY AUTOINCREMENT, name text, createDate datetime default current_timestamp)', [], this);
         })
         .par(function() {
-            db.query('create table transactions (id INTEGER PRIMARY KEY AUTOINCREMENT, userId INTEGER, createDate date, value REAL)', [], this);
+            db.query('create table transactions (id INTEGER PRIMARY KEY AUTOINCREMENT, userId INTEGER, createDate datetime default current_timestamp, value REAL)', [], this);
         })
         .seq(function() {
             console.log('done');
