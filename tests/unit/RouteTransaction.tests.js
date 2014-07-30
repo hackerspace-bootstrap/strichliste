@@ -1,21 +1,21 @@
 var expect = require('chai').expect;
 var sinon = require('sinon');
 
-var TransactionListRoute = require('../../lib/routes/TransactionList');
+var TransactionRoute = require('../../lib/routes/Transaction');
 var mocks = require('../util/mocks');
 
 describe('transactionListRoute', function () {
     describe('sucess', function () {
         var userLoader = mocks.createUserPersistenceMock({
-            loadTransactionsByUserId: {
+            loadTransaction: {
                 error: null,
-                result: [1, 2, 3]
+                result: {value:42}
             }
         });
 
-        var route = new TransactionListRoute(userLoader);
+        var route = new TransactionRoute(userLoader);
         var req = mocks.createRequestMock({
-            params: {userId: 42}
+            params: {transactionId: 23}
         });
         var res = mocks.createResponseMock();
 
@@ -23,13 +23,13 @@ describe('transactionListRoute', function () {
         route.route(req, res, spy);
         var result = req.result;
 
-        it('should call the loadTransactionsByUserId', function () {
-            expect(userLoader.loadTransactionsByUserId.callCount).to.equal(1);
-            expect(userLoader.loadTransactionsByUserId.args[0][0]).to.equal(42);
+        it('should call loadTransaction', function () {
+            expect(userLoader.loadTransaction.callCount).to.equal(1);
+            expect(userLoader.loadTransaction.args[0][0]).to.equal(23);
         });
 
         it('should return the transactionlist from the userLoader', function () {
-            expect(result.content()).to.deep.equal([1,2,3]);
+            expect(result.content()).to.deep.equal({value:42});
         });
 
         it('should set the correct content type', function() {
@@ -47,14 +47,16 @@ describe('transactionListRoute', function () {
 
     describe('fail', function () {
         var userLoader = mocks.createUserPersistenceMock({
-            loadTransactionsByUserId: {
+            loadTransaction: {
                 error: new Error('caboom'),
                 result: null
             }
         });
 
-        var route = new TransactionListRoute(userLoader);
-        var req = mocks.createRequestMock();
+        var route = new TransactionRoute(userLoader);
+        var req = mocks.createRequestMock({
+            params: {transactionId: 23}
+        });
         var res = mocks.createResponseMock();
 
         var error;
@@ -62,8 +64,8 @@ describe('transactionListRoute', function () {
             error = _error;
         });
 
-        it('should call the loadTransactionsByUserId', function () {
-            expect(userLoader.loadTransactionsByUserId.callCount).to.equal(1);
+        it('should call loadTransaction', function () {
+            expect(userLoader.loadTransaction.callCount).to.equal(1);
         });
 
         it('should call next with an eror', function () {

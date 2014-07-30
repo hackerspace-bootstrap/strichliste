@@ -24,6 +24,14 @@ describe('userRoute', function () {
             expect(result.content()).to.deep.equal({name:'bert'});
         });
 
+        it('should set the correct content type', function() {
+            expect(result.contentType()).to.equal('application/json');
+        });
+
+        it('should set the correct status code', function() {
+            expect(result.statusCode()).to.equal(200);
+        });
+
         it('should call next', function () {
             expect(spy.callCount).to.equal(1);
         });
