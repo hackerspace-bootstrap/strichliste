@@ -9,7 +9,8 @@ describe('transactionCreateRoute', function () {
         var route = new TransactionCreate(null);
         var req = mocks.createRequestMock({
             params: {userId: 1},
-            body: {}
+            body: {},
+            result: {name:'foo'}
         });
         var res = mocks.createResponseMock();
 
@@ -51,67 +52,6 @@ describe('transactionCreateRoute', function () {
         });
     });
 
-    describe('user check fails', function () {
-        var userLoader = mocks.createUserPersistenceMock({
-            loadUserById: { error: new Error('caboom'), result: null }
-        });
-
-        var route = new TransactionCreate(userLoader);
-        var req = mocks.createRequestMock({
-            body: {value: 42}
-        });
-        var res = mocks.createResponseMock();
-
-        var error;
-        route.route(req, res, function (_error) {
-            error = _error;
-        });
-
-        it('should return an error if an error occurs on user load', function () {
-            expect(error.errorCode).to.equal(500);
-            expect(error.message).to.equal('error checking user: caboom');
-        });
-
-        it('should not sent any body', function () {
-            expect(res._end).to.be.null;
-        });
-
-        it('should ask the userLoader', function () {
-            expect(userLoader.loadUserById.callCount).to.equal(1);
-        });
-    });
-
-    describe('user doesnt exists', function () {
-        var userLoader = mocks.createUserPersistenceMock({
-            loadUserById: { error: null, result: null }
-        });
-
-        var route = new TransactionCreate(userLoader);
-        var req = mocks.createRequestMock({
-            body: {value: 42},
-            params: {userId: 100}
-        });
-        var res = mocks.createResponseMock();
-
-        var error;
-        route.route(req, res, function (_error) {
-            error = _error;
-        });
-
-        it('should return an error user is not found', function () {
-            expect(error.errorCode).to.equal(404);
-            expect(error.message).to.equal('user 100 not found');
-        });
-
-        it('should not sent any body', function () {
-            expect(res._end).to.be.null;
-        });
-
-        it('should ask the userLoader', function () {
-            expect(userLoader.loadUserById.callCount).to.equal(1);
-        });
-    });
-
     describe('creation fails', function () {
         var userLoader = mocks.createUserPersistenceMock({
             loadUserById: { error: null, result: {name: 'bert'} },
@@ -121,7 +61,8 @@ describe('transactionCreateRoute', function () {
         var route = new TransactionCreate(userLoader);
         var req = mocks.createRequestMock({
             body: {value: 42},
-            params: {userId: 100}
+            params: {userId: 100},
+            result: {name:'foo'}
         });
         var res = mocks.createResponseMock();
 
@@ -137,11 +78,6 @@ describe('transactionCreateRoute', function () {
 
         it('should not sent any body', function () {
             expect(res._end).to.be.null;
-        });
-
-        it('should ask the userLoader for the name', function () {
-            expect(userLoader.loadUserById.args[0][0]).to.equal(100);
-            expect(userLoader.loadUserById.callCount).to.equal(1);
         });
 
         it('should call creatTransaction with the correct parameters', function () {
@@ -161,7 +97,8 @@ describe('transactionCreateRoute', function () {
         var route = new TransactionCreate(userLoader);
         var req = mocks.createRequestMock({
             body: {value: 1337},
-            params: {userId: 1000}
+            params: {userId: 1000},
+            result: {name:'foo'}
         });
         var res = mocks.createResponseMock();
 
@@ -179,11 +116,6 @@ describe('transactionCreateRoute', function () {
             expect(res._end).to.be.null;
         });
 
-        it('should ask the userLoader for the name', function () {
-            expect(userLoader.loadUserById.args[0][0]).to.equal(1000);
-            expect(userLoader.loadUserById.callCount).to.equal(1);
-        });
-
         it('should call createUser', function () {
             expect(userLoader.createTransaction.callCount).to.equal(1);
             expect(userLoader.createTransaction.args[0][0]).to.equal(1000);
@@ -191,8 +123,8 @@ describe('transactionCreateRoute', function () {
         });
 
         it('should reload the user', function () {
-            expect(userLoader.loadUserById.callCount).to.equal(1);
-            expect(userLoader.loadUserById.args[0][0]).to.equal(1000);
+            expect(userLoader.loadTransaction.callCount).to.equal(1);
+            expect(userLoader.loadTransaction.args[0][0]).to.equal(1337);
         });
     });
 
@@ -206,7 +138,8 @@ describe('transactionCreateRoute', function () {
         var route = new TransactionCreate(userLoader);
         var req = mocks.createRequestMock({
             body: {value: 42.1},
-            params: {userId: 100}
+            params: {userId: 100},
+            result: {name:'foo'}
         });
         var res = mocks.createResponseMock();
 
@@ -221,11 +154,6 @@ describe('transactionCreateRoute', function () {
 
         it('should send 201 (created)', function () {
             expect(result.statusCode()).to.equal(201);
-        });
-
-        it('should ask the userLoader for the user', function () {
-            expect(userLoader.loadUserById.callCount).to.equal(1);
-            expect(userLoader.loadUserById.args[0][0]).to.equal(100);
         });
 
         it('should call createTransaction', function () {
