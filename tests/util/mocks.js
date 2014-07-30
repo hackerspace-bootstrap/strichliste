@@ -27,6 +27,8 @@ function createResponseMock () {
 }
 
 function createUserPersistenceMock (options) {
+    options = options || {};
+
     return {
         loadUsers: sinon.spy(function (callback) {
             callback(options.loadUsers.error, options.loadUsers.result);
@@ -52,8 +54,25 @@ function createUserPersistenceMock (options) {
     };
 }
 
+function createDBMock(options) {
+    options = options || {};
+
+    return {
+        selectOne: sinon.spy(function(query, arguments, callback) {
+            callback(options.selectOne.error, options.selectOne.result);
+        }),
+        selectMany: sinon.spy(function(query, arguments, callback) {
+            callback(options.selectMany.error, options.selectMany.result);
+        }),
+        query: sinon.spy(function(query, arguments, callback) {
+            callback(options.query.error, options.query.result);
+        })
+    }
+}
+
 module.exports = {
     createRequestMock: createRequestMock,
     createResponseMock: createResponseMock,
-    createUserPersistenceMock: createUserPersistenceMock
+    createUserPersistenceMock: createUserPersistenceMock,
+    createDBMock: createDBMock
 };
