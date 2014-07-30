@@ -14,8 +14,9 @@
     "checlist",
     "strichliste"
   ],
-  "author": "Manuel Ernst <zaphod84@gmx.de>",
+  "author": "Hackerspace Bootstrap <info@hackerspace-bootstrap.org>",
   "contributors": [
+    "Manuel Ernst <zaphod84@gmx.de>",
     "Christopher Schirner <schinken@hackerspace-bamberg.de>"
   ],
   "license": "MIT",
