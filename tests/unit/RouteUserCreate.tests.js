@@ -123,7 +123,7 @@ describe('userCreateRoute', function () {
         });
     });
 
-    describe('reload fails', function () {
+    describe('aaa', function () {
         var userLoader = mocks.createUserPersistenceMock({
             loadUserByName: { error: null, result: null },
             createUser: {error: null, result: 1337},
@@ -178,19 +178,17 @@ describe('userCreateRoute', function () {
         });
         var res = mocks.createResponseMock();
 
-        var spy = sinon.spy();
-        route.route(req, res, spy);
-
-        it('should not call next', function () {
-            expect(spy.callCount).to.equal(0);
+        var result;
+        route.route(req, res, function() {
+            result = req.result;
         });
 
         it('should send a body', function () {
-            expect(res._end).to.equal('{"name":"bert"}');
+            expect(result.content()).to.deep.equal({"name":"bert"});
         });
 
         it('should send 201 (created)', function () {
-            expect(res._status).to.equal(201);
+            expect(result.statusCode()).to.equal(201);
         });
 
         it('should ask the userLoader for the name', function () {

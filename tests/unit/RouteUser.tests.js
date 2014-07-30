@@ -12,19 +12,20 @@ describe('userRoute', function () {
 
         var route = new UserRoute(userLoader);
         var req = mocks.createRequestMock({
-            params: {id: 1}
+            params: {userId: 1}
         });
         var res = mocks.createResponseMock();
 
         var spy = sinon.spy();
         route.route(req, res, spy);
+        var result = req.result;
 
         it('should return the user from the userLoader', function () {
-            expect(res._end).to.equal('{"name":"bert"}');
+            expect(result.content()).to.deep.equal({name:'bert'});
         });
 
-        it('should not call next', function () {
-            expect(spy.callCount).to.equal(0);
+        it('should call next', function () {
+            expect(spy.callCount).to.equal(1);
         });
 
         it('should ask the userPersistence with id 1', function () {
@@ -39,7 +40,7 @@ describe('userRoute', function () {
 
         var route = new UserRoute(userLoader);
         var req = mocks.createRequestMock({
-            params: {id: 1}
+            params: {userId: 1}
         });
         var res = mocks.createResponseMock();
 
@@ -69,7 +70,7 @@ describe('userRoute', function () {
 
         var route = new UserRoute(userLoader);
         var req = mocks.createRequestMock({
-            params: {id: 1}
+            params: {userId: 1}
         });
         var res = mocks.createResponseMock();
 

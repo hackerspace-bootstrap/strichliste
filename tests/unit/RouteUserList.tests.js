@@ -19,17 +19,18 @@ describe('userListRoute', function () {
 
         var spy = sinon.spy();
         route.route(req, res, spy);
+        var result = req.result;
 
         it('should call the loadUserMethod', function () {
             expect(userLoader.loadUsers.callCount).to.equal(1);
         });
 
         it('should return the userlist from the userLoader', function () {
-            expect(res._end).to.equal('[1,2,3]');
+            expect(result.content()).to.deep.equal([1,2,3]);
         });
 
-        it('should not call the next method', function () {
-            expect(spy.callCount).to.equal(0);
+        it('should call the next method', function () {
+            expect(spy.callCount).to.equal(1);
         });
     });
 

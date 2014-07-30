@@ -205,24 +205,22 @@ describe('transactionCreateRoute', function () {
 
         var route = new TransactionCreate(userLoader);
         var req = mocks.createRequestMock({
-            body: {value: 42},
+            body: {value: 42.1},
             params: {userId: 100}
         });
         var res = mocks.createResponseMock();
 
-        var spy = sinon.spy();
-        route.route(req, res, spy);
-
-        it('should not call next', function () {
-            expect(spy.callCount).to.equal(0);
+        var result;
+        route.route(req, res, function() {
+            result = req.result;
         });
 
         it('should send a body', function () {
-            expect(res._end).to.equal('{"value":123}');
+            expect(result.content()).to.deep.equal({value:123});
         });
 
         it('should send 201 (created)', function () {
-            expect(res._status).to.equal(201);
+            expect(result.statusCode()).to.equal(201);
         });
 
         it('should ask the userLoader for the user', function () {
@@ -233,7 +231,7 @@ describe('transactionCreateRoute', function () {
         it('should call createTransaction', function () {
             expect(userLoader.createTransaction.callCount).to.equal(1);
             expect(userLoader.createTransaction.args[0][0]).to.equal(100);
-            expect(userLoader.createTransaction.args[0][1]).to.equal(42);
+            expect(userLoader.createTransaction.args[0][1]).to.equal(42.1);
         });
 
         it('should reload the transaction', function () {
