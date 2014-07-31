@@ -13,7 +13,7 @@ module.exports = {
         host: 'mqtt',
         port: 1882,
         topics: {
-            transaction: 'strichliste/transaction'
+            transactionValue: 'strichliste/transactionValue'
         }
     }
 };
