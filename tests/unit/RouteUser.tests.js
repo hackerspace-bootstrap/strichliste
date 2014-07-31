@@ -21,14 +21,14 @@ describe('userRoute', function () {
         var result = req.result;
 
         it('should return the user from the userLoader', function () {
-            expect(result.content()).to.deep.equal({name:'bert'});
+            expect(result.content()).to.deep.equal({name: 'bert'});
         });
 
-        it('should set the correct content type', function() {
+        it('should set the correct content type', function () {
             expect(result.contentType()).to.equal('application/json');
         });
 
-        it('should set the correct status code', function() {
+        it('should set the correct status code', function () {
             expect(result.statusCode()).to.equal(200);
         });
 

@@ -179,19 +179,19 @@ describe('userCreateRoute', function () {
         var res = mocks.createResponseMock();
 
         var result;
-        route.route(req, res, function() {
+        route.route(req, res, function () {
             result = req.result;
         });
 
         it('should send a body', function () {
-            expect(result.content()).to.deep.equal({"name":"bert"});
+            expect(result.content()).to.deep.equal({"name": "bert"});
         });
 
-        it('should set the correct content type', function() {
+        it('should set the correct content type', function () {
             expect(result.contentType()).to.equal('application/json');
         });
 
-        it('should set the correct status code', function() {
+        it('should set the correct status code', function () {
             expect(result.statusCode()).to.equal(201);
         });
 
@@ -225,19 +225,19 @@ describe('userCreateRoute', function () {
         var res = mocks.createResponseMock();
 
         var result;
-        route.route(req, res, function() {
+        route.route(req, res, function () {
             result = req.result;
         });
 
         it('should send a body', function () {
-            expect(result.content()).to.deep.equal({"name":"bert"});
+            expect(result.content()).to.deep.equal({"name": "bert"});
         });
 
-        it('should set the correct content type', function() {
+        it('should set the correct content type', function () {
             expect(result.contentType()).to.equal('application/json');
         });
 
-        it('should set the correct status code', function() {
+        it('should set the correct status code', function () {
             expect(result.statusCode()).to.equal(201);
         });
 
@@ -271,19 +271,19 @@ describe('userCreateRoute', function () {
         var res = mocks.createResponseMock();
 
         var result;
-        route.route(req, res, function() {
+        route.route(req, res, function () {
             result = req.result;
         });
 
         it('should send a body', function () {
-            expect(result.content()).to.deep.equal({"name":"bert"});
+            expect(result.content()).to.deep.equal({"name": "bert"});
         });
 
-        it('should set the correct content type', function() {
+        it('should set the correct content type', function () {
             expect(result.contentType()).to.equal('application/json');
         });
 
-        it('should set the correct status code', function() {
+        it('should set the correct status code', function () {
             expect(result.statusCode()).to.equal(201);
         });
 

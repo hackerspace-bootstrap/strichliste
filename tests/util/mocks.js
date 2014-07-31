@@ -54,29 +54,29 @@ function createUserPersistenceMock (options) {
     };
 }
 
-function createMqttWrapperMock() {
+function createMqttWrapperMock () {
     return {
         publishTransactionValue: sinon.spy()
     };
 }
 
-function createMqttClientMock() {
+function createMqttClientMock () {
     return {
         publish: sinon.spy()
     };
 }
 
-function createDBMock(options) {
+function createDBMock (options) {
     options = options || {};
 
     return {
-        selectOne: sinon.spy(function(query, arguments, callback) {
+        selectOne: sinon.spy(function (query, arguments, callback) {
             callback(options.selectOne.error, options.selectOne.result);
         }),
-        selectMany: sinon.spy(function(query, arguments, callback) {
+        selectMany: sinon.spy(function (query, arguments, callback) {
             callback(options.selectMany.error, options.selectMany.result);
         }),
-        query: sinon.spy(function(query, arguments, callback) {
+        query: sinon.spy(function (query, arguments, callback) {
             callback(options.query.error, options.query.result);
         })
     }

@@ -11,7 +11,7 @@ describe('mqtt', function () {
         describe('publish success with client', function () {
             var mqttClient, mqttWrapper;
 
-            before(function() {
+            before(function () {
                 mqttClient = mocks.createMqttClientMock();
 
                 mqttWrapper = new MqttWrapper(mqttClient);
@@ -22,7 +22,7 @@ describe('mqtt', function () {
                 expect(mqttClient.publish.callCount).to.equal(1);
             });
 
-            it('should publish the correct value', function() {
+            it('should publish the correct value', function () {
                 expect(mqttClient.publish.args[0][0]).to.equal('strichliste/transactionValue');
                 expect(mqttClient.publish.args[0][1]).to.equal(1337);
             });
@@ -40,29 +40,29 @@ describe('mqtt', function () {
 
     describe('mqttClient', function () {
 
-        describe('create client fails', function() {
+        describe('create client fails', function () {
 
             var mqttClient = sandbox.require('../../lib/mqtt/client', {
                 requires: {
                     mqtt: {
-                        createClient: function(host, port, callback) {
+                        createClient: function (host, port, callback) {
                             callback(new Error('caboom!'));
                         }
                     }
                 }
             });
 
-            it('should return an error', function() {
-                mqttClient.createClient('lulz.de', 31337, function(error) {
+            it('should return an error', function () {
+                mqttClient.createClient('lulz.de', 31337, function (error) {
                     expect(error.message).to.equal('caboom!');
                 });
             });
         });
 
-        describe('create client success', function() {
+        describe('create client success', function () {
 
             var mqttClientMock = {
-                createClient: sinon.spy(function(host, port, callback) {
+                createClient: sinon.spy(function (host, port, callback) {
                     process.nextTick(callback.bind(null, null));
                     return 'foobar';
                 })
@@ -75,20 +75,20 @@ describe('mqtt', function () {
             });
 
             var error, client;
-            before(function(done) {
-                mqttClient.createClient('lulz.de', 31337, function(_error, _client) {
+            before(function (done) {
+                mqttClient.createClient('lulz.de', 31337, function (_error, _client) {
                     error = _error;
                     client = _client;
                     done();
                 });
             });
 
-            it('should return an error', function() {
+            it('should return an error', function () {
                 expect(error).to.be.null;
                 expect(client).to.equal('foobar');
             });
 
-            it('should be called with correct parameters', function() {
+            it('should be called with correct parameters', function () {
                 expect(mqttClientMock.createClient.args[0][0]).to.equal(31337);
                 expect(mqttClientMock.createClient.args[0][1]).to.equal('lulz.de');
             });

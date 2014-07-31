@@ -10,7 +10,7 @@ describe('transactionCreateRoute', function () {
         var req = mocks.createRequestMock({
             params: {userId: 1},
             body: {},
-            result: {name:'foo'}
+            result: {name: 'foo'}
         });
         var res = mocks.createResponseMock();
 
@@ -62,7 +62,7 @@ describe('transactionCreateRoute', function () {
         var req = mocks.createRequestMock({
             body: {value: 42},
             params: {userId: 100},
-            result: {name:'foo'}
+            result: {name: 'foo'}
         });
         var res = mocks.createResponseMock();
 
@@ -98,7 +98,7 @@ describe('transactionCreateRoute', function () {
         var req = mocks.createRequestMock({
             body: {value: 1337},
             params: {userId: 1000},
-            result: {name:'foo'}
+            result: {name: 'foo'}
         });
         var res = mocks.createResponseMock();
 
@@ -141,24 +141,24 @@ describe('transactionCreateRoute', function () {
         var req = mocks.createRequestMock({
             body: {value: 42.1},
             params: {userId: 100},
-            result: {name:'foo'}
+            result: {name: 'foo'}
         });
         var res = mocks.createResponseMock();
 
         var result;
-        route.route(req, res, function() {
+        route.route(req, res, function () {
             result = req.result;
         });
 
         it('should send a body', function () {
-            expect(result.content()).to.deep.equal({value:123});
+            expect(result.content()).to.deep.equal({value: 123});
         });
 
-        it('should set the correct content type', function() {
+        it('should set the correct content type', function () {
             expect(result.contentType()).to.equal('application/json');
         });
 
-        it('should set the correct status code', function() {
+        it('should set the correct status code', function () {
             expect(result.statusCode()).to.equal(201);
         });
 
@@ -173,7 +173,7 @@ describe('transactionCreateRoute', function () {
             expect(userLoader.loadTransaction.args[0][0]).to.equal(1337);
         });
 
-        it('should send an transaction value through mqtt', function() {
+        it('should send an transaction value through mqtt', function () {
             expect(mqttWrapper.publishTransactionValue.callCount).to.equal(1);
             expect(mqttWrapper.publishTransactionValue.args[0][0]).to.equal(42.1);
         })

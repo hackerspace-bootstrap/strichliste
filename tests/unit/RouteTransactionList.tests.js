@@ -29,14 +29,14 @@ describe('transactionListRoute', function () {
         });
 
         it('should return the transactionlist from the userLoader', function () {
-            expect(result.content()).to.deep.equal([1,2,3]);
+            expect(result.content()).to.deep.equal([1, 2, 3]);
         });
 
-        it('should set the correct content type', function() {
+        it('should set the correct content type', function () {
             expect(result.contentType()).to.equal('application/json');
         });
 
-        it('should set the correct status code', function() {
+        it('should set the correct status code', function () {
             expect(result.statusCode()).to.equal(200);
         });
 
