@@ -27,18 +27,18 @@
     "chai": "^1.9.1",
     "mocha": "^1.20.1",
     "sinon": "^1.10.3",
-    "sandboxed-module": "~1.0.1"
+    "sandboxed-module": "^1.0.1"
   },
   "dependencies": {
-    "body-parser": "~1.5.2",
+    "body-parser": "^1.5.2",
     "configurations": "^0.1.3",
     "cors": "^2.4.1",
     "express": "^4.6.1",
     "figlet": "^1.0.10",
     "mqtt": "^0.3.11",
-    "seq": "~0.3.5",
-    "sqlite3": "~2.2.4",
-    "squel": "~3.6.0",
+    "seq": "^0.3.5",
+    "sqlite3": "^2.2.4",
+    "squel": "^3.6.0",
     "yargs": "^1.2.6"
   }
 }
