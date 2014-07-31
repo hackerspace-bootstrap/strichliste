@@ -26,7 +26,8 @@
   "devDependencies": {
     "chai": "^1.9.1",
     "mocha": "^1.20.1",
-    "sinon": "^1.10.3"
+    "sinon": "^1.10.3",
+    "sandboxed-module": "~1.0.1"
   },
   "dependencies": {
     "body-parser": "~1.5.2",

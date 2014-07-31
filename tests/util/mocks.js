@@ -54,6 +54,18 @@ function createUserPersistenceMock (options) {
     };
 }
 
+function createMqttWrapperMock() {
+    return {
+        publishTransactionValue: sinon.spy()
+    };
+}
+
+function createMqttClientMock() {
+    return {
+        publish: sinon.spy()
+    };
+}
+
 function createDBMock(options) {
     options = options || {};
 
@@ -74,5 +86,7 @@ module.exports = {
     createRequestMock: createRequestMock,
     createResponseMock: createResponseMock,
     createUserPersistenceMock: createUserPersistenceMock,
-    createDBMock: createDBMock
+    createDBMock: createDBMock,
+    createMqttWrapperMock: createMqttWrapperMock,
+    createMqttClientMock: createMqttClientMock
 };

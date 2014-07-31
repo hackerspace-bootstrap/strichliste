@@ -6,7 +6,7 @@ var mocks = require('../util/mocks');
 
 describe('transactionCreateRoute', function () {
     describe('no value', function () {
-        var route = new TransactionCreate(null);
+        var route = new TransactionCreate(null, null);
         var req = mocks.createRequestMock({
             params: {userId: 1},
             body: {},
@@ -30,7 +30,7 @@ describe('transactionCreateRoute', function () {
     });
 
     describe('zero value', function () {
-        var route = new TransactionCreate(null);
+        var route = new TransactionCreate(null, null);
         var req = mocks.createRequestMock({
             params: {userId: 1},
             body: {value: 0}
@@ -58,7 +58,7 @@ describe('transactionCreateRoute', function () {
             createTransaction: {error: new Error('caboom'), result: null}
         });
 
-        var route = new TransactionCreate(userLoader);
+        var route = new TransactionCreate(userLoader, null);
         var req = mocks.createRequestMock({
             body: {value: 42},
             params: {userId: 100},
@@ -135,7 +135,9 @@ describe('transactionCreateRoute', function () {
             loadTransaction: {error: null, result: {value: 123}}
         });
 
-        var route = new TransactionCreate(userLoader);
+        var mqttWrapper = mocks.createMqttWrapperMock();
+
+        var route = new TransactionCreate(userLoader, mqttWrapper);
         var req = mocks.createRequestMock({
             body: {value: 42.1},
             params: {userId: 100},
@@ -170,5 +172,10 @@ describe('transactionCreateRoute', function () {
             expect(userLoader.loadTransaction.callCount).to.equal(1);
             expect(userLoader.loadTransaction.args[0][0]).to.equal(1337);
         });
+
+        it('should send an transaction value through mqtt', function() {
+            expect(mqttWrapper.publishTransactionValue.callCount).to.equal(1);
+            expect(mqttWrapper.publishTransactionValue.args[0][0]).to.equal(42.1);
+        })
     });
 });
