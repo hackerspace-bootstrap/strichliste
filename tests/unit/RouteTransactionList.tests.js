@@ -7,41 +7,115 @@ var mocks = require('../util/mocks');
 describe('transactionListRoute', function () {
     describe('sucess', function () {
         var userLoader = mocks.createUserPersistenceMock({
-            loadTransactionsByUserId: {
-                error: null,
-                result: [1, 2, 3]
-            }
+            loadTransactionsByUserId: { error: null, result: [1, 2, 3] }
         });
 
         var route = new TransactionListRoute(userLoader);
         var req = mocks.createRequestMock({
-            params: {userId: 42}
+            params: {userId: 42},
+            query: {}
         });
         var res = mocks.createResponseMock();
 
-        var spy = sinon.spy();
-        route.route(req, res, spy);
-        var result = req.result;
+        before(function(done) {
+            route.route(req, res, done);
+        });
 
-        it('should call the loadTransactionsByUserId', function () {
+        it('should call the loadTransactionsByUserId with correct parameters', function () {
             expect(userLoader.loadTransactionsByUserId.callCount).to.equal(1);
             expect(userLoader.loadTransactionsByUserId.args[0][0]).to.equal(42);
+            expect(userLoader.loadTransactionsByUserId.args[0][1]).to.be.null;
+            expect(userLoader.loadTransactionsByUserId.args[0][2]).to.be.null;
         });
 
         it('should return the transactionlist from the userLoader', function () {
-            expect(result.content()).to.deep.equal([1, 2, 3]);
+            expect(req.result.content()).to.deep.equal([1, 2, 3]);
         });
 
         it('should set the correct content type', function () {
-            expect(result.contentType()).to.equal('application/json');
+            expect(req.result.contentType()).to.equal('application/json');
         });
 
         it('should set the correct status code', function () {
-            expect(result.statusCode()).to.equal(200);
+            expect(req.result.statusCode()).to.equal(200);
+        });
+    });
+
+    describe('success with limit/offset', function () {
+        var userLoader = mocks.createUserPersistenceMock({
+            loadTransactionsByUserId: { error: null, result: [1, 2, 3] }
         });
 
-        it('should call the next method', function () {
-            expect(spy.callCount).to.equal(1);
+        var route = new TransactionListRoute(userLoader);
+        var req = mocks.createRequestMock({
+            params: {userId: 42},
+            query: {
+                offset: 23,
+                limit: 1337
+            }
+        });
+        var res = mocks.createResponseMock();
+
+        before(function(done) {
+            route.route(req, res, done);
+        });
+
+        it('should call the loadTransactionsByUserId with correct parameters', function () {
+            expect(userLoader.loadTransactionsByUserId.callCount).to.equal(1);
+            expect(userLoader.loadTransactionsByUserId.args[0][0]).to.equal(42);
+            expect(userLoader.loadTransactionsByUserId.args[0][1]).to.equal(23);
+            expect(userLoader.loadTransactionsByUserId.args[0][2]).to.equal(1337)
+        });
+
+        it('should return the transactionlist from the userLoader', function () {
+            expect(req.result.content()).to.deep.equal([1, 2, 3]);
+        });
+
+        it('should set the correct content type', function () {
+            expect(req.result.contentType()).to.equal('application/json');
+        });
+
+        it('should set the correct status code', function () {
+            expect(req.result.statusCode()).to.equal(200);
+        });
+    });
+
+    describe('success with malformed limit/offset', function () {
+        var userLoader = mocks.createUserPersistenceMock({
+            loadTransactionsByUserId: { error: null, result: [1, 2, 3] }
+        });
+
+        var route = new TransactionListRoute(userLoader);
+        var req = mocks.createRequestMock({
+            params: {userId: 42},
+            query: {
+                offset: 'bert',
+                limit: 'bart'
+            }
+        });
+        var res = mocks.createResponseMock();
+
+        before(function(done) {
+            route.route(req, res, done);
+        });
+
+        it('should call the loadTransactionsByUserId with correct parameters', function () {
+            expect(userLoader.loadTransactionsByUserId.callCount).to.equal(1);
+            expect(userLoader.loadTransactionsByUserId.args[0][0]).to.equal(42);
+            expect(userLoader.loadTransactionsByUserId.args[0][1]).to.be.null;
+            expect(userLoader.loadTransactionsByUserId.args[0][2]).to.be.null;
+        });
+
+        it('should return the transactionlist from the userLoader', function () {
+            expect(req.result.content()).to.deep.equal([1, 2, 3]);
+        });
+
+        it('should set the correct content type', function () {
+            expect(req.result.contentType()).to.equal('application/json');
+        });
+
+        it('should set the correct status code', function () {
+            expect(req.result.statusCode()).to.equal(200);
         });
     });
 
@@ -54,7 +128,9 @@ describe('transactionListRoute', function () {
         });
 
         var route = new TransactionListRoute(userLoader);
-        var req = mocks.createRequestMock();
+        var req = mocks.createRequestMock({
+            query: {}
+        });
         var res = mocks.createResponseMock();
 
         var error;

@@ -327,7 +327,7 @@ describe('Persistence', function () {
             });
 
             it('should execute the correct query', function () {
-                expect(db.selectOne.args[0][0]).to.equal("SELECT id, userId, createDate, value FROM transactions WHERE (id = ?)");
+                expect(db.selectOne.args[0][0]).to.equal("SELECT id, userId, createDate, value FROM transactions WHERE (id = ?) ORDER BY id DESC");
             });
 
             it('should assign the correct arguments', function () {
@@ -356,7 +356,7 @@ describe('Persistence', function () {
             });
 
             it('should execute the correct query', function () {
-                expect(db.selectOne.args[0][0]).to.equal("SELECT id, userId, createDate, value FROM transactions WHERE (id = ?)");
+                expect(db.selectOne.args[0][0]).to.equal("SELECT id, userId, createDate, value FROM transactions WHERE (id = ?) ORDER BY id DESC");
             });
 
             it('should assign the correct arguments', function () {
@@ -373,7 +373,7 @@ describe('Persistence', function () {
 
             var error, result;
             new Persistence(db)
-                .loadTransactionsByUserId(1337, function (_error, _result) {
+                .loadTransactionsByUserId(1337, 1, 2, function (_error, _result) {
                     error = _error;
                     result = _result;
                 });
@@ -387,7 +387,65 @@ describe('Persistence', function () {
             });
 
             it('should execute the correct query', function () {
-                expect(db.selectMany.args[0][0]).to.equal("SELECT id, userId, createDate, value FROM transactions WHERE (userId = ?)");
+                expect(db.selectMany.args[0][0]).to.equal("SELECT id, userId, createDate, value FROM transactions WHERE (userId = ?) ORDER BY id DESC LIMIT 2 OFFSET 1");
+            });
+
+            it('should assign the correct arguments', function () {
+                expect(db.selectMany.args[0][1]).to.deep.equal([1337]);
+            });
+        });
+
+        describe('success without offset/limit', function () {
+            var db = mocks.createDBMock({
+                selectMany: {error: null, result: {value: 123}}
+            });
+
+            var error, result;
+            new Persistence(db)
+                .loadTransactionsByUserId(1337, null, null, function (_error, _result) {
+                    error = _error;
+                    result = _result;
+                });
+
+            it('should not return an error', function () {
+                expect(error).to.be.null;
+            });
+
+            it('should return the result', function () {
+                expect(result).to.deep.equal({value: 123});
+            });
+
+            it('should execute the correct query', function () {
+                expect(db.selectMany.args[0][0]).to.equal("SELECT id, userId, createDate, value FROM transactions WHERE (userId = ?) ORDER BY id DESC");
+            });
+
+            it('should assign the correct arguments', function () {
+                expect(db.selectMany.args[0][1]).to.deep.equal([1337]);
+            });
+        });
+
+        describe('success without offset/limit', function () {
+            var db = mocks.createDBMock({
+                selectMany: {error: null, result: {value: 123}}
+            });
+
+            var error, result;
+            new Persistence(db)
+                .loadTransactionsByUserId(1337, '10', null, function (_error, _result) {
+                    error = _error;
+                    result = _result;
+                });
+
+            it('should not return an error', function () {
+                expect(error).to.be.null;
+            });
+
+            it('should return the result', function () {
+                expect(result).to.deep.equal({value: 123});
+            });
+
+            it('should execute the correct query', function () {
+                expect(db.selectMany.args[0][0]).to.equal("SELECT id, userId, createDate, value FROM transactions WHERE (userId = ?) ORDER BY id DESC OFFSET 10");
             });
 
             it('should assign the correct arguments', function () {
@@ -402,7 +460,7 @@ describe('Persistence', function () {
 
             var error, result;
             new Persistence(db)
-                .loadTransactionsByUserId(1337, function (_error, _result) {
+                .loadTransactionsByUserId(1337, 1, 2, function (_error, _result) {
                     error = _error;
                     result = _result;
                 });
@@ -416,7 +474,7 @@ describe('Persistence', function () {
             });
 
             it('should execute the correct query', function () {
-                expect(db.selectMany.args[0][0]).to.equal("SELECT id, userId, createDate, value FROM transactions WHERE (userId = ?)");
+                expect(db.selectMany.args[0][0]).to.equal("SELECT id, userId, createDate, value FROM transactions WHERE (userId = ?) ORDER BY id DESC LIMIT 2 OFFSET 1");
             });
 
             it('should assign the correct arguments', function () {

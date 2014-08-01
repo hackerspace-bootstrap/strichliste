@@ -60,7 +60,7 @@ describe('Integration tests', function() {
             .get('/user/1')
             .expect('Content-Type', /application\/json/)
             .expect(200)
-            .expect('{"id":1,"name":"bert","balance":0}', done);
+            .expect('{"id":1,"name":"bert","balance":0,"transactions":[]}', done);
     });
 
     it('should return a failure when user does not exist', function(done) {
@@ -120,5 +120,38 @@ describe('Integration tests', function() {
             .expect('Content-Type', /application\/json/)
             .expect(200)
             .expect(/{"id":1,"userId":1,"createDate":"(.*)","value":42}/, done);
+    });
+
+    it('should create a second transaction', function(done) {
+        request(app)
+            .post('/user/1/transaction')
+            .send({value: 23})
+            .expect('Content-Type', /application\/json/)
+            .expect(201)
+            .expect(/{"id":2,"userId":1,"createDate":"(.*)","value":23}/, done);
+    });
+
+    it('should return the complete list of transactions', function(done) {
+        request(app)
+            .get('/user/1/transaction')
+            .expect('Content-Type', /application\/json/)
+            .expect(200)
+            .expect(/\[\{"id":2,"userId":1,"createDate":"(.*)","value":23\},\{"id":1,"userId":1,"createDate":"(.*)","value":42\}\]/, done);
+    });
+
+    it('should return a restricted list of transactions (limit=1)', function(done) {
+        request(app)
+            .get('/user/1/transaction?limit=1')
+            .expect('Content-Type', /application\/json/)
+            .expect(200)
+            .expect(/\[\{"id":2,"userId":1,"createDate":"(.*)","value":23\}\]/, done);
+    });
+
+    it('should return a restricted list of transactions (offset=1&limit=1)', function(done) {
+        request(app)
+            .get('/user/1/transaction?limit=1&offset=1')
+            .expect('Content-Type', /application\/json/)
+            .expect(200)
+            .expect(/\[\{"id":1,"userId":1,"createDate":"(.*)","value":42\}\]/, done);
     });
 });

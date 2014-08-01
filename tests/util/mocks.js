@@ -12,7 +12,8 @@ function createRequestMock (options) {
     return {
         params: options.params || {},
         body: options.body || {},
-        result: options.result || null
+        result: options.result || null,
+        query: options.query || null
     }
 }
 
@@ -54,7 +55,7 @@ function createUserPersistenceMock (options) {
         loadTransaction: sinon.spy(function (transactionId, callback) {
             callback(options.loadTransaction.error, options.loadTransaction.result);
         }),
-        loadTransactionsByUserId: sinon.spy(function (transactionId, callback) {
+        loadTransactionsByUserId: sinon.spy(function (transactionId, offset, limit, callback) {
             callback(options.loadTransactionsByUserId.error, options.loadTransactionsByUserId.result);
         })
     };
