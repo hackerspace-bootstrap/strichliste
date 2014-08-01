@@ -16,10 +16,13 @@ Factory.create(dbOptions, function(error, db) {
 
     seq()
         .par(function() {
-            db.query('create table users (id INTEGER PRIMARY KEY AUTOINCREMENT, name text, createDate datetime default current_timestamp)', [], this);
+            db.query('CREATE TABLE users (id INTEGER PRIMARY KEY AUTOINCREMENT, name text, createDate DATETIME DEFAULT current_timestamp)', [], this);
         })
         .par(function() {
-            db.query('create table transactions (id INTEGER PRIMARY KEY AUTOINCREMENT, userId INTEGER, createDate datetime default current_timestamp, value REAL)', [], this);
+            db.query('CREATE TABLE transactions (id INTEGER PRIMARY KEY AUTOINCREMENT, userId INTEGER, createDate DATETIME DEFAULT current_timestamp, value REAL)', [], this);
+        })
+        .seq(function() {
+            db.query('CREATE INDEX userId ON transactions(userId)', [], this);
         })
         .seq(function() {
             console.log('database ' + dbOptions.options.filename + ' created');
