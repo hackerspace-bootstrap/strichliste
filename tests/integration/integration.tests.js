@@ -4,7 +4,7 @@ var express = require('express');
 var appFactory = require('../../appFactory');
 var configuration = require('../../lib/configuration');
 
-describe('foo', function() {
+describe('Integration tests', function() {
     var app;
     before(function(done) {
         appFactory.create(function(error, _app) {
