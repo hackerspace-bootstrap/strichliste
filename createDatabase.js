@@ -1,12 +1,18 @@
 var seq = require('seq');
+var args = require('yargs').argv;
 
 var Factory = require('./lib/database/Factory');
 var config = require('./lib/configuration');
 
-Factory.create(config.database, function(error, db) {
-    if (error) {
-        return console.log(error.message);
-    }
+var fileName = args.filename || null;
+var dbOptions = config.database;
+
+if (fileName) {
+    dbOptions.options.filename = fileName;
+}
+
+Factory.create(dbOptions, function(error, db) {
+    if (error) return console.log(error.message);
 
     seq()
         .par(function() {
@@ -16,6 +22,6 @@ Factory.create(config.database, function(error, db) {
             db.query('create table transactions (id INTEGER PRIMARY KEY AUTOINCREMENT, userId INTEGER, createDate datetime default current_timestamp, value REAL)', [], this);
         })
         .seq(function() {
-            console.log('done');
+            console.log('database ' + dbOptions.options.filename + ' created');
         });
 });
