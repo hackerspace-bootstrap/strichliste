@@ -1,4 +1,7 @@
-tables:
+start:
+	@node server.js
+
+database:
 	@node createDatabase.js
 
 run-unit-tests:

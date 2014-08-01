@@ -8,10 +8,22 @@ backend service for the strichliste app.
 $ npm install
 ````
 
+## run tests
+
+````bash
+$ make test
+````
+
 ## initialize database
 
 creates the tables in the sqlitefile
 
 ````bash
-$ node createDatabase.js
+$ make database
+````
+
+## start api process
+
+````bash
+$ make start
 ````
