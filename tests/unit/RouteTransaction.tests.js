@@ -21,7 +21,7 @@ describe('transactionListRoute', function () {
 
         var spy = sinon.spy();
         route.route(req, res, spy);
-        var result = req.result;
+        var result = req.strichliste.result;
 
         it('should call loadTransaction', function () {
             expect(userLoader.loadTransaction.callCount).to.equal(1);

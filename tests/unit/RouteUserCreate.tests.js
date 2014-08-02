@@ -180,7 +180,7 @@ describe('userCreateRoute', function () {
 
         var result;
         route.route(req, res, function () {
-            result = req.result;
+            result = req.strichliste.result;
         });
 
         it('should send a body', function () {
@@ -226,7 +226,7 @@ describe('userCreateRoute', function () {
 
         var result;
         route.route(req, res, function () {
-            result = req.result;
+            result = req.strichliste.result;
         });
 
         it('should send a body', function () {
@@ -272,7 +272,7 @@ describe('userCreateRoute', function () {
 
         var result;
         route.route(req, res, function () {
-            result = req.result;
+            result = req.strichliste.result;
         });
 
         it('should send a body', function () {

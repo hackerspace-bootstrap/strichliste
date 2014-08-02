@@ -19,7 +19,7 @@ describe('userRoute', function () {
 
         var spy = sinon.spy();
         route.route(req, res, spy);
-        var result = req.result;
+        var result = req.strichliste.result;
 
         it('should return the user from the userLoader', function () {
             expect(result.content()).to.deep.equal({name: 'bert', transactions: [1,2,3]});

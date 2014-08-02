@@ -29,15 +29,15 @@ describe('transactionListRoute', function () {
         });
 
         it('should return the transactionlist from the userLoader', function () {
-            expect(req.result.content()).to.deep.equal([1, 2, 3]);
+            expect(req.strichliste.result.content()).to.deep.equal([1, 2, 3]);
         });
 
         it('should set the correct content type', function () {
-            expect(req.result.contentType()).to.equal('application/json');
+            expect(req.strichliste.result.contentType()).to.equal('application/json');
         });
 
         it('should set the correct status code', function () {
-            expect(req.result.statusCode()).to.equal(200);
+            expect(req.strichliste.result.statusCode()).to.equal(200);
         });
     });
 
@@ -68,15 +68,15 @@ describe('transactionListRoute', function () {
         });
 
         it('should return the transactionlist from the userLoader', function () {
-            expect(req.result.content()).to.deep.equal([1, 2, 3]);
+            expect(req.strichliste.result.content()).to.deep.equal([1, 2, 3]);
         });
 
         it('should set the correct content type', function () {
-            expect(req.result.contentType()).to.equal('application/json');
+            expect(req.strichliste.result.contentType()).to.equal('application/json');
         });
 
         it('should set the correct status code', function () {
-            expect(req.result.statusCode()).to.equal(200);
+            expect(req.strichliste.result.statusCode()).to.equal(200);
         });
     });
 
@@ -107,15 +107,15 @@ describe('transactionListRoute', function () {
         });
 
         it('should return the transactionlist from the userLoader', function () {
-            expect(req.result.content()).to.deep.equal([1, 2, 3]);
+            expect(req.strichliste.result.content()).to.deep.equal([1, 2, 3]);
         });
 
         it('should set the correct content type', function () {
-            expect(req.result.contentType()).to.equal('application/json');
+            expect(req.strichliste.result.contentType()).to.equal('application/json');
         });
 
         it('should set the correct status code', function () {
-            expect(req.result.statusCode()).to.equal(200);
+            expect(req.strichliste.result.statusCode()).to.equal(200);
         });
     });
 

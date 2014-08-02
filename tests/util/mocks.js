@@ -12,8 +12,8 @@ function createRequestMock (options) {
     return {
         params: options.params || {},
         body: options.body || {},
-        result: options.result || null,
-        query: options.query || null
+        query: options.query || null,
+        strichliste: options.strichliste || {}
     }
 }
 

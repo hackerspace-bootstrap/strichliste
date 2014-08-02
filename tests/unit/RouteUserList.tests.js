@@ -19,7 +19,7 @@ describe('userListRoute', function () {
 
         var spy = sinon.spy();
         route.route(req, res, spy);
-        var result = req.result;
+        var result = req.strichliste.result;
 
         it('should call the loadUserMethod', function () {
             expect(userLoader.loadUsers.callCount).to.equal(1);
