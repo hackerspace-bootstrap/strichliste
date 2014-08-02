@@ -1,6 +1,6 @@
 var figlet = require('figlet');
 
-var version = require('./lib/version');
+var version = require('./lib/util/version');
 var configuration = require('./lib/configuration');
 var appFactory = require('./appFactory');
 
