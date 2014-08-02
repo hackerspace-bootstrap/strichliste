@@ -54,8 +54,7 @@ describe('parameters', function () {
             });
 
             it('should create a limitStatement', function() {
-                expect(reqMock.strichliste.limitStatement.limit()).to.be.null;
-                expect(reqMock.strichliste.limitStatement.offset()).to.equal(10);
+                expect(reqMock.strichliste.limitStatement).to.be.null;
             });
         });
 
@@ -90,7 +89,24 @@ describe('parameters', function () {
             });
 
             it('should create a limitStatement', function() {
-                expect(reqMock.strichliste.limitStatement.limit()).to.be.null;
+                expect(reqMock.strichliste.limitStatement).to.be.null;
+            });
+        });
+
+        describe('limit+offset parameter', function() {
+            var reqMock = mocks.createRequestMock({ query: { limit: 1, offset: 'foo' } });
+            var resMock = mocks.createResponseMock();
+
+            before(function(done) {
+                parameterMiddleware()(reqMock, resMock, done);
+            });
+
+            it('should create not a orderStatement', function() {
+                expect(reqMock.strichliste.orderStatement).to.be.null;
+            });
+
+            it('should create a limitStatement', function() {
+                expect(reqMock.strichliste.limitStatement.limit()).to.equal(1);
                 expect(reqMock.strichliste.limitStatement.offset()).to.equal(0);
             });
         });
