@@ -38,6 +38,14 @@ describe('Integration tests', function() {
             .expect('[{"id":1,"name":"bert","balance":0,"lastTransaction":null}]', done);
     });
 
+    it('should return a empty list b/c of limit+offset', function(done) {
+        request(app)
+            .get('/user?offset=1&limit=1')
+            .expect('Content-Type', /application\/json/)
+            .expect(200)
+            .expect('[]', done);
+    });
+
     it('create should fail without without a name', function(done) {
         request(app)
             .post('/user')

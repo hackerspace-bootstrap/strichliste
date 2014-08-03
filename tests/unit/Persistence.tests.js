@@ -16,7 +16,7 @@ describe('Persistence', function () {
 
             var error, result;
             new Persistence(db)
-                .loadUsers(function (_error, _result) {
+                .loadUsers(null, null, function (_error, _result) {
                     error = _error;
                     result = _result;
                 });
@@ -38,6 +38,35 @@ describe('Persistence', function () {
             });
         });
 
+        describe('success with limit', function () {
+            var db = mocks.createDBMock({
+                selectMany: {error: null, result: [1, 2, 3]}
+            });
+
+            var error, result;
+            new Persistence(db)
+                .loadUsers(new LimitStatement(1, 1), null, function (_error, _result) {
+                    error = _error;
+                    result = _result;
+                });
+
+            it('should not return an error', function () {
+                expect(error).to.be.null;
+            });
+
+            it('should return the result', function () {
+                expect(result).to.deep.equal([1, 2, 3]);
+            });
+
+            it('should execute the correct query', function () {
+                expect(db.selectMany.args[0][0]).to.equal('SELECT users.id AS "id", users.name AS "name", coalesce(sum(value),0) AS \"balance\", max(transactions.createDate) AS \"lastTransaction\" FROM users LEFT JOIN transactions ON (transactions.userId = users.id) GROUP BY users.id LIMIT 1 OFFSET 1');
+            });
+
+            it('should assign the correct arguments', function () {
+                expect(db.selectMany.args[0][1]).to.deep.equal([]);
+            });
+        });
+
         describe('fail', function () {
             var db = mocks.createDBMock({
                 selectMany: {error: new Error('Caboom'), result: null}
@@ -45,7 +74,7 @@ describe('Persistence', function () {
 
             var error, result;
             new Persistence(db)
-                .loadUsers(function (_error, _result) {
+                .loadUsers(null, null, function (_error, _result) {
                     error = _error;
                     result = _result;
                 });
