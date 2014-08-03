@@ -42,6 +42,50 @@ describe('userListRoute', function () {
         });
     });
 
+    describe('sucess with limitStatement', function () {
+        var userLoader = mocks.createUserPersistenceMock({
+            loadUsers: {
+                error: null,
+                result: [1, 2, 3]
+            }
+        });
+
+        var route = new UserListRoute(userLoader);
+        var req = mocks.createRequestMock({
+            strichliste: {orderStatement: null, limitStatement: 'bert'}
+        });
+        var res = mocks.createResponseMock();
+
+        var spy = sinon.spy();
+        route.route(req, res, spy);
+        var result = req.strichliste.result;
+
+        it('should call the loadUserMethod', function () {
+            expect(userLoader.loadUsers.callCount).to.equal(1);
+        });
+
+        it('should call the loadUserMethod with the correct parameters', function () {
+            expect(userLoader.loadUsers.args[0][0]).to.equal('bert');
+            expect(userLoader.loadUsers.args[0][1]).to.be.null;
+        });
+
+        it('should return the userlist from the userLoader', function () {
+            expect(result.content()).to.deep.equal([1, 2, 3]);
+        });
+
+        it('should set the correct content type', function () {
+            expect(result.contentType()).to.equal('application/json');
+        });
+
+        it('should set the correct status code', function () {
+            expect(result.statusCode()).to.equal(200);
+        });
+
+        it('should call the next method', function () {
+            expect(spy.callCount).to.equal(1);
+        });
+    });
+
     describe('fail', function () {
         var userLoader = mocks.createUserPersistenceMock({
             loadUsers: {

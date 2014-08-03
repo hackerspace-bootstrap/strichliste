@@ -37,7 +37,7 @@ function createUserPersistenceMock (options) {
     options = options || {};
 
     return {
-        loadUsers: sinon.spy(function (callback) {
+        loadUsers: sinon.spy(function (limitStatement, orderStatement, callback) {
             callback(options.loadUsers.error, options.loadUsers.result);
         }),
         loadUserById: sinon.spy(function (id, callback) {
