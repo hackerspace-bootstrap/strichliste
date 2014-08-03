@@ -30,7 +30,7 @@ describe('Persistence', function () {
             });
 
             it('should execute the correct query', function () {
-                expect(db.selectMany.args[0][0]).to.equal('SELECT users.id AS "id", users.name AS "name", coalesce(sum(value),0) AS \"balance\" FROM users LEFT JOIN transactions ON (transactions.userId = users.id) GROUP BY users.id');
+                expect(db.selectMany.args[0][0]).to.equal('SELECT users.id AS "id", users.name AS "name", coalesce(sum(value),0) AS \"balance\", max(transactions.createDate) AS \"lastTransaction\" FROM users LEFT JOIN transactions ON (transactions.userId = users.id) GROUP BY users.id');
             });
 
             it('should assign the correct arguments', function () {
@@ -59,7 +59,7 @@ describe('Persistence', function () {
             });
 
             it('should execute the correct query', function () {
-                expect(db.selectMany.args[0][0]).to.equal('SELECT users.id AS "id", users.name AS "name", coalesce(sum(value),0) AS \"balance\" FROM users LEFT JOIN transactions ON (transactions.userId = users.id) GROUP BY users.id');
+                expect(db.selectMany.args[0][0]).to.equal('SELECT users.id AS "id", users.name AS "name", coalesce(sum(value),0) AS \"balance\", max(transactions.createDate) AS \"lastTransaction\" FROM users LEFT JOIN transactions ON (transactions.userId = users.id) GROUP BY users.id');
             });
 
             it('should assign the correct arguments', function () {
@@ -90,7 +90,7 @@ describe('Persistence', function () {
             });
 
             it('should execute the correct query', function () {
-                expect(db.selectOne.args[0][0]).to.equal('SELECT users.id AS "id", users.name AS "name", coalesce(sum(value),0) AS "balance" FROM users LEFT JOIN transactions ON (transactions.userId = users.id) WHERE (users.id = ?) GROUP BY users.id');
+                expect(db.selectOne.args[0][0]).to.equal('SELECT users.id AS "id", users.name AS "name", coalesce(sum(value),0) AS "balance", max(transactions.createDate) AS \"lastTransaction\" FROM users LEFT JOIN transactions ON (transactions.userId = users.id) WHERE (users.id = ?) GROUP BY users.id');
             });
 
             it('should assign the correct arguments', function () {
@@ -119,7 +119,7 @@ describe('Persistence', function () {
             });
 
             it('should execute the correct query', function () {
-                expect(db.selectOne.args[0][0]).to.equal('SELECT users.id AS "id", users.name AS "name", coalesce(sum(value),0) AS "balance" FROM users LEFT JOIN transactions ON (transactions.userId = users.id) WHERE (users.id = ?) GROUP BY users.id');
+                expect(db.selectOne.args[0][0]).to.equal('SELECT users.id AS "id", users.name AS "name", coalesce(sum(value),0) AS "balance", max(transactions.createDate) AS \"lastTransaction\" FROM users LEFT JOIN transactions ON (transactions.userId = users.id) WHERE (users.id = ?) GROUP BY users.id');
             });
 
             it('should assign the correct arguments', function () {
@@ -150,7 +150,7 @@ describe('Persistence', function () {
             });
 
             it('should execute the correct query', function () {
-                expect(db.selectOne.args[0][0]).to.equal('SELECT users.id AS \"id\", users.name AS \"name\", coalesce(sum(value),0) AS \"balance\" FROM users LEFT JOIN transactions ON (transactions.userId = users.id) WHERE (lower(users.name) = ?) GROUP BY users.id');
+                expect(db.selectOne.args[0][0]).to.equal('SELECT users.id AS \"id\", users.name AS \"name\", coalesce(sum(value),0) AS \"balance\", max(transactions.createDate) AS \"lastTransaction\" FROM users LEFT JOIN transactions ON (transactions.userId = users.id) WHERE (lower(users.name) = ?) GROUP BY users.id');
             });
 
             it('should assign the correct arguments', function () {
@@ -179,7 +179,7 @@ describe('Persistence', function () {
             });
 
             it('should execute the correct query', function () {
-                expect(db.selectOne.args[0][0]).to.equal('SELECT users.id AS \"id\", users.name AS \"name\", coalesce(sum(value),0) AS \"balance\" FROM users LEFT JOIN transactions ON (transactions.userId = users.id) WHERE (lower(users.name) = ?) GROUP BY users.id');
+                expect(db.selectOne.args[0][0]).to.equal('SELECT users.id AS \"id\", users.name AS \"name\", coalesce(sum(value),0) AS \"balance\", max(transactions.createDate) AS \"lastTransaction\" FROM users LEFT JOIN transactions ON (transactions.userId = users.id) WHERE (lower(users.name) = ?) GROUP BY users.id');
             });
 
             it('should assign the correct arguments', function () {

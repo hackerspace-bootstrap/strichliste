@@ -27,7 +27,7 @@ describe('Integration tests', function() {
             .send({name: 'bert'})
             .expect('Content-Type', /application\/json/)
             .expect(201)
-            .expect('{"id":1,"name":"bert","balance":0}', done);
+            .expect('{"id":1,"name":"bert","balance":0,"lastTransaction":null}', done);
     });
 
     it('should return a list with one entry', function(done) {
@@ -35,7 +35,7 @@ describe('Integration tests', function() {
             .get('/user')
             .expect('Content-Type', /application\/json/)
             .expect(200)
-            .expect('[{"id":1,"name":"bert","balance":0}]', done);
+            .expect('[{"id":1,"name":"bert","balance":0,"lastTransaction":null}]', done);
     });
 
     it('create should fail without without a name', function(done) {
@@ -60,7 +60,7 @@ describe('Integration tests', function() {
             .get('/user/1')
             .expect('Content-Type', /application\/json/)
             .expect(200)
-            .expect('{"id":1,"name":"bert","balance":0,"transactions":[]}', done);
+            .expect('{"id":1,"name":"bert","balance":0,"lastTransaction":null,"transactions":[]}', done);
     });
 
     it('should return a failure when user does not exist', function(done) {
