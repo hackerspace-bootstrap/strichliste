@@ -9,7 +9,7 @@ module.exports = {
     },
 
     mqtt: {
-        enabled: true,
+        enabled: false,
         host: 'localhost',
         port: 1883,
         topics: {
