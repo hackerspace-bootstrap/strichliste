@@ -1,5 +1,4 @@
 var expect = require('chai').expect;
-var sinon = require('sinon');
 
 var Routes = require('../../lib/routing/Routes');
 var mocks = require('../util/mocks');
@@ -14,9 +13,9 @@ function createRouteMock(path, pred) {
             };
         },
         route: {
-            bind: sinon.spy(function() {
+            bind: function() {
                 return 'route to "' + path + '"';
-            })
+            }
         }
     };
 }
