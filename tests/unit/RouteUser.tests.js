@@ -1,4 +1,4 @@
-var expect = require('chai').expect;
+var expect = require('chai').use(require('sinon-chai')).expect;
 var sinon = require('sinon');
 
 var UserRoute = require('../../lib/routes/User');
@@ -38,11 +38,11 @@ describe('userRoute', function () {
         });
 
         it('should ask the userPersistence for userId 1 (userLoad)', function () {
-            expect(userLoader.loadUserById.args[0][0]).to.equal(1);
+            expect(userLoader.loadUserById).to.be.calledWith(1);
         });
 
         it('should ask the userPersistence for userId 1 (transactionLoad)', function () {
-            expect(userLoader.loadTransactionsByUserId.args[0][0]).to.equal(1);
+            expect(userLoader.loadTransactionsByUserId).to.be.calledWith(1);
         });
     });
 
@@ -73,11 +73,11 @@ describe('userRoute', function () {
         });
 
         it('should ask the userPersistence with id 1', function () {
-            expect(userLoader.loadUserById.args[0][0]).to.equal(1);
+            expect(userLoader.loadUserById).to.be.calledWith(1);
         });
 
         it('should ask the userPersistence for userId 1 (transactionLoad)', function () {
-            expect(userLoader.loadTransactionsByUserId.args[0][0]).to.equal(1);
+            expect(userLoader.loadTransactionsByUserId).to.be.calledWith(1);
         });
     });
 
@@ -107,7 +107,7 @@ describe('userRoute', function () {
         });
 
         it('should ask the userPersistence with id 1', function () {
-            expect(userLoader.loadUserById.args[0][0]).to.equal(1);
+            expect(userLoader.loadUserById).to.be.calledWith(1);
         });
     });
 
@@ -137,7 +137,7 @@ describe('userRoute', function () {
         });
 
         it('should ask the userPersistence with id 1', function () {
-            expect(userLoader.loadUserById.args[0][0]).to.equal(1);
+            expect(userLoader.loadUserById).to.be.calledWith(1);
         });
     });
 });

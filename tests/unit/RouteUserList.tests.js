@@ -1,4 +1,4 @@
-var expect = require('chai').expect;
+var expect = require('chai').use(require('sinon-chai')).expect;
 var sinon = require('sinon');
 
 var UserListRoute = require('../../lib/routes/UserList');
@@ -22,7 +22,7 @@ describe('userListRoute', function () {
         var result = req.strichliste.result;
 
         it('should call the loadUserMethod', function () {
-            expect(userLoader.loadUsers.callCount).to.equal(1);
+            expect(userLoader.loadUsers).to.be.calledOnce;
         });
 
         it('should return the userlist from the userLoader', function () {
@@ -38,7 +38,7 @@ describe('userListRoute', function () {
         });
 
         it('should call the next method', function () {
-            expect(spy.callCount).to.equal(1);
+            expect(spy).to.be.calledOnce;
         });
     });
 
@@ -61,12 +61,11 @@ describe('userListRoute', function () {
         var result = req.strichliste.result;
 
         it('should call the loadUserMethod', function () {
-            expect(userLoader.loadUsers.callCount).to.equal(1);
+            expect(userLoader.loadUsers).to.be.calledOnce;
         });
 
         it('should call the loadUserMethod with the correct parameters', function () {
-            expect(userLoader.loadUsers.args[0][0]).to.equal('bert');
-            expect(userLoader.loadUsers.args[0][1]).to.be.null;
+            expect(userLoader.loadUsers).to.be.calledWith('bert', null);
         });
 
         it('should return the userlist from the userLoader', function () {
@@ -82,7 +81,7 @@ describe('userListRoute', function () {
         });
 
         it('should call the next method', function () {
-            expect(spy.callCount).to.equal(1);
+            expect(spy).to.be.calledOnce;
         });
     });
 
@@ -104,7 +103,7 @@ describe('userListRoute', function () {
         });
 
         it('should call the loadUserMethod', function () {
-            expect(userLoader.loadUsers.callCount).to.equal(1);
+            expect(userLoader.loadUsers).to.be.calledOnce;
         });
 
         it('should call next with an eror', function () {

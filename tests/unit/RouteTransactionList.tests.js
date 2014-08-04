@@ -1,5 +1,4 @@
-var expect = require('chai').expect;
-var sinon = require('sinon');
+var expect = require('chai').use(require('sinon-chai')).expect;
 
 var TransactionListRoute = require('../../lib/routes/TransactionList');
 var mocks = require('../util/mocks');
@@ -26,10 +25,8 @@ describe('transactionListRoute', function () {
         });
 
         it('should call the loadTransactionsByUserId with correct parameters', function () {
-            expect(userLoader.loadTransactionsByUserId.callCount).to.equal(1);
-            expect(userLoader.loadTransactionsByUserId.args[0][0]).to.equal(42);
-            expect(userLoader.loadTransactionsByUserId.args[0][1]).to.equal('fooLimitSt');
-            expect(userLoader.loadTransactionsByUserId.args[0][2]).to.equal('fooOrderSt');
+            expect(userLoader.loadTransactionsByUserId).to.be.calledOnce;
+            expect(userLoader.loadTransactionsByUserId).to.be.calledWith(42, 'fooLimitSt', 'fooOrderSt');
         });
 
         it('should return the transactionlist from the userLoader', function () {
@@ -65,7 +62,7 @@ describe('transactionListRoute', function () {
         });
 
         it('should call the loadTransactionsByUserId', function () {
-            expect(userLoader.loadTransactionsByUserId.callCount).to.equal(1);
+            expect(userLoader.loadTransactionsByUserId).to.be.calledOnce;
         });
 
         it('should call next with an eror', function () {

@@ -1,5 +1,4 @@
-var expect = require('chai').expect;
-var sinon = require('sinon');
+var expect = require('chai').use(require('sinon-chai')).expect;
 
 var UserCreateRoute = require('../../lib/routes/UserCreate');
 var mocks = require('../util/mocks');
@@ -53,7 +52,7 @@ describe('userCreateRoute', function () {
         });
 
         it('should ask the userLoader', function () {
-            expect(userLoader.loadUserByName.callCount).to.equal(1);
+            expect(userLoader.loadUserByName).to.be.calledOnce;
         });
     });
 
@@ -83,7 +82,7 @@ describe('userCreateRoute', function () {
         });
 
         it('should ask the userLoader', function () {
-            expect(userLoader.loadUserByName.callCount).to.equal(1);
+            expect(userLoader.loadUserByName).to.be.calledOnce;
         });
     });
 
@@ -114,12 +113,12 @@ describe('userCreateRoute', function () {
         });
 
         it('should ask the userLoader for the name', function () {
-            expect(userLoader.loadUserByName.callCount).to.equal(1);
+            expect(userLoader.loadUserByName).to.be.calledOnce;
         });
 
         it('should call createUser', function () {
-            expect(userLoader.createUser.callCount).to.equal(1);
-            expect(userLoader.createUser.args[0][0]).to.equal('bert');
+            expect(userLoader.createUser).to.be.calledOnce;
+            expect(userLoader.createUser).to.be.calledWith('bert');
         });
     });
 
@@ -151,17 +150,17 @@ describe('userCreateRoute', function () {
         });
 
         it('should ask the userLoader for the name', function () {
-            expect(userLoader.loadUserByName.callCount).to.equal(1);
+            expect(userLoader.loadUserByName).to.be.calledOnce;
         });
 
         it('should call createUser', function () {
-            expect(userLoader.createUser.callCount).to.equal(1);
-            expect(userLoader.createUser.args[0][0]).to.equal('bert');
+            expect(userLoader.createUser).to.be.calledOnce;
+            expect(userLoader.createUser).to.be.calledWith('bert');
         });
 
         it('should reload the user', function () {
-            expect(userLoader.loadUserById.callCount).to.equal(1);
-            expect(userLoader.loadUserById.args[0][0]).to.equal(1337);
+            expect(userLoader.loadUserById).to.be.calledOnce;
+            expect(userLoader.loadUserById).to.be.calledWith(1337);
         });
     });
 
@@ -196,18 +195,18 @@ describe('userCreateRoute', function () {
         });
 
         it('should ask the userLoader for the name', function () {
-            expect(userLoader.loadUserByName.callCount).to.equal(1);
-            expect(userLoader.loadUserByName.args[0][0]).to.equal('bert');
+            expect(userLoader.loadUserByName).to.be.calledOnce;
+            expect(userLoader.loadUserByName).to.be.calledWith('bert');
         });
 
         it('should call createUser', function () {
-            expect(userLoader.createUser.callCount).to.equal(1);
-            expect(userLoader.createUser.args[0][0]).to.equal('bert');
+            expect(userLoader.createUser).to.be.calledOnce;
+            expect(userLoader.createUser).to.be.calledWith('bert');
         });
 
         it('should reload the user', function () {
-            expect(userLoader.loadUserById.callCount).to.equal(1);
-            expect(userLoader.loadUserById.args[0][0]).to.equal(1337);
+            expect(userLoader.loadUserById).to.be.calledOnce;
+            expect(userLoader.loadUserById).to.be.calledWith(1337);
         });
     });
 
@@ -242,18 +241,18 @@ describe('userCreateRoute', function () {
         });
 
         it('should ask the userLoader for the name', function () {
-            expect(userLoader.loadUserByName.callCount).to.equal(1);
-            expect(userLoader.loadUserByName.args[0][0]).to.equal('10');
+            expect(userLoader.loadUserByName).to.be.calledOnce;
+            expect(userLoader.loadUserByName).to.be.calledWith('10');
         });
 
         it('should call createUser', function () {
-            expect(userLoader.createUser.callCount).to.equal(1);
-            expect(userLoader.createUser.args[0][0]).to.equal('10');
+            expect(userLoader.createUser).to.be.calledOnce;
+            expect(userLoader.createUser).to.be.calledWith('10');
         });
 
         it('should reload the user', function () {
-            expect(userLoader.loadUserById.callCount).to.equal(1);
-            expect(userLoader.loadUserById.args[0][0]).to.equal(1337);
+            expect(userLoader.loadUserById).to.be.calledOnce;
+            expect(userLoader.loadUserById).to.be.calledWith(1337);
         });
     });
 
@@ -288,18 +287,18 @@ describe('userCreateRoute', function () {
         });
 
         it('should ask the userLoader for the name', function () {
-            expect(userLoader.loadUserByName.callCount).to.equal(1);
-            expect(userLoader.loadUserByName.args[0][0]).to.equal('\'');
+            expect(userLoader.loadUserByName).to.be.calledOnce;
+            expect(userLoader.loadUserByName).to.be.calledWith('\'');
         });
 
         it('should call createUser', function () {
-            expect(userLoader.createUser.callCount).to.equal(1);
-            expect(userLoader.createUser.args[0][0]).to.equal('\'');
+            expect(userLoader.createUser).to.be.calledOnce;
+            expect(userLoader.createUser).to.be.calledWith('\'');
         });
 
         it('should reload the user', function () {
-            expect(userLoader.loadUserById.callCount).to.equal(1);
-            expect(userLoader.loadUserById.args[0][0]).to.equal(1337);
+            expect(userLoader.loadUserById).to.be.calledOnce;
+            expect(userLoader.loadUserById).to.be.calledWith(1337);
         });
     });
 });

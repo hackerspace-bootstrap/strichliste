@@ -1,5 +1,4 @@
-var expect = require('chai').expect;
-var sinon = require('sinon');
+var expect = require('chai').use(require('sinon-chai')).expect;
 
 var TransactionCreate = require('../../lib/routes/TransactionCreate');
 var mocks = require('../util/mocks');
@@ -82,9 +81,8 @@ describe('transactionCreateRoute', function () {
         });
 
         it('should call creatTransaction with the correct parameters', function () {
-            expect(userLoader.createTransaction.callCount).to.equal(1);
-            expect(userLoader.createTransaction.args[0][0]).to.equal(100);
-            expect(userLoader.createTransaction.args[0][1]).to.equal(42);
+            expect(userLoader.createTransaction).to.be.calledOnce;
+            expect(userLoader.createTransaction).to.be.calledWith(100, 42);
         });
     });
 

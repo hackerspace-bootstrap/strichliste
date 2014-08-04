@@ -1,5 +1,4 @@
 var expect = require('chai').expect;
-var sinon = require('sinon');
 
 var mocks = require('../util/mocks');
 var parameterMiddleware = require('../../lib/parameters/middleware');

@@ -1,5 +1,4 @@
 var expect = require('chai').expect;
-var sinon = require('sinon');
 
 var Persistence = require('../../lib/UserPersistence');
 var mocks = require('../util/mocks');

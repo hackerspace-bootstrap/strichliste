@@ -32,12 +32,8 @@ describe('Routing', function() {
         var appMock = mocks.createAppMock();
         a.mount(appMock);
 
-        expect(appMock.get.args[0]).to.deep.equal([
-            'fooPath', 'route to "barPath"', 'route to "fooPath"'
-        ]);
-        expect(appMock.get.args[1]).to.deep.equal([
-            'barPath', 'route to "barPath"'
-        ]);
+        expect(appMock.get).to.be.calledWithExactly('fooPath', 'route to "barPath"', 'route to "fooPath"');
+        expect(appMock.get).to.be.calledWithExactly('barPath', 'route to "barPath"');
     });
 
     it('should crash if an invalid predecessor has been specified', function() {

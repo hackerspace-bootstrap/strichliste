@@ -1,4 +1,4 @@
-var expect = require('chai').expect;
+var expect = require('chai').use(require('sinon-chai')).expect;
 var sinon = require('sinon');
 
 var TransactionRoute = require('../../lib/routes/Transaction');
@@ -41,7 +41,7 @@ describe('transactionListRoute', function () {
         });
 
         it('should call the next method', function () {
-            expect(spy.callCount).to.equal(1);
+            expect(spy).to.be.calledOnce;
         });
     });
 
