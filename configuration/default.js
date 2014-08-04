@@ -9,9 +9,9 @@ module.exports = {
     },
 
     mqtt: {
-        enabled: false,
-        host: 'mqtt',
-        port: 1882,
+        enabled: true,
+        host: 'localhost',
+        port: 1883,
         topics: {
             transactionValue: 'strichliste/transactionValue'
         }
