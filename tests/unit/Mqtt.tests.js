@@ -14,7 +14,6 @@ var defaultConfig = {
 
 describe('mqtt', function () {
     describe('mqttWrapper', function () {
-
         describe('publish success with client', function () {
             var mqttClient, mqttWrapper;
 
@@ -36,7 +35,6 @@ describe('mqtt', function () {
         });
 
         describe('publish success without client', function () {
-
             var mqttWrapper = new MqttWrapper(null);
 
             it('should call publish once', function () {
@@ -44,46 +42,63 @@ describe('mqtt', function () {
             });
         });
     });
+
     describe('mqttClient', function () {
         describe('create client fails', function () {
-            var clock = sinon.useFakeTimers();
-
             var emitter = new EventEmitter();
             var mqttMock = mocks.createMqttMock(emitter);
-            var mqttClient = sandbox.require('../../lib/mqtt/client', {
-                requires: {
-                    mqtt: mqttMock
-                }
-            });
 
-            it('should return an error', function (done) {
-                mqttClient.createClient(defaultConfig, function (error, client) {
-                    expect(error.message).to.equal('Connect to MQTT broker mqtt:1883 timed out');
-                    expect(client).to.be.null;
+            var clock, client, error;
+            before(function(done) {
+                clock = sinon.useFakeTimers();
 
-                    expect(mqttMock.createClient.args[0][0]).to.equal(defaultConfig.port);
-                    expect(mqttMock.createClient.args[0][1]).to.equal(defaultConfig.host);
+                var MqttClientFactory = sandbox.require('../../lib/mqtt/ClientFactory', {
+                    requires: {
+                        mqtt: mqttMock
+                    }
+                });
+
+                var myFactory = new MqttClientFactory();
+                myFactory.createClient(defaultConfig, function (_error, _client) {
+                    client = _client;
+                    error = _error;
                     done();
                 });
 
                 clock.tick(42*1000);
+            });
+
+            after(function() {
+                clock.restore();
+            });
+
+            it('should return an error', function () {
+                expect(error.message).to.equal('Connect to MQTT broker mqtt:1883 timed out');
+                expect(client).to.be.null;
+            });
+
+            it('should invoke with the correct parameters', function() {
+                expect(mqttMock.createClient.args[0][0]).to.equal(defaultConfig.port);
+                expect(mqttMock.createClient.args[0][1]).to.equal(defaultConfig.host);
             });
         });
 
         describe('create client success', function () {
             var emitter = new EventEmitter();
             var mqttMock = mocks.createMqttMock(emitter);
-            var mqttClient = sandbox.require('../../lib/mqtt/client', {
-                requires: {
-                    mqtt: mqttMock
-                }
-            });
 
             var error, client;
             before(function (done) {
-                mqttClient.createClient(defaultConfig, function (_error, _client) {
-                    error = _error;
+                var MqttClientFactory = sandbox.require('../../lib/mqtt/ClientFactory', {
+                    requires: {
+                        mqtt: mqttMock
+                    }
+                });
+
+                var myFactory = new MqttClientFactory();
+                myFactory.createClient(defaultConfig, function (_error, _client) {
                     client = _client;
+                    error = _error;
                     done();
                 });
 

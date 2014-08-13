@@ -1,5 +1,3 @@
-var EventEmitter = require('events').EventEmitter;
-
 var sinon = require('sinon');
 
 function createAppMock() {
