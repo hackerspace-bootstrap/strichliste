@@ -15,5 +15,10 @@ module.exports = {
         topics: {
             transactionValue: 'strichliste/transactionValue'
         }
+    },
+
+    boundaries: {
+        upper: Infinity,
+        lower: -50
     }
 };

@@ -51,6 +51,58 @@ describe('transactionCreateRoute', function () {
         });
     });
 
+    describe('lower boundary', function () {
+        var route = new TransactionCreate(null, null);
+        var req = mocks.createRequestMock({
+            params: {userId: 1},
+            body: {value: -100},
+            strichliste: {
+                result: {balance: 1}
+            }
+        });
+        var res = mocks.createResponseMock();
+
+        var error;
+        route.route(req, res, function (_error) {
+            error = _error;
+        });
+
+        it('should return an forbidden error if the new balance cuts below a certain boundary', function () {
+            expect(error.errorCode).to.equal(403);
+            expect(error.message).to.equal('transaction value of -100 leads to an overall account balance of -99 which goes below the lower account limit of -23');
+        });
+
+        it('should not sent any body', function () {
+            expect(res._end).to.be.null;
+        });
+    });
+
+    describe('upper boundary', function () {
+        var route = new TransactionCreate(null, null);
+        var req = mocks.createRequestMock({
+            params: {userId: 1},
+            body: {value: 100},
+            strichliste: {
+                result: {balance: 1}
+            }
+        });
+        var res = mocks.createResponseMock();
+
+        var error;
+        route.route(req, res, function (_error) {
+            error = _error;
+        });
+
+        it('should return an forbidden error if the new balance is above a certain boundary', function () {
+            expect(error.errorCode).to.equal(403);
+            expect(error.message).to.equal('transaction value of 100 leads to an overall account balance of 101 which goes beyond the upper account limit of 42');
+        });
+
+        it('should not sent any body', function () {
+            expect(res._end).to.be.null;
+        });
+    });
+
     describe('creation fails', function () {
         var userLoader = mocks.createUserPersistenceMock({
             loadUserById: { error: null, result: {name: 'bert'} },
