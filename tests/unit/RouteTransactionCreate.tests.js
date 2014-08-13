@@ -51,7 +51,7 @@ describe('transactionCreateRoute', function () {
         });
     });
 
-    describe('lower boundary', function () {
+    describe('lower account boundary', function () {
         var route = new TransactionCreate(null, null);
         var req = mocks.createRequestMock({
             params: {userId: 1},
@@ -77,7 +77,7 @@ describe('transactionCreateRoute', function () {
         });
     });
 
-    describe('upper boundary', function () {
+    describe('upper account boundary', function () {
         var route = new TransactionCreate(null, null);
         var req = mocks.createRequestMock({
             params: {userId: 1},
@@ -96,6 +96,58 @@ describe('transactionCreateRoute', function () {
         it('should return an forbidden error if the new balance is above a certain boundary', function () {
             expect(error.errorCode).to.equal(403);
             expect(error.message).to.equal('transaction value of 100 leads to an overall account balance of 101 which goes beyond the upper account limit of 42');
+        });
+
+        it('should not sent any body', function () {
+            expect(res._end).to.be.null;
+        });
+    });
+
+    describe('upper transaction boundary', function () {
+        var route = new TransactionCreate(null, null);
+        var req = mocks.createRequestMock({
+            params: {userId: 1},
+            body: {value: 99999},
+            strichliste: {
+                result: mocks.createResultMock({balance: 1})
+            }
+        });
+        var res = mocks.createResponseMock();
+
+        var error;
+        route.route(req, res, function (_error) {
+            error = _error;
+        });
+
+        it('should return an forbidden error if the new balance is above a certain boundary', function () {
+            expect(error.errorCode).to.equal(403);
+            expect(error.message).to.equal('transaction value of 99999 exceeds the transaction maximum of 9999');
+        });
+
+        it('should not sent any body', function () {
+            expect(res._end).to.be.null;
+        });
+    });
+
+    describe('lower transaction boundary', function () {
+        var route = new TransactionCreate(null, null);
+        var req = mocks.createRequestMock({
+            params: {userId: 1},
+            body: {value: -99999},
+            strichliste: {
+                result: mocks.createResultMock({balance: 1})
+            }
+        });
+        var res = mocks.createResponseMock();
+
+        var error;
+        route.route(req, res, function (_error) {
+            error = _error;
+        });
+
+        it('should return an forbidden error if the new balance is above a certain boundary', function () {
+            expect(error.errorCode).to.equal(403);
+            expect(error.message).to.equal('transaction value of -99999 falls below the transaction minimum of -9999');
         });
 
         it('should not sent any body', function () {

@@ -11,8 +11,8 @@ module.exports = {
             upper: 42
         },
         transaction: {
-            upper: 150,
-            lower: -20
+            upper: 9999,
+            lower: -9999
         }
     }
 };
