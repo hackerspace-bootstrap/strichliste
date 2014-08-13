@@ -1,3 +1,5 @@
+var EventEmitter = require('events').EventEmitter;
+
 var sinon = require('sinon');
 
 function createAppMock() {
@@ -6,7 +8,7 @@ function createAppMock() {
     }
 }
 
-function createRequestMock (options) {
+function createRequestMock(options) {
     options = options || {};
 
     return {
@@ -17,7 +19,7 @@ function createRequestMock (options) {
     }
 }
 
-function createResponseMock () {
+function createResponseMock() {
     return {
         _end: null,
         _status: null,
@@ -33,7 +35,7 @@ function createResponseMock () {
     }
 }
 
-function createUserPersistenceMock (options) {
+function createUserPersistenceMock(options) {
     options = options || {};
 
     return {
@@ -61,19 +63,27 @@ function createUserPersistenceMock (options) {
     };
 }
 
-function createMqttWrapperMock () {
+function createMqttWrapperMock() {
     return {
         publishTransactionValue: sinon.spy()
     };
 }
 
-function createMqttClientMock () {
+function createMqttClientMock() {
     return {
         publish: sinon.spy()
     };
 }
 
-function createDBMock (options) {
+function createMqttMock(emitter) {
+    return {
+        createClient: sinon.spy(function (port, host) {
+            return emitter;
+        })
+    };
+}
+
+function createDBMock(options) {
     options = options || {};
 
     return {
@@ -96,5 +106,6 @@ module.exports = {
     createDBMock: createDBMock,
     createMqttWrapperMock: createMqttWrapperMock,
     createMqttClientMock: createMqttClientMock,
-    createAppMock: createAppMock
+    createAppMock: createAppMock,
+    createMqttMock: createMqttMock
 };

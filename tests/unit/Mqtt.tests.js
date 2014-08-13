@@ -44,50 +44,38 @@ describe('mqtt', function () {
             });
         });
     });
-
     describe('mqttClient', function () {
-
         describe('create client fails', function () {
-
             var clock = sinon.useFakeTimers();
+
+            var emitter = new EventEmitter();
+            var mqttMock = mocks.createMqttMock(emitter);
             var mqttClient = sandbox.require('../../lib/mqtt/client', {
                 requires: {
-                    mqtt: {
-                        createClient: function (port, host) {
-                            return new EventEmitter;
-                        }
-                    }
+                    mqtt: mqttMock
                 }
             });
 
-            it('should return an error', function () {
-
-                mqttClient.createClient(defaultConfig, function (error) {
+            it('should return an error', function (done) {
+                mqttClient.createClient(defaultConfig, function (error, client) {
                     expect(error.message).to.equal('Connect to MQTT broker mqtt:1883 timed out');
+                    expect(client).to.be.null;
+
+                    expect(mqttMock.createClient.args[0][0]).to.equal(defaultConfig.port);
+                    expect(mqttMock.createClient.args[0][1]).to.equal(defaultConfig.host);
+                    done();
                 });
 
                 clock.tick(42*1000);
             });
-
         });
 
         describe('create client success', function () {
-
-            var mqttClientMock = {
-                createClient: sinon.spy(function (port, host) {
-
-                    var emitter = new EventEmitter;
-                    process.nextTick(function() {
-                        emitter.emit('connect', 'foo');
-                    });
-
-                    return emitter;
-                })
-            };
-
+            var emitter = new EventEmitter();
+            var mqttMock = mocks.createMqttMock(emitter);
             var mqttClient = sandbox.require('../../lib/mqtt/client', {
                 requires: {
-                    mqtt: mqttClientMock
+                    mqtt: mqttMock
                 }
             });
 
@@ -98,16 +86,18 @@ describe('mqtt', function () {
                     client = _client;
                     done();
                 });
+
+                emitter.emit('connect', 'foo');
             });
 
             it('should not return an error', function () {
                 expect(error).to.be.null;
-                expect(client).to.be.not.null;
+                expect(client).to.equal(emitter);
             });
 
             it('should be called with correct parameters', function () {
-                expect(mqttClientMock.createClient.args[0][0]).to.equal(defaultConfig.port);
-                expect(mqttClientMock.createClient.args[0][1]).to.equal(defaultConfig.host);
+                expect(mqttMock.createClient.args[0][0]).to.equal(defaultConfig.port);
+                expect(mqttMock.createClient.args[0][1]).to.equal(defaultConfig.host);
             });
         });
     });
