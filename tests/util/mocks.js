@@ -1,5 +1,13 @@
 var sinon = require('sinon');
 
+function createResultMock(content) {
+    return {
+        content: function() {
+            return content;
+        }
+    }
+}
+
 function createAppMock() {
     return {
         get: sinon.spy()
@@ -98,6 +106,7 @@ function createDBMock(options) {
 }
 
 module.exports = {
+    createResultMock: createResultMock,
     createRequestMock: createRequestMock,
     createResponseMock: createResponseMock,
     createUserPersistenceMock: createUserPersistenceMock,

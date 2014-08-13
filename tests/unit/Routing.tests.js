@@ -5,23 +5,29 @@ var mocks = require('../util/mocks');
 
 function createRouteMock(path, pred) {
     return {
-        mountPoint: function() {
+        mountPoint: function () {
             return {
-                path: function() { return path; },
-                predecessors: function() { return pred || [] },
-                method: function() { return 'get'; }
+                path: function () {
+                    return path;
+                },
+                predecessors: function () {
+                    return pred || []
+                },
+                method: function () {
+                    return 'get';
+                }
             };
         },
         route: {
-            bind: function() {
+            bind: function () {
                 return 'route to "' + path + '"';
             }
         }
     };
 }
 
-describe('Routing', function() {
-    it('should bind the correct routes with the correct predecessor', function() {
+describe('Routing', function () {
+    it('should bind the correct routes with the correct predecessor', function () {
         var r1 = createRouteMock('fooPath', ['bar']);
         var r2 = createRouteMock('barPath');
         var a = new Routes();
@@ -36,7 +42,7 @@ describe('Routing', function() {
         expect(appMock.get).to.be.calledWithExactly('barPath', 'route to "barPath"');
     });
 
-    it('should crash if an invalid predecessor has been specified', function() {
+    it('should crash if an invalid predecessor has been specified', function () {
         var r1 = createRouteMock('fooPath', ['caboom!']);
         var a = new Routes();
 
@@ -44,7 +50,7 @@ describe('Routing', function() {
 
         var appMock = mocks.createAppMock();
 
-        expect(function() {
+        expect(function () {
             a.mount(appMock);
         }).to.throw(/could not load predecessor: caboom!/);
     });

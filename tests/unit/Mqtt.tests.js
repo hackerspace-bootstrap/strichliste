@@ -49,7 +49,7 @@ describe('mqtt', function () {
             var mqttMock = mocks.createMqttMock(emitter);
 
             var clock, client, error;
-            before(function(done) {
+            before(function (done) {
                 clock = sinon.useFakeTimers();
 
                 var MqttClientFactory = sandbox.require('../../lib/mqtt/ClientFactory', {
@@ -65,10 +65,10 @@ describe('mqtt', function () {
                     done();
                 });
 
-                clock.tick(42*1000);
+                clock.tick(42 * 1000);
             });
 
-            after(function() {
+            after(function () {
                 clock.restore();
             });
 
@@ -77,7 +77,7 @@ describe('mqtt', function () {
                 expect(client).to.be.null;
             });
 
-            it('should invoke with the correct parameters', function() {
+            it('should invoke with the correct parameters', function () {
                 expect(mqttMock.createClient.args[0][0]).to.equal(defaultConfig.port);
                 expect(mqttMock.createClient.args[0][1]).to.equal(defaultConfig.host);
             });

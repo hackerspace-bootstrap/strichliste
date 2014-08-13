@@ -20,7 +20,7 @@ describe('transactionListRoute', function () {
         });
         var res = mocks.createResponseMock();
 
-        before(function(done) {
+        before(function (done) {
             route.route(req, res, done);
         });
 

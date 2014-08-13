@@ -57,7 +57,7 @@ describe('transactionCreateRoute', function () {
             params: {userId: 1},
             body: {value: -100},
             strichliste: {
-                result: {balance: 1}
+                result: mocks.createResultMock({balance: 1})
             }
         });
         var res = mocks.createResponseMock();
@@ -83,7 +83,7 @@ describe('transactionCreateRoute', function () {
             params: {userId: 1},
             body: {value: 100},
             strichliste: {
-                result: {balance: 1}
+                result: mocks.createResultMock({balance: 1})
             }
         });
         var res = mocks.createResponseMock();
@@ -113,7 +113,9 @@ describe('transactionCreateRoute', function () {
         var req = mocks.createRequestMock({
             body: {value: 42},
             params: {userId: 100},
-            strichliste: {result: {name: 'foo'}}
+            strichliste: {
+                result: mocks.createResultMock({name: 'foo'})
+            }
         });
 
         var res = mocks.createResponseMock();
@@ -149,7 +151,9 @@ describe('transactionCreateRoute', function () {
         var req = mocks.createRequestMock({
             body: {value: 1337},
             params: {userId: 1000},
-            strichliste: {result: {name: 'foo'}}
+            strichliste: {
+                result: mocks.createResultMock({name: 'foo'})
+            }
         });
         var res = mocks.createResponseMock();
 
@@ -192,7 +196,9 @@ describe('transactionCreateRoute', function () {
         var req = mocks.createRequestMock({
             body: {value: 42.1},
             params: {userId: 100},
-            strichliste: {result: {name: 'foo'}}
+            strichliste: {
+                result: mocks.createResultMock({name: 'foo'})
+            }
         });
         var res = mocks.createResponseMock();
 

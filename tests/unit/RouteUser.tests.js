@@ -8,7 +8,7 @@ describe('userRoute', function () {
     describe('sucess', function () {
         var userLoader = mocks.createUserPersistenceMock({
             loadUserById: { error: null, result: {name: 'bert'} },
-            loadTransactionsByUserId: { error: null, result: [1,2,3]}
+            loadTransactionsByUserId: { error: null, result: [1, 2, 3]}
         });
 
         var route = new UserRoute(userLoader);
@@ -22,7 +22,7 @@ describe('userRoute', function () {
         var result = req.strichliste.result;
 
         it('should return the user from the userLoader', function () {
-            expect(result.content()).to.deep.equal({name: 'bert', transactions: [1,2,3]});
+            expect(result.content()).to.deep.equal({name: 'bert', transactions: [1, 2, 3]});
         });
 
         it('should set the correct content type', function () {
