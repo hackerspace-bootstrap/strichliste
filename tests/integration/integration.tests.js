@@ -147,7 +147,7 @@ describe('Integration tests', function () {
             .expect(/\[\{"id":2,"userId":1,"createDate":"(.*)","value":11\},\{"id":1,"userId":1,"createDate":"(.*)","value":11\}\]/, done);
     });
 
-    it('should fail the transaction creation with 403 (lower boundary error)', function (done) {
+    it('should fail the transaction creation with 403 (lower account boundary error)', function (done) {
         request(app)
             .post('/user/1/transaction')
             .send({value: -100})
@@ -156,13 +156,31 @@ describe('Integration tests', function () {
             .expect('{"message":"transaction value of -100 leads to an overall account balance of -78 which goes below the lower account limit of -23"}', done);
     });
 
-    it('should fail the transaction creation with 403 (lower boundary error)', function (done) {
+    it('should fail the transaction creation with 403 (upper account boundary error)', function (done) {
         request(app)
             .post('/user/1/transaction')
             .send({value: 100})
             .expect('Content-Type', /application\/json/)
             .expect(403)
             .expect('{"message":"transaction value of 100 leads to an overall account balance of 122 which goes beyond the upper account limit of 42"}', done);
+    });
+
+    it('should fail the transaction creation with 403 (upper transaction boundary error)', function (done) {
+        request(app)
+            .post('/user/1/transaction')
+            .send({value: 99999})
+            .expect('Content-Type', /application\/json/)
+            .expect(403)
+            .expect('{"message":"transaction value of 99999 exceeds the transaction maximum of 9999"}', done);
+    });
+
+    it('should fail the transaction creation with 403 (upper transaction boundary error)', function (done) {
+        request(app)
+            .post('/user/1/transaction')
+            .send({value: -99999})
+            .expect('Content-Type', /application\/json/)
+            .expect(403)
+            .expect('{"message":"transaction value of -99999 falls below the transaction minimum of -9999"}', done);
     });
 
     it('should return a restricted list of transactions (limit=1)', function (done) {
