@@ -6,7 +6,13 @@ module.exports = {
         }
     },
     boundaries: {
-        lower: -23,
-        upper: 42
+        account: {
+            lower: -23,
+            upper: 42
+        },
+        transaction: {
+            upper: 150,
+            lower: -20
+        }
     }
 };
