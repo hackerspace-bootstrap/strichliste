@@ -65,6 +65,9 @@ function createUserPersistenceMock(options) {
         }),
         loadTransactionsByUserId: sinon.spy(function (transactionId, offset, limit, callback) {
             callback(options.loadTransactionsByUserId.error, options.loadTransactionsByUserId.result);
+        }),
+        loadMetrics: sinon.spy(function (callback) {
+            callback(options.loadMetrics.error, options.loadMetrics.result);
         })
     };
 }

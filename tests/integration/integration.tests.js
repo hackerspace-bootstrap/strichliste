@@ -174,7 +174,7 @@ describe('Integration tests', function () {
             .expect('{"message":"transaction value of 99999 exceeds the transaction maximum of 9999"}', done);
     });
 
-    it('should fail the transaction creation with 403 (upper transaction boundary error)', function (done) {
+    it('should fail the transaction creation with 403 (lower transaction boundary error)', function (done) {
         request(app)
             .post('/user/1/transaction')
             .send({value: -99999})
@@ -197,5 +197,13 @@ describe('Integration tests', function () {
             .expect('Content-Type', /application\/json/)
             .expect(200)
             .expect(/\[\{"id":1,"userId":1,"createDate":"(.*)","value":11\}\]/, done);
+    });
+
+    it('should return the metrics', function (done) {
+        request(app)
+            .get('/metrics')
+            .expect('Content-Type', /application\/json/)
+            .expect(200)
+            .expect('{"countTransactions":2,"countUsers":1,"avgBalance":22,"overallBalance":22}', done);
     });
 });
