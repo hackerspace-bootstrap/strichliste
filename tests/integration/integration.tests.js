@@ -1,3 +1,4 @@
+var expect = require('chai').expect;
 var request = require('supertest');
 var express = require('express');
 
@@ -204,6 +205,12 @@ describe('Integration tests', function () {
             .get('/metrics')
             .expect('Content-Type', /application\/json/)
             .expect(200)
-            .expect('{"countTransactions":2,"countUsers":1,"avgBalance":22,"overallBalance":22}', done);
+            .end(function(err, res){
+                if (err) return done(err);
+
+                expect(res.res.body).to.deep.equal({countTransactions: 2, countUsers: 1, avgBalance: 22, overallBalance: 22});
+
+                done()
+            });
     });
 });
