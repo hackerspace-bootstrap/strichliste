@@ -557,5 +557,44 @@ describe('Persistence', function () {
                 expect(db.selectOne).to.be.calledWith('select avg(userBalance) as avgBalance from (select sum(value) as userBalance from transactions group by userId) as ghoti', []);
             });
         });
+
+        describe('fail', function () {
+            var e = new Error('caboomsl!');
+            var db = mocks.createDBMock({
+                selectOne: {
+                    error: [null, e, null, null],
+                    result: [
+                        {foo: 'bar'},
+                        null,
+                        {spam: 'eggs'},
+                        {baz: 'ball'}
+                    ]}
+            });
+
+            var error, result;
+            before(function(done) {
+                new Persistence(db)
+                    .loadMetrics(function (_error, _result) {
+                        error = _error;
+                        result = _result;
+                        done();
+                    });
+            });
+
+            it('should not return an error', function () {
+                expect(error).to.equal(e);
+            });
+
+            it('should return the result', function () {
+                expect(result).to.be.null;
+            });
+
+            it('should execute the correct queries', function () {
+                expect(db.selectOne).to.be.calledWith('select count(*) as countTransactions from transactions', []);
+                expect(db.selectOne).to.be.calledWith('select sum(value) as overallBalance from transactions', []);
+                expect(db.selectOne).to.be.calledWith('select count(*) as countUsers from users', []);
+                expect(db.selectOne).to.be.calledWith('select avg(userBalance) as avgBalance from (select sum(value) as userBalance from transactions group by userId) as ghoti', []);
+            });
+        });
     })
 });
