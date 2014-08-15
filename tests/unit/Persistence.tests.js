@@ -10,7 +10,7 @@ describe('Persistence', function () {
     describe('loadUsers', function () {
         describe('success', function () {
             var db = mocks.createDBMock({
-                selectMany: {error: null, result: [1, 2, 3]}
+                selectMany: {error: null, result: {foo: 'bar'}}
             });
 
             var error, result;
@@ -25,7 +25,7 @@ describe('Persistence', function () {
             });
 
             it('should return the result', function () {
-                expect(result).to.deep.equal([1, 2, 3]);
+                expect(result).to.deep.equal({foo: 'bar'});
             });
 
             it('should execute the correct query', function () {
@@ -39,7 +39,7 @@ describe('Persistence', function () {
 
         describe('success with limit', function () {
             var db = mocks.createDBMock({
-                selectMany: {error: null, result: [1, 2, 3]}
+                selectMany: {error: null, result: {foo: 'bar'}}
             });
 
             var error, result;
@@ -54,7 +54,7 @@ describe('Persistence', function () {
             });
 
             it('should return the result', function () {
-                expect(result).to.deep.equal([1, 2, 3]);
+                expect(result).to.deep.equal({foo: 'bar'});
             });
 
             it('should execute the correct query', function () {
@@ -99,7 +99,7 @@ describe('Persistence', function () {
     describe('loadUserById', function () {
         describe('success', function () {
             var db = mocks.createDBMock({
-                selectOne: {error: null, result: [1, 2, 3]}
+                selectOne: {error: null, result: {foo: 'bar'}}
             });
 
             var error, result;
@@ -114,7 +114,7 @@ describe('Persistence', function () {
             });
 
             it('should return the result', function () {
-                expect(result).to.deep.equal([1, 2, 3]);
+                expect(result).to.deep.equal({foo: 'bar'});
             });
 
             it('should execute the correct query', function () {
@@ -513,4 +513,49 @@ describe('Persistence', function () {
             });
         });
     });
+
+    describe('loadMetrics', function() {
+        describe('success', function () {
+            var db = mocks.createDBMock({
+                selectOne: {
+                    error: [null, null, null, null],
+                    result: [
+                        {foo: 'bar'},
+                        {boo: 'far'},
+                        {spam: 'eggs'},
+                        {baz: 'ball'}
+                    ]}
+            });
+
+            var error, result;
+            before(function(done) {
+                new Persistence(db)
+                    .loadMetrics(function (_error, _result) {
+                        error = _error;
+                        result = _result;
+                        done();
+                    });
+            });
+
+            it('should not return an error', function () {
+                expect(error).to.be.null;
+            });
+
+            it('should return the result', function () {
+                expect(result).to.deep.equal({
+                    foo: 'bar',
+                    boo: 'far',
+                    spam: 'eggs',
+                    baz: 'ball'
+                });
+            });
+
+            it('should execute the correct queries', function () {
+                expect(db.selectOne).to.be.calledWith('select count(*) as countTransactions from transactions', []);
+                expect(db.selectOne).to.be.calledWith('select sum(value) as overallBalance from transactions', []);
+                expect(db.selectOne).to.be.calledWith('select count(*) as countUsers from users', []);
+                expect(db.selectOne).to.be.calledWith('select avg(userBalance) as avgBalance from (select sum(value) as userBalance from transactions group by userId) as ghoti', []);
+            });
+        });
+    })
 });
