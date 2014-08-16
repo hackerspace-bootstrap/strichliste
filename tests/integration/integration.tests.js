@@ -207,12 +207,4 @@ describe('Integration tests', function () {
             .expect(200)
             .expect(/\[\{"id":1,"userId":1,"createDate":"(.*)","value":11\}\]/, done);
     });
-
-    it('should return the metrics', function (done) {
-        request(app)
-            .get('/metrics')
-            .expect('Content-Type', /application\/json/)
-            .expect(200)
-            .expect(/\{"countTransactions":2,"overallBalance":22,"countUsers":1,"avgBalance":22,"days":\[\{"date":"(.*)","overallNumber":2,"distinctUsers":1,"dayBalance":22,"dayBalancePositive":22,"dayBalanceNegative":0\}\]\}/, done);
-    });
 });
