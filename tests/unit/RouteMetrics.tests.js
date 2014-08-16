@@ -4,7 +4,7 @@ var sinon = require('sinon');
 var MetricsRoute = require('../../lib/routes/Metrics');
 var mocks = require('../util/mocks');
 
-describe('transactionListRoute', function () {
+describe('metricsRoute', function () {
     describe('sucess', function () {
         var userLoader = mocks.createUserPersistenceMock({
             loadMetrics: {

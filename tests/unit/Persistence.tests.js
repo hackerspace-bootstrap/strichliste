@@ -524,7 +524,12 @@ describe('Persistence', function () {
                         {boo: 'far'},
                         {spam: 'eggs'},
                         {baz: 'ball'}
-                    ]}
+                    ]
+                },
+                selectMany: {
+                    error: null,
+                    result: {balls: 'eggs'}
+                }
             });
 
             var error, result;
@@ -546,7 +551,10 @@ describe('Persistence', function () {
                     foo: 'bar',
                     boo: 'far',
                     spam: 'eggs',
-                    baz: 'ball'
+                    baz: 'ball',
+                    days: {
+                        balls: 'eggs'
+                    }
                 });
             });
 
@@ -568,7 +576,12 @@ describe('Persistence', function () {
                         null,
                         {spam: 'eggs'},
                         {baz: 'ball'}
-                    ]}
+                    ]
+                },
+                selectMany: {
+                    error: null,
+                    result: {balls: 'eggs'}
+                }
             });
 
             var error, result;

@@ -213,12 +213,6 @@ describe('Integration tests', function () {
             .get('/metrics')
             .expect('Content-Type', /application\/json/)
             .expect(200)
-            .end(function(err, res){
-                if (err) return done(err);
-
-                expect(res.res.body).to.deep.equal({countTransactions: 2, countUsers: 1, avgBalance: 22, overallBalance: 22});
-
-                done()
-            });
+            .expect(/\{"countTransactions":2,"overallBalance":22,"countUsers":1,"avgBalance":22,"days":\[\{"date":"(.*)","overallNumber":2,"distinctUsers":1,"dayBalance":22,"dayBalancePositive":22,"dayBalanceNegative":0\}\]\}/, done);
     });
 });
