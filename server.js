@@ -9,9 +9,6 @@ appFactory.create(function(error, app) {
 
     app.listen(configuration.port);
 
-    figlet('Strichliste v' + version, function(error, data) {
-        if (!error) console.log(data);
-
-        console.log('running on port ' + configuration.port);
-    });
+    console.log(figlet.textSync('Strichliste v' + version));
+    console.log('running on port ' + configuration.port);
 });
