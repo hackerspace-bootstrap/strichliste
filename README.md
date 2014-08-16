@@ -80,7 +80,10 @@ To create a new user a name has to be assigned via the following data structure:
 { "name": <string> }
 ````
 
+Returns the status code 201 if a user was successfully created.
+
 ##### Errors
+
 * 409: If a user already exists
 
 #### GET /user/:userId
@@ -88,6 +91,10 @@ To create a new user a name has to be assigned via the following data structure:
 Returns one specific user.
 The returned data structure correlates with the /user endpoint, additionally a list of the five last transactions is sent.
 (See the /user/transaction section for a reference to the transaction data structure)
+
+#### Errors
+
+* 404: If the user could not be found
 
 #### GET /user/:userId/transaction
 
@@ -104,7 +111,72 @@ Each transaction has the following data structure:
 
 The parameters and the list structure of the `Pagination` section are used in this endpoint.
 
+#### Errors
+
+* 404: If the user could not be found
+
 #### POST /user/:userId/transaction
+
+Creates a new transaction for the user with the id `:userId`.
+The following data structure describes the transaction:
+
+````
+{ value: <int> }
+````
+
+Returns the status code 201 if a transaction was successfully created.
+
+#### Errors
+
+* 400: If a transaction value is not a number or is zero.
+* 403: If a transaction value is above or below a certain border (configurable) or the resulting user balance would exceed a certain border (configurable).
+* 404: If the user has not been found
+
+
 #### GET /user/:userId/transaction/:transactionId
+
+Returns a certain transaction.
+The data structure corresponds to that of the `/user/:userId/transaction` section.
+
+#### Errors
+
+* 404: If the user or the transaction could not be found
+
 #### GET /settings
+
+Returns the configured settings:
+
+````
+{
+  boundaries: {
+    upper: <int>
+    lower: <int>
+  }
+}
+````
+
+For more details on the configuration see the `configuration` section.
+
 #### GET /metrics
+
+Returns metrics concerning the registered users and their transactions.
+Data structure:
+
+````
+{
+  overallBalance: <float>,
+  countTransactions: <int>,
+  contUsers: <int>,
+  avgBalance: <float>,
+  days: [
+    {
+      date: <Date>,
+      overallNumber: <int>,
+      distinctUsers: <int>,
+      dayBalance: <float>,
+      dayBalancePositive: <float>,
+      dayBalanceNegative: <float>
+    }
+  ]
+}
+````
