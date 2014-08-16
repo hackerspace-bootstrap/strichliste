@@ -43,6 +43,7 @@
     "squel": "^3.6.0",
     "yargs": "^1.2.6",
     "once": "^1.3.0",
-    "cloneextend": "0.0.3"
+    "cloneextend": "0.0.3",
+    "morgan": "^1.2.2"
   }
 }
