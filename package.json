@@ -1,6 +1,6 @@
 {
   "name": "strichliste",
-  "version": "0.18.3",
+  "version": "0.19.0",
   "description": "keep track of your balance",
   "main": "server.js",
   "scripts": {
