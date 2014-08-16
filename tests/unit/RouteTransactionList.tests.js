@@ -1,10 +1,12 @@
 var expect = require('chai').use(require('sinon-chai')).expect;
 
+var LimitStatement = require('../../lib/parameters/LimitStatement');
 var TransactionListRoute = require('../../lib/routes/TransactionList');
 var mocks = require('../util/mocks');
 
 describe('transactionListRoute', function () {
     describe('success', function () {
+        var limitStatement = new LimitStatement(10, 20);
         var userLoader = mocks.createUserPersistenceMock({
             loadTransactionsByUserId: { error: null, result: [1, 2, 3] }
         });
@@ -15,7 +17,7 @@ describe('transactionListRoute', function () {
             query: {},
             strichliste: {
                 orderStatement: 'fooOrderSt',
-                limitStatement: 'fooLimitSt'
+                limitStatement: limitStatement
             }
         });
         var res = mocks.createResponseMock();
@@ -25,12 +27,18 @@ describe('transactionListRoute', function () {
         });
 
         it('should call the loadTransactionsByUserId with correct parameters', function () {
-            expect(userLoader.loadTransactionsByUserId).to.be.calledOnce;
-            expect(userLoader.loadTransactionsByUserId).to.be.calledWith(42, 'fooLimitSt', 'fooOrderSt');
+            expect(userLoader.loadTransactionsByUserId).to.be.calledTwice;
+            expect(userLoader.loadTransactionsByUserId).to.be.calledWith(42, limitStatement, 'fooOrderSt');
+            expect(userLoader.loadTransactionsByUserId).to.be.calledWith(42, null, null);
         });
 
         it('should return the transactionlist from the userLoader', function () {
-            expect(req.strichliste.result.content()).to.deep.equal([1, 2, 3]);
+            expect(req.strichliste.result.content()).to.deep.equal({
+                overallCount: 3,
+                limit: 10,
+                offset: 20,
+                entries: [1,2,3]
+            });
         });
 
         it('should set the correct content type', function () {
@@ -62,7 +70,7 @@ describe('transactionListRoute', function () {
         });
 
         it('should call the loadTransactionsByUserId', function () {
-            expect(userLoader.loadTransactionsByUserId).to.be.calledOnce;
+            expect(userLoader.loadTransactionsByUserId).to.be.calledTwice;
         });
 
         it('should call next with an eror', function () {

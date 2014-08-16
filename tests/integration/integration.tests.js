@@ -93,7 +93,7 @@ describe('Integration tests', function () {
             .get('/user/1/transaction')
             .expect('Content-Type', /application\/json/)
             .expect(200)
-            .expect('[]', done);
+            .expect('{"overallCount":0,"limit":null,"offset":null,"entries":[]}', done);
     });
 
     it('transaction create should fail when value is not a number', function (done) {
