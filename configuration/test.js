@@ -14,5 +14,9 @@ module.exports = {
             upper: 9999,
             lower: -9999
         }
+    },
+
+    logging: {
+        active: false
     }
 };

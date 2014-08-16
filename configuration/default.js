@@ -26,5 +26,9 @@ module.exports = {
             upper: 150,
             lower: -20
         }
+    },
+
+    logging: {
+        active: true
     }
 };
