@@ -1,34 +1,31 @@
 var expect = require('chai').use(require('sinon-chai')).expect;
 var sinon = require('sinon');
 
-var TransactionRoute = require('../../lib/routes/Transaction');
+var MetricsRoute = require('../../lib/routes/Metrics');
 var mocks = require('../util/mocks');
 
-describe('transactionListRoute', function () {
+describe('metricsRoute', function () {
     describe('sucess', function () {
         var userLoader = mocks.createUserPersistenceMock({
-            loadTransaction: {
+            loadMetrics: {
                 error: null,
                 result: {value: 42}
             }
         });
 
-        var route = new TransactionRoute(userLoader);
-        var req = mocks.createRequestMock({
-            params: {transactionId: 23}
-        });
+        var route = new MetricsRoute(userLoader);
+        var req = mocks.createRequestMock();
         var res = mocks.createResponseMock();
 
         var spy = sinon.spy();
         route.route(req, res, spy);
         var result = req.strichliste.result;
 
-        it('should call loadTransaction', function () {
-            expect(userLoader.loadTransaction.callCount).to.equal(1);
-            expect(userLoader.loadTransaction.args[0][0]).to.equal(23);
+        it('should call loadMetrics', function () {
+            expect(userLoader.loadMetrics).to.be.calledOnce;
         });
 
-        it('should return the transactionlist from the userLoader', function () {
+        it('should return the metrics from persistence', function () {
             expect(result.content()).to.deep.equal({value: 42});
         });
 
@@ -47,34 +44,31 @@ describe('transactionListRoute', function () {
 
     describe('fail', function () {
         var userLoader = mocks.createUserPersistenceMock({
-            loadTransaction: {
+            loadMetrics: {
                 error: new Error('caboom'),
                 result: null
             }
         });
 
-        var route = new TransactionRoute(userLoader);
-        var req = mocks.createRequestMock({
-            params: {transactionId: 23}
-        });
-        var res = mocks.createResponseMock();
-
         var error;
-        route.route(req, res, function (_error) {
-            error = _error;
+        before(function(done) {
+            var route = new MetricsRoute(userLoader);
+            var req = mocks.createRequestMock();
+            var res = mocks.createResponseMock();
+
+            route.route(req, res, function (_error) {
+                error = _error;
+                done();
+            });
         });
 
-        it('should call loadTransaction', function () {
-            expect(userLoader.loadTransaction.callCount).to.equal(1);
+        it('should call loadMetrics', function () {
+            expect(userLoader.loadMetrics).to.be.calledOnce;
         });
 
         it('should call next with an eror', function () {
             expect(error.errorCode).to.equal(500);
             expect(error.message).to.equal('caboom');
-        });
-
-        it('should not send a body', function () {
-            expect(res._end).to.be.null;
         });
     });
 });

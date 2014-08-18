@@ -1,5 +1,4 @@
-var expect = require('chai').expect;
-var sinon = require('sinon');
+var expect = require('chai').use(require('sinon-chai')).expect;
 
 var TransactionCreate = require('../../lib/routes/TransactionCreate');
 var mocks = require('../util/mocks');
@@ -10,7 +9,7 @@ describe('transactionCreateRoute', function () {
         var req = mocks.createRequestMock({
             params: {userId: 1},
             body: {},
-            result: {name: 'foo'}
+            strichliste: {result: {name: 'foo'}}
         });
         var res = mocks.createResponseMock();
 
@@ -52,6 +51,110 @@ describe('transactionCreateRoute', function () {
         });
     });
 
+    describe('lower account boundary', function () {
+        var route = new TransactionCreate(null, null);
+        var req = mocks.createRequestMock({
+            params: {userId: 1},
+            body: {value: -100},
+            strichliste: {
+                result: mocks.createResultMock({balance: 1})
+            }
+        });
+        var res = mocks.createResponseMock();
+
+        var error;
+        route.route(req, res, function (_error) {
+            error = _error;
+        });
+
+        it('should return an forbidden error if the new balance cuts below a certain boundary', function () {
+            expect(error.errorCode).to.equal(403);
+            expect(error.message).to.equal('transaction value of -100 leads to an overall account balance of -99 which goes below the lower account limit of -23');
+        });
+
+        it('should not sent any body', function () {
+            expect(res._end).to.be.null;
+        });
+    });
+
+    describe('upper account boundary', function () {
+        var route = new TransactionCreate(null, null);
+        var req = mocks.createRequestMock({
+            params: {userId: 1},
+            body: {value: 100},
+            strichliste: {
+                result: mocks.createResultMock({balance: 1})
+            }
+        });
+        var res = mocks.createResponseMock();
+
+        var error;
+        route.route(req, res, function (_error) {
+            error = _error;
+        });
+
+        it('should return an forbidden error if the new balance is above a certain boundary', function () {
+            expect(error.errorCode).to.equal(403);
+            expect(error.message).to.equal('transaction value of 100 leads to an overall account balance of 101 which goes beyond the upper account limit of 42');
+        });
+
+        it('should not sent any body', function () {
+            expect(res._end).to.be.null;
+        });
+    });
+
+    describe('upper transaction boundary', function () {
+        var route = new TransactionCreate(null, null);
+        var req = mocks.createRequestMock({
+            params: {userId: 1},
+            body: {value: 99999},
+            strichliste: {
+                result: mocks.createResultMock({balance: 1})
+            }
+        });
+        var res = mocks.createResponseMock();
+
+        var error;
+        route.route(req, res, function (_error) {
+            error = _error;
+        });
+
+        it('should return an forbidden error if the new balance is above a certain boundary', function () {
+            expect(error.errorCode).to.equal(403);
+            expect(error.message).to.equal('transaction value of 99999 exceeds the transaction maximum of 9999');
+        });
+
+        it('should not sent any body', function () {
+            expect(res._end).to.be.null;
+        });
+    });
+
+    describe('lower transaction boundary', function () {
+        var route = new TransactionCreate(null, null);
+        var req = mocks.createRequestMock({
+            params: {userId: 1},
+            body: {value: -99999},
+            strichliste: {
+                result: mocks.createResultMock({balance: 1})
+            }
+        });
+        var res = mocks.createResponseMock();
+
+        var error;
+        route.route(req, res, function (_error) {
+            error = _error;
+        });
+
+        it('should return an forbidden error if the new balance is above a certain boundary', function () {
+            expect(error.errorCode).to.equal(403);
+            expect(error.message).to.equal('transaction value of -99999 falls below the transaction minimum of -9999');
+        });
+
+        it('should not sent any body', function () {
+            expect(res._end).to.be.null;
+        });
+    });
+
     describe('creation fails', function () {
         var userLoader = mocks.createUserPersistenceMock({
             loadUserById: { error: null, result: {name: 'bert'} },
@@ -62,8 +165,11 @@ describe('transactionCreateRoute', function () {
         var req = mocks.createRequestMock({
             body: {value: 42},
             params: {userId: 100},
-            result: {name: 'foo'}
+            strichliste: {
+                result: mocks.createResultMock({name: 'foo'})
+            }
         });
+
         var res = mocks.createResponseMock();
 
         var error;
@@ -81,9 +187,8 @@ describe('transactionCreateRoute', function () {
         });
 
         it('should call creatTransaction with the correct parameters', function () {
-            expect(userLoader.createTransaction.callCount).to.equal(1);
-            expect(userLoader.createTransaction.args[0][0]).to.equal(100);
-            expect(userLoader.createTransaction.args[0][1]).to.equal(42);
+            expect(userLoader.createTransaction).to.be.calledOnce;
+            expect(userLoader.createTransaction).to.be.calledWith(100, 42);
         });
     });
 
@@ -98,7 +203,9 @@ describe('transactionCreateRoute', function () {
         var req = mocks.createRequestMock({
             body: {value: 1337},
             params: {userId: 1000},
-            result: {name: 'foo'}
+            strichliste: {
+                result: mocks.createResultMock({name: 'foo'})
+            }
         });
         var res = mocks.createResponseMock();
 
@@ -141,13 +248,15 @@ describe('transactionCreateRoute', function () {
         var req = mocks.createRequestMock({
             body: {value: 42.1},
             params: {userId: 100},
-            result: {name: 'foo'}
+            strichliste: {
+                result: mocks.createResultMock({name: 'foo'})
+            }
         });
         var res = mocks.createResponseMock();
 
         var result;
         route.route(req, res, function () {
-            result = req.result;
+            result = req.strichliste.result;
         });
 
         it('should send a body', function () {

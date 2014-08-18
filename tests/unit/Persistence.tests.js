@@ -1,19 +1,21 @@
 var expect = require('chai').expect;
-var sinon = require('sinon');
 
 var Persistence = require('../../lib/UserPersistence');
 var mocks = require('../util/mocks');
+
+var OrderStatement = require('../../lib/parameters/OrderStatement');
+var LimitStatement = require('../../lib/parameters/LimitStatement');
 
 describe('Persistence', function () {
     describe('loadUsers', function () {
         describe('success', function () {
             var db = mocks.createDBMock({
-                selectMany: {error: null, result: [1, 2, 3]}
+                selectMany: {error: null, result: {foo: 'bar'}}
             });
 
             var error, result;
             new Persistence(db)
-                .loadUsers(function (_error, _result) {
+                .loadUsers(null, null, function (_error, _result) {
                     error = _error;
                     result = _result;
                 });
@@ -23,11 +25,40 @@ describe('Persistence', function () {
             });
 
             it('should return the result', function () {
-                expect(result).to.deep.equal([1, 2, 3]);
+                expect(result).to.deep.equal({foo: 'bar'});
             });
 
             it('should execute the correct query', function () {
-                expect(db.selectMany.args[0][0]).to.equal('SELECT users.id AS "id", users.name AS "name", coalesce(sum(value),0) AS \"balance\" FROM users LEFT JOIN transactions ON (transactions.userId = users.id) GROUP BY users.id');
+                expect(db.selectMany.args[0][0]).to.equal('SELECT users.id AS "id", users.name AS "name", coalesce(sum(value),0) AS \"balance\", max(transactions.createDate) AS \"lastTransaction\" FROM users LEFT JOIN transactions ON (transactions.userId = users.id) GROUP BY users.id');
+            });
+
+            it('should assign the correct arguments', function () {
+                expect(db.selectMany.args[0][1]).to.deep.equal([]);
+            });
+        });
+
+        describe('success with limit', function () {
+            var db = mocks.createDBMock({
+                selectMany: {error: null, result: {foo: 'bar'}}
+            });
+
+            var error, result;
+            new Persistence(db)
+                .loadUsers(new LimitStatement(1, 1), null, function (_error, _result) {
+                    error = _error;
+                    result = _result;
+                });
+
+            it('should not return an error', function () {
+                expect(error).to.be.null;
+            });
+
+            it('should return the result', function () {
+                expect(result).to.deep.equal({foo: 'bar'});
+            });
+
+            it('should execute the correct query', function () {
+                expect(db.selectMany.args[0][0]).to.equal('SELECT users.id AS "id", users.name AS "name", coalesce(sum(value),0) AS \"balance\", max(transactions.createDate) AS \"lastTransaction\" FROM users LEFT JOIN transactions ON (transactions.userId = users.id) GROUP BY users.id LIMIT 1 OFFSET 1');
             });
 
             it('should assign the correct arguments', function () {
@@ -42,7 +73,7 @@ describe('Persistence', function () {
 
             var error, result;
             new Persistence(db)
-                .loadUsers(function (_error, _result) {
+                .loadUsers(null, null, function (_error, _result) {
                     error = _error;
                     result = _result;
                 });
@@ -56,7 +87,7 @@ describe('Persistence', function () {
             });
 
             it('should execute the correct query', function () {
-                expect(db.selectMany.args[0][0]).to.equal('SELECT users.id AS "id", users.name AS "name", coalesce(sum(value),0) AS \"balance\" FROM users LEFT JOIN transactions ON (transactions.userId = users.id) GROUP BY users.id');
+                expect(db.selectMany.args[0][0]).to.equal('SELECT users.id AS "id", users.name AS "name", coalesce(sum(value),0) AS \"balance\", max(transactions.createDate) AS \"lastTransaction\" FROM users LEFT JOIN transactions ON (transactions.userId = users.id) GROUP BY users.id');
             });
 
             it('should assign the correct arguments', function () {
@@ -68,7 +99,7 @@ describe('Persistence', function () {
     describe('loadUserById', function () {
         describe('success', function () {
             var db = mocks.createDBMock({
-                selectOne: {error: null, result: [1, 2, 3]}
+                selectOne: {error: null, result: {foo: 'bar'}}
             });
 
             var error, result;
@@ -83,11 +114,11 @@ describe('Persistence', function () {
             });
 
             it('should return the result', function () {
-                expect(result).to.deep.equal([1, 2, 3]);
+                expect(result).to.deep.equal({foo: 'bar'});
             });
 
             it('should execute the correct query', function () {
-                expect(db.selectOne.args[0][0]).to.equal('SELECT users.id AS "id", users.name AS "name", coalesce(sum(value),0) AS "balance" FROM users LEFT JOIN transactions ON (transactions.userId = users.id) WHERE (users.id = ?) GROUP BY users.id');
+                expect(db.selectOne.args[0][0]).to.equal('SELECT users.id AS "id", users.name AS "name", coalesce(sum(value),0) AS "balance", max(transactions.createDate) AS \"lastTransaction\" FROM users LEFT JOIN transactions ON (transactions.userId = users.id) WHERE (users.id = ?) GROUP BY users.id');
             });
 
             it('should assign the correct arguments', function () {
@@ -116,7 +147,7 @@ describe('Persistence', function () {
             });
 
             it('should execute the correct query', function () {
-                expect(db.selectOne.args[0][0]).to.equal('SELECT users.id AS "id", users.name AS "name", coalesce(sum(value),0) AS "balance" FROM users LEFT JOIN transactions ON (transactions.userId = users.id) WHERE (users.id = ?) GROUP BY users.id');
+                expect(db.selectOne.args[0][0]).to.equal('SELECT users.id AS "id", users.name AS "name", coalesce(sum(value),0) AS "balance", max(transactions.createDate) AS \"lastTransaction\" FROM users LEFT JOIN transactions ON (transactions.userId = users.id) WHERE (users.id = ?) GROUP BY users.id');
             });
 
             it('should assign the correct arguments', function () {
@@ -147,7 +178,7 @@ describe('Persistence', function () {
             });
 
             it('should execute the correct query', function () {
-                expect(db.selectOne.args[0][0]).to.equal('SELECT users.id AS \"id\", users.name AS \"name\", coalesce(sum(value),0) AS \"balance\" FROM users LEFT JOIN transactions ON (transactions.userId = users.id) WHERE (lower(users.name) = ?) GROUP BY users.id');
+                expect(db.selectOne.args[0][0]).to.equal('SELECT users.id AS \"id\", users.name AS \"name\", coalesce(sum(value),0) AS \"balance\", max(transactions.createDate) AS \"lastTransaction\" FROM users LEFT JOIN transactions ON (transactions.userId = users.id) WHERE (lower(users.name) = ?) GROUP BY users.id');
             });
 
             it('should assign the correct arguments', function () {
@@ -176,7 +207,7 @@ describe('Persistence', function () {
             });
 
             it('should execute the correct query', function () {
-                expect(db.selectOne.args[0][0]).to.equal('SELECT users.id AS \"id\", users.name AS \"name\", coalesce(sum(value),0) AS \"balance\" FROM users LEFT JOIN transactions ON (transactions.userId = users.id) WHERE (lower(users.name) = ?) GROUP BY users.id');
+                expect(db.selectOne.args[0][0]).to.equal('SELECT users.id AS \"id\", users.name AS \"name\", coalesce(sum(value),0) AS \"balance\", max(transactions.createDate) AS \"lastTransaction\" FROM users LEFT JOIN transactions ON (transactions.userId = users.id) WHERE (lower(users.name) = ?) GROUP BY users.id');
             });
 
             it('should assign the correct arguments', function () {
@@ -327,7 +358,7 @@ describe('Persistence', function () {
             });
 
             it('should execute the correct query', function () {
-                expect(db.selectOne.args[0][0]).to.equal("SELECT id, userId, createDate, value FROM transactions WHERE (id = ?)");
+                expect(db.selectOne.args[0][0]).to.equal("SELECT id, userId, createDate, value FROM transactions WHERE (id = ?) ORDER BY id DESC");
             });
 
             it('should assign the correct arguments', function () {
@@ -356,7 +387,7 @@ describe('Persistence', function () {
             });
 
             it('should execute the correct query', function () {
-                expect(db.selectOne.args[0][0]).to.equal("SELECT id, userId, createDate, value FROM transactions WHERE (id = ?)");
+                expect(db.selectOne.args[0][0]).to.equal("SELECT id, userId, createDate, value FROM transactions WHERE (id = ?) ORDER BY id DESC");
             });
 
             it('should assign the correct arguments', function () {
@@ -373,7 +404,7 @@ describe('Persistence', function () {
 
             var error, result;
             new Persistence(db)
-                .loadTransactionsByUserId(1337, function (_error, _result) {
+                .loadTransactionsByUserId(1337, new LimitStatement(1, 2), null, function (_error, _result) {
                     error = _error;
                     result = _result;
                 });
@@ -387,7 +418,65 @@ describe('Persistence', function () {
             });
 
             it('should execute the correct query', function () {
-                expect(db.selectMany.args[0][0]).to.equal("SELECT id, userId, createDate, value FROM transactions WHERE (userId = ?)");
+                expect(db.selectMany.args[0][0]).to.equal("SELECT id, userId, createDate, value FROM transactions WHERE (userId = ?) ORDER BY id DESC LIMIT 1 OFFSET 2");
+            });
+
+            it('should assign the correct arguments', function () {
+                expect(db.selectMany.args[0][1]).to.deep.equal([1337]);
+            });
+        });
+
+        describe('success without offset/limit', function () {
+            var db = mocks.createDBMock({
+                selectMany: {error: null, result: {value: 123}}
+            });
+
+            var error, result;
+            new Persistence(db)
+                .loadTransactionsByUserId(1337, null, null, function (_error, _result) {
+                    error = _error;
+                    result = _result;
+                });
+
+            it('should not return an error', function () {
+                expect(error).to.be.null;
+            });
+
+            it('should return the result', function () {
+                expect(result).to.deep.equal({value: 123});
+            });
+
+            it('should execute the correct query', function () {
+                expect(db.selectMany.args[0][0]).to.equal("SELECT id, userId, createDate, value FROM transactions WHERE (userId = ?) ORDER BY id DESC");
+            });
+
+            it('should assign the correct arguments', function () {
+                expect(db.selectMany.args[0][1]).to.deep.equal([1337]);
+            });
+        });
+
+        describe('success without offset/limit', function () {
+            var db = mocks.createDBMock({
+                selectMany: {error: null, result: {value: 123}}
+            });
+
+            var error, result;
+            new Persistence(db)
+                .loadTransactionsByUserId(1337, new LimitStatement(11, 10), null, function (_error, _result) {
+                    error = _error;
+                    result = _result;
+                });
+
+            it('should not return an error', function () {
+                expect(error).to.be.null;
+            });
+
+            it('should return the result', function () {
+                expect(result).to.deep.equal({value: 123});
+            });
+
+            it('should execute the correct query', function () {
+                expect(db.selectMany.args[0][0]).to.equal("SELECT id, userId, createDate, value FROM transactions WHERE (userId = ?) ORDER BY id DESC LIMIT 11 OFFSET 10");
             });
 
             it('should assign the correct arguments', function () {
@@ -402,7 +491,7 @@ describe('Persistence', function () {
 
             var error, result;
             new Persistence(db)
-                .loadTransactionsByUserId(1337, function (_error, _result) {
+                .loadTransactionsByUserId(1337, new LimitStatement(1, 2), null, function (_error, _result) {
                     error = _error;
                     result = _result;
                 });
@@ -416,7 +505,7 @@ describe('Persistence', function () {
             });
 
             it('should execute the correct query', function () {
-                expect(db.selectMany.args[0][0]).to.equal("SELECT id, userId, createDate, value FROM transactions WHERE (userId = ?)");
+                expect(db.selectMany.args[0][0]).to.equal("SELECT id, userId, createDate, value FROM transactions WHERE (userId = ?) ORDER BY id DESC LIMIT 1 OFFSET 2");
             });
 
             it('should assign the correct arguments', function () {
@@ -424,4 +513,110 @@ describe('Persistence', function () {
             });
         });
     });
+
+    describe('loadMetrics', function() {
+        describe('success', function () {
+            var db = mocks.createDBMock({
+                selectOne: {
+                    error: [null, null, null, null],
+                    result: [
+                        {foo: 'bar'},
+                        {boo: 'far'},
+                        {spam: 'eggs'},
+                        {baz: 'ball'}
+                    ]
+                },
+                selectMany: {
+                    error: null,
+                    result: {balls: 'eggs'}
+                }
+            });
+
+            var error, result;
+            before(function(done) {
+                new Persistence(db)
+                    .loadMetrics(function (_error, _result) {
+                        error = _error;
+                        result = _result;
+                        done();
+                    });
+            });
+
+            it('should not return an error', function () {
+                expect(error).to.be.null;
+            });
+
+            it('should return the result', function () {
+                expect(result).to.deep.equal({
+                    foo: 'bar',
+                    boo: 'far',
+                    spam: 'eggs',
+                    baz: 'ball',
+                    days: {
+                        balls: 'eggs'
+                    }
+                });
+            });
+
+            it('should execute the correct queries', function () {
+                expect(db.selectOne).to.be.calledWith('select count(*) as countTransactions from transactions', []);
+                expect(db.selectOne).to.be.calledWith('select sum(value) as overallBalance from transactions', []);
+                expect(db.selectOne).to.be.calledWith('select count(*) as countUsers from users', []);
+                expect(db.selectOne).to.be.calledWith('select avg(userBalance) as avgBalance from (select sum(value) as userBalance from transactions group by userId) as ghoti', []);
+            });
+        });
+
+        describe('fail', function () {
+            var e = new Error('caboomsl!');
+            var db = mocks.createDBMock({
+                selectOne: {
+                    error: [null, e, null, null],
+                    result: [
+                        {foo: 'bar'},
+                        null,
+                        {spam: 'eggs'},
+                        {baz: 'ball'}
+                    ]
+                },
+                selectMany: {
+                    error: null,
+                    result: {balls: 'eggs'}
+                }
+            });
+
+            var error, result;
+            before(function(done) {
+                new Persistence(db)
+                    .loadMetrics(function (_error, _result) {
+                        error = _error;
+                        result = _result;
+                        done();
+                    });
+            });
+
+            it('should not return an error', function () {
+                expect(error).to.equal(e);
+            });
+
+            it('should return the result', function () {
+                expect(result).to.be.null;
+            });
+
+            it('should query several times', function() {
+                expect(db.selectOne).to.be.callCount(4);
+            });
+
+            it('should query several times', function() {
+                expect(db.selectMany).to.be.calledOnce;
+            });
+
+            it('should execute the correct queries', function () {
+                expect(db.selectOne).to.be.calledWith('select count(*) as countTransactions from transactions', []);
+                expect(db.selectOne).to.be.calledWith('select sum(value) as overallBalance from transactions', []);
+                expect(db.selectOne).to.be.calledWith('select count(*) as countUsers from users', []);
+                expect(db.selectOne).to.be.calledWith('select avg(userBalance) as avgBalance from (select sum(value) as userBalance from transactions group by userId) as ghoti', []);
+                expect(db.selectMany).to.be.calledWith('select date(createDate) as date, count(*) as overallNumber,count(distinct userid) as distinctUsers,sum(value) as dayBalance,sum(max(value, 0)) as dayBalancePositive,sum(min(value, 0)) as dayBalanceNegative from transactions where createDate >=  date("now", "-30 day") group by date(createDate);', []);
+            });
+        });
+    })
 });

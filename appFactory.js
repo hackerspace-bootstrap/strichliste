@@ -3,7 +3,6 @@ var bodyParser = require('body-parser');
 var cors = require('cors');
 
 var configuration = require('./lib/configuration');
-var version = require('./lib/version');
 var bootstrap = require('./lib/bootstrap');
 
 module.exports.create = function(callback) {

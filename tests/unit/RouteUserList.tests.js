@@ -1,4 +1,4 @@
-var expect = require('chai').expect;
+var expect = require('chai').use(require('sinon-chai')).expect;
 var sinon = require('sinon');
 
 var UserListRoute = require('../../lib/routes/UserList');
@@ -19,10 +19,10 @@ describe('userListRoute', function () {
 
         var spy = sinon.spy();
         route.route(req, res, spy);
-        var result = req.result;
+        var result = req.strichliste.result;
 
         it('should call the loadUserMethod', function () {
-            expect(userLoader.loadUsers.callCount).to.equal(1);
+            expect(userLoader.loadUsers).to.be.calledOnce;
         });
 
         it('should return the userlist from the userLoader', function () {
@@ -38,7 +38,50 @@ describe('userListRoute', function () {
         });
 
         it('should call the next method', function () {
-            expect(spy.callCount).to.equal(1);
+            expect(spy).to.be.calledOnce;
+        });
+    });
+
+    describe('sucess with limitStatement', function () {
+        var userLoader = mocks.createUserPersistenceMock({
+            loadUsers: {
+                error: null,
+                result: [1, 2, 3]
+            }
+        });
+
+        var route = new UserListRoute(userLoader);
+        var req = mocks.createRequestMock({
+            strichliste: {orderStatement: null, limitStatement: 'bert'}
+        });
+        var res = mocks.createResponseMock();
+
+        var spy = sinon.spy();
+        route.route(req, res, spy);
+        var result = req.strichliste.result;
+
+        it('should call the loadUserMethod', function () {
+            expect(userLoader.loadUsers).to.be.calledOnce;
+        });
+
+        it('should call the loadUserMethod with the correct parameters', function () {
+            expect(userLoader.loadUsers).to.be.calledWith('bert', null);
+        });
+
+        it('should return the userlist from the userLoader', function () {
+            expect(result.content()).to.deep.equal([1, 2, 3]);
+        });
+
+        it('should set the correct content type', function () {
+            expect(result.contentType()).to.equal('application/json');
+        });
+
+        it('should set the correct status code', function () {
+            expect(result.statusCode()).to.equal(200);
+        });
+
+        it('should call the next method', function () {
+            expect(spy).to.be.calledOnce;
         });
     });
 
@@ -60,7 +103,7 @@ describe('userListRoute', function () {
         });
 
         it('should call the loadUserMethod', function () {
-            expect(userLoader.loadUsers.callCount).to.equal(1);
+            expect(userLoader.loadUsers).to.be.calledOnce;
         });
 
         it('should call next with an eror', function () {

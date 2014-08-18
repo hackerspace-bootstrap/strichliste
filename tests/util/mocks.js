@@ -1,16 +1,31 @@
 var sinon = require('sinon');
 
-function createRequestMock (options) {
+function createResultMock(content) {
+    return {
+        content: function() {
+            return content;
+        }
+    }
+}
+
+function createAppMock() {
+    return {
+        get: sinon.spy()
+    }
+}
+
+function createRequestMock(options) {
     options = options || {};
 
     return {
         params: options.params || {},
         body: options.body || {},
-        result: options.result || null
+        query: options.query || null,
+        strichliste: options.strichliste || {}
     }
 }
 
-function createResponseMock () {
+function createResponseMock() {
     return {
         _end: null,
         _status: null,
@@ -26,11 +41,11 @@ function createResponseMock () {
     }
 }
 
-function createUserPersistenceMock (options) {
+function createUserPersistenceMock(options) {
     options = options || {};
 
     return {
-        loadUsers: sinon.spy(function (callback) {
+        loadUsers: sinon.spy(function (limitStatement, orderStatement, callback) {
             callback(options.loadUsers.error, options.loadUsers.result);
         }),
         loadUserById: sinon.spy(function (id, callback) {
@@ -48,45 +63,72 @@ function createUserPersistenceMock (options) {
         loadTransaction: sinon.spy(function (transactionId, callback) {
             callback(options.loadTransaction.error, options.loadTransaction.result);
         }),
-        loadTransactionsByUserId: sinon.spy(function (transactionId, callback) {
+        loadTransactionsByUserId: sinon.spy(function (transactionId, offset, limit, callback) {
             callback(options.loadTransactionsByUserId.error, options.loadTransactionsByUserId.result);
+        }),
+        loadMetrics: sinon.spy(function (callback) {
+            callback(options.loadMetrics.error, options.loadMetrics.result);
         })
     };
 }
 
-function createMqttWrapperMock () {
+function createMqttWrapperMock() {
     return {
         publishTransactionValue: sinon.spy()
     };
 }
 
-function createMqttClientMock () {
+function createMqttClientMock() {
     return {
         publish: sinon.spy()
     };
 }
 
-function createDBMock (options) {
+function createMqttMock(emitter) {
+    return {
+        createClient: sinon.spy(function (port, host) {
+            return emitter;
+        })
+    };
+}
+
+function createDBMock(options) {
     options = options || {};
 
+    var i = 0;
     return {
         selectOne: sinon.spy(function (query, arguments, callback) {
-            callback(options.selectOne.error, options.selectOne.result);
+            var error = Array.isArray(options.selectOne.error) ? options.selectOne.error[i] : options.selectOne.error;
+            var result = Array.isArray(options.selectOne.result) ? options.selectOne.result[i] : options.selectOne.result;
+            i++;
+
+            callback(error, result);
         }),
         selectMany: sinon.spy(function (query, arguments, callback) {
-            callback(options.selectMany.error, options.selectMany.result);
+            var error = Array.isArray(options.selectMany.error) ? options.selectMany.error[i] : options.selectMany.error;
+            var result = Array.isArray(options.selectMany.result) ? options.selectMany.result[i] : options.selectMany.result;
+            i++;
+
+            callback(error, result);
         }),
         query: sinon.spy(function (query, arguments, callback) {
-            callback(options.query.error, options.query.result);
+            var error = Array.isArray(options.query.error) ? options.query.error[i] : options.query.error;
+            var result = Array.isArray(options.query.result) ? options.query.result[i] : options.query.result;
+            i++;
+
+            callback(error, result);
         })
     }
 }
 
 module.exports = {
+    createResultMock: createResultMock,
     createRequestMock: createRequestMock,
     createResponseMock: createResponseMock,
     createUserPersistenceMock: createUserPersistenceMock,
     createDBMock: createDBMock,
     createMqttWrapperMock: createMqttWrapperMock,
-    createMqttClientMock: createMqttClientMock
+    createMqttClientMock: createMqttClientMock,
+    createAppMock: createAppMock,
+    createMqttMock: createMqttMock
 };

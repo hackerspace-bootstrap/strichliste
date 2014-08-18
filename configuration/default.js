@@ -10,10 +10,25 @@ module.exports = {
 
     mqtt: {
         enabled: false,
-        host: 'mqtt',
-        port: 1882,
+        host: 'localhost',
+        port: 1883,
         topics: {
             transactionValue: 'strichliste/transactionValue'
         }
+    },
+
+    boundaries: {
+        account: {
+            upper: Infinity,
+            lower: -50
+        },
+        transaction: {
+            upper: 150,
+            lower: -20
+        }
+    },
+
+    logging: {
+        active: true
     }
 };

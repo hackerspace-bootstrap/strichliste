@@ -5,10 +5,10 @@ database:
 	@node createDatabase.js
 
 run-unit-tests:
-	@NODE_ENV=test mocha --reporter=spec $(shell find tests/unit -name "*.tests.js")
+	@NODE_ENV=test mocha $(shell find tests/unit -name "*.tests.js")
 
 run-integration-tests: testprepare
-	@NODE_ENV=test mocha --reporter=spec $(shell find tests/integration -name "*.tests.js")
+	@NODE_ENV=test mocha $(shell find tests/integration -name "*.tests.js")
 
 testprepare:
 	@rm -f testdata.sqlite

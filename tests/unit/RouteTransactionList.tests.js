@@ -1,47 +1,52 @@
-var expect = require('chai').expect;
-var sinon = require('sinon');
+var expect = require('chai').use(require('sinon-chai')).expect;
 
+var LimitStatement = require('../../lib/parameters/LimitStatement');
 var TransactionListRoute = require('../../lib/routes/TransactionList');
 var mocks = require('../util/mocks');
 
 describe('transactionListRoute', function () {
-    describe('sucess', function () {
+    describe('success', function () {
+        var limitStatement = new LimitStatement(10, 20);
         var userLoader = mocks.createUserPersistenceMock({
-            loadTransactionsByUserId: {
-                error: null,
-                result: [1, 2, 3]
-            }
+            loadTransactionsByUserId: { error: null, result: [1, 2, 3] }
         });
 
         var route = new TransactionListRoute(userLoader);
         var req = mocks.createRequestMock({
-            params: {userId: 42}
+            params: {userId: 42},
+            query: {},
+            strichliste: {
+                orderStatement: 'fooOrderSt',
+                limitStatement: limitStatement
+            }
         });
         var res = mocks.createResponseMock();
 
-        var spy = sinon.spy();
-        route.route(req, res, spy);
-        var result = req.result;
+        before(function (done) {
+            route.route(req, res, done);
+        });
 
-        it('should call the loadTransactionsByUserId', function () {
-            expect(userLoader.loadTransactionsByUserId.callCount).to.equal(1);
-            expect(userLoader.loadTransactionsByUserId.args[0][0]).to.equal(42);
+        it('should call the loadTransactionsByUserId with correct parameters', function () {
+            expect(userLoader.loadTransactionsByUserId).to.be.calledTwice;
+            expect(userLoader.loadTransactionsByUserId).to.be.calledWith(42, limitStatement, 'fooOrderSt');
+            expect(userLoader.loadTransactionsByUserId).to.be.calledWith(42, null, null);
         });
 
         it('should return the transactionlist from the userLoader', function () {
-            expect(result.content()).to.deep.equal([1, 2, 3]);
+            expect(req.strichliste.result.content()).to.deep.equal({
+                overallCount: 3,
+                limit: 10,
+                offset: 20,
+                entries: [1,2,3]
+            });
         });
 
         it('should set the correct content type', function () {
-            expect(result.contentType()).to.equal('application/json');
+            expect(req.strichliste.result.contentType()).to.equal('application/json');
         });
 
         it('should set the correct status code', function () {
-            expect(result.statusCode()).to.equal(200);
-        });
-
-        it('should call the next method', function () {
-            expect(spy.callCount).to.equal(1);
+            expect(req.strichliste.result.statusCode()).to.equal(200);
         });
     });
 
@@ -54,7 +59,9 @@ describe('transactionListRoute', function () {
         });
 
         var route = new TransactionListRoute(userLoader);
-        var req = mocks.createRequestMock();
+        var req = mocks.createRequestMock({
+            query: {}
+        });
         var res = mocks.createResponseMock();
 
         var error;
@@ -63,7 +70,7 @@ describe('transactionListRoute', function () {
         });
 
         it('should call the loadTransactionsByUserId', function () {
-            expect(userLoader.loadTransactionsByUserId.callCount).to.equal(1);
+            expect(userLoader.loadTransactionsByUserId).to.be.calledTwice;
         });
 
         it('should call next with an eror', function () {
