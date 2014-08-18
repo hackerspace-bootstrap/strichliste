@@ -14,20 +14,20 @@ describe('Integration tests', function () {
         });
     });
 
+    it('should return the app settings', function (done) {
+        request(app)
+            .get('/settings')
+            .expect('Content-Type', /application\/json/)
+            .expect(200)
+            .expect('{"boundaries":{"upper":42,"lower":-23}}', done);
+    });
+
     it('should return an empty list', function (done) {
         request(app)
             .get('/user')
             .expect('Content-Type', /application\/json/)
             .expect(200)
             .expect('[]', done);
-    });
-
-    it('should return an empty list', function (done) {
-        request(app)
-            .get('/settings')
-            .expect('Content-Type', /application\/json/)
-            .expect(200)
-            .expect('{"boundaries":{"upper":42,"lower":-23}}', done);
     });
 
     it('should create a user', function (done) {
