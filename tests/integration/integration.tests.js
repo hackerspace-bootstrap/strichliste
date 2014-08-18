@@ -22,8 +22,6 @@ describe('Integration tests', function () {
             .expect('[]', done);
     });
 
-<<<<<<< HEAD
-=======
     it('should return an empty list', function (done) {
         request(app)
             .get('/settings')
@@ -32,7 +30,6 @@ describe('Integration tests', function () {
             .expect('{"boundaries":{"upper":42,"lower":-23}}', done);
     });
 
->>>>>>> 30275cbca3ef4707667f3101cb7a68dfe9cf234b
     it('should create a user', function (done) {
         request(app)
             .post('/user')
@@ -58,11 +55,7 @@ describe('Integration tests', function () {
             .expect('[]', done);
     });
 
-<<<<<<< HEAD
-    it('create should fail without without a name', function (done) {
-=======
     it('create should fail without a name', function (done) {
->>>>>>> 30275cbca3ef4707667f3101cb7a68dfe9cf234b
         request(app)
             .post('/user')
             .expect('Content-Type', /application\/json/)
