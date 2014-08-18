@@ -7,12 +7,8 @@ database:
 run-unit-tests:
 	@NODE_ENV=test mocha $(shell find tests/unit -name "*.tests.js")
 
-run-integration-tests: testprepare
+run-integration-tests:
 	@NODE_ENV=test mocha $(shell find tests/integration -name "*.tests.js")
-
-testprepare:
-	@rm -f testdata.sqlite
-	@node createDatabase.js --filename=testdata.sqlite
 
 test:
 	make run-unit-tests

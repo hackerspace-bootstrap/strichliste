@@ -2,15 +2,23 @@ var expect = require('chai').expect;
 var request = require('supertest');
 var express = require('express');
 
+var createDatabase = require('../../lib/util/createDatabase');
+
 var appFactory = require('../../appFactory');
 var configuration = require('../../lib/configuration');
 
 describe('Integration tests', function () {
     var app;
     before(function (done) {
-        appFactory.create(function (error, _app) {
-            app = _app;
-            done();
+        createDatabase(configuration.database, function(error) {
+            if (error) throw error;
+
+            appFactory.create(function (error, _app) {
+                if (error) throw error;
+
+                app = _app;
+                done();
+            });
         });
     });
 
