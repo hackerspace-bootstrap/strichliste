@@ -15,7 +15,7 @@ describe('userListRoute', function () {
         var result = req.strichliste.result;
 
         it('should set the correct content type', function () {
-            expect(result.content()).to.deep.equal({boundaries:{upper:42, lower:-23}});
+            expect(result.content()).to.deep.equal({boundaries: {upper: 42, lower: -23}});
         });
 
         it('should set the correct content type', function () {

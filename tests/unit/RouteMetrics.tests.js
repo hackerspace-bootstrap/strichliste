@@ -51,7 +51,7 @@ describe('metricsRoute', function () {
         });
 
         var error;
-        before(function(done) {
+        before(function (done) {
             var route = new MetricsRoute(userLoader);
             var req = mocks.createRequestMock();
             var res = mocks.createResponseMock();

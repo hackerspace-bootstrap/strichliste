@@ -37,7 +37,7 @@ describe('transactionListRoute', function () {
                 overallCount: 3,
                 limit: 10,
                 offset: 20,
-                entries: [1,2,3]
+                entries: [1, 2, 3]
             });
         });
 

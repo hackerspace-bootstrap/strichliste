@@ -514,7 +514,7 @@ describe('Persistence', function () {
         });
     });
 
-    describe('loadMetrics', function() {
+    describe('loadMetrics', function () {
         describe('success', function () {
             var db = mocks.createDBMock({
                 selectOne: {
@@ -533,7 +533,7 @@ describe('Persistence', function () {
             });
 
             var error, result;
-            before(function(done) {
+            before(function (done) {
                 new Persistence(db)
                     .loadMetrics(function (_error, _result) {
                         error = _error;
@@ -585,7 +585,7 @@ describe('Persistence', function () {
             });
 
             var error, result;
-            before(function(done) {
+            before(function (done) {
                 new Persistence(db)
                     .loadMetrics(function (_error, _result) {
                         error = _error;
@@ -602,11 +602,11 @@ describe('Persistence', function () {
                 expect(result).to.be.null;
             });
 
-            it('should query several times', function() {
+            it('should query several times', function () {
                 expect(db.selectOne).to.be.callCount(4);
             });
 
-            it('should query several times', function() {
+            it('should query several times', function () {
                 expect(db.selectMany).to.be.calledOnce;
             });
 

@@ -3,7 +3,7 @@ var expect = require('chai').expect;
 var Routes = require('../../lib/routing/Routes');
 var mocks = require('../util/mocks');
 
-function createRouteMock(path, pred) {
+function createRouteMock (path, pred) {
     return {
         mountPoint: function () {
             return {

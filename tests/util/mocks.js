@@ -1,20 +1,20 @@
 var sinon = require('sinon');
 
-function createResultMock(content) {
+function createResultMock (content) {
     return {
-        content: function() {
+        content: function () {
             return content;
         }
     }
 }
 
-function createAppMock() {
+function createAppMock () {
     return {
         get: sinon.spy()
     }
 }
 
-function createRequestMock(options) {
+function createRequestMock (options) {
     options = options || {};
 
     return {
@@ -25,7 +25,7 @@ function createRequestMock(options) {
     }
 }
 
-function createResponseMock() {
+function createResponseMock () {
     return {
         _end: null,
         _status: null,
@@ -41,7 +41,7 @@ function createResponseMock() {
     }
 }
 
-function createUserPersistenceMock(options) {
+function createUserPersistenceMock (options) {
     options = options || {};
 
     return {
@@ -72,19 +72,19 @@ function createUserPersistenceMock(options) {
     };
 }
 
-function createMqttWrapperMock() {
+function createMqttWrapperMock () {
     return {
         publishTransactionValue: sinon.spy()
     };
 }
 
-function createMqttClientMock() {
+function createMqttClientMock () {
     return {
         publish: sinon.spy()
     };
 }
 
-function createMqttMock(emitter) {
+function createMqttMock (emitter) {
     return {
         createClient: sinon.spy(function (port, host) {
             return emitter;
@@ -92,7 +92,7 @@ function createMqttMock(emitter) {
     };
 }
 
-function createDBMock(options) {
+function createDBMock (options) {
     options = options || {};
 
     var i = 0;

@@ -10,7 +10,7 @@ var configuration = require('../../lib/configuration');
 describe('Integration tests', function () {
     var app;
     before(function (done) {
-        createDatabase(configuration.database, function(error) {
+        createDatabase(configuration.database, function (error) {
             if (error) throw error;
 
             appFactory.create(function (error, _app) {
