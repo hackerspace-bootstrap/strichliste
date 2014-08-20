@@ -33,7 +33,7 @@
   },
   "dependencies": {
     "body-parser": "^1.5.2",
-    "configurations": "^0.1.3",
+    "configurations": "^1.0.0",
     "cors": "^2.4.1",
     "express": "^4.6.1",
     "figlet": "^1.1.0",
@@ -43,7 +43,7 @@
     "squel": "^3.6.0",
     "yargs": "^1.2.6",
     "once": "^1.3.0",
-    "cloneextend": "0.0.3",
-    "morgan": "^1.2.2"
+    "morgan": "^1.2.2",
+    "hoek": "^2.4.1"
   }
 }
