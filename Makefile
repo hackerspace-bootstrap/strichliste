@@ -5,10 +5,10 @@ database:
 	@node createDatabase.js
 
 run-unit-tests:
-	@NODE_ENV=test mocha $(shell find tests/unit -name "*.tests.js") --timeout=5000
+	@NODE_ENV=test mocha $(shell find tests/unit -name "*.tests.js") --timeout=5000 --reporter=dot
 
 run-integration-tests:
-	@NODE_ENV=test mocha $(shell find tests/integration -name "*.tests.js") --timeout=5000
+	@NODE_ENV=test mocha $(shell find tests/integration -name "*.tests.js") --timeout=5000 --reporter=dot
 
 install-packages:
 	@npm i
