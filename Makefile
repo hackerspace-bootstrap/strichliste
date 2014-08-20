@@ -20,7 +20,8 @@ test:
 	@make run-integration-tests
 
 cover:
-	NODE_ENV=test istanbul cover ./node_modules/.bin/_mocha -- tests/**/*.tests.js -R dot --timeout=5000
+	NODE_ENV=test ./node_modules/.bin/istanbul cover ./node_modules/.bin/_mocha -- tests/unit/*.tests.js -R dot --timeout=5000
+	NODE_ENV=test ./node_modules/.bin/istanbul cover ./node_modules/.bin/_mocha -- tests/integration/*.tests.js -R dot --timeout=5000
 
 make travis:
 	make test

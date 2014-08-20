@@ -29,7 +29,8 @@
     "sinon": "^1.10.3",
     "sandboxed-module": "^1.0.1",
     "supertest": "^0.13.0",
-    "sinon-chai": "^2.5.0"
+    "sinon-chai": "^2.5.0",
+    "istanbul": "^0.3.0"
   },
   "dependencies": {
     "body-parser": "^1.5.2",
