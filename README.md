@@ -7,7 +7,7 @@ backend service for the strichliste app.
 ### install dependencies
 
 ````bash
-$ npm install
+$ make install-packages
 ````
 
 ### run tests
@@ -24,7 +24,14 @@ creates the tables in the sqlitefile
 $ make database
 ````
 
-### start api server
+### everything at once
+
+runs all of the above mentioned steps at once:
+````bash
+$ make setup
+````
+
+## start api server
 
 ````bash
 $ make start
