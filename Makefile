@@ -1,18 +1,18 @@
 start:
-	@node server.js
+	node server.js
 
 database:
-	@node createDatabase.js
+	node createDatabase.js
 
 run-unit-tests:
-	@NODE_ENV=test mocha $(shell find tests/unit -name "*.tests.js") --timeout=5000 --reporter=dot
+	NODE_ENV=test mocha $(shell find tests/unit -name "*.tests.js") --timeout=5000 --reporter=dot
 
-run-integration-tests:
-	@NODE_ENV=test mocha $(shell find tests/integration -name "*.tests.js") --timeout=5000 --reporter=dot
+run-integration-tests	:
+	NODE_ENV=test mocha $(shell find tests/integration -name "*.tests.js") --timeout=5000 --reporter=dot
 
 install-packages:
-	@npm i
-	@npm prune
+	npm i
+	npm prune
 
 test:
 	@make install-packages
@@ -24,8 +24,9 @@ cover:
 	NODE_ENV=test ./node_modules/.bin/istanbul cover ./node_modules/.bin/_mocha -- tests/integration/*.tests.js -R dot --timeout=5000
 
 make travis:
-	make test
-	make cover
+	npm outdated --depth=0
+	@make test
+	@make cover
 
 setup:
 	@make install-packages
