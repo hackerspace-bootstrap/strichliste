@@ -7,7 +7,7 @@ var database = require('../util/database');
 var appFactory = require('../../appFactory');
 var configuration = require('../../lib/configuration');
 
-describe('Integration tests', function () {
+describe('List tests', function () {
     var app;
     before(function (done) {
         database.create2Users5TransactionsDatabase(configuration.database, function (error) {
