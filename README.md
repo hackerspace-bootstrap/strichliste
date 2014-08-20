@@ -1,6 +1,10 @@
 # strichliste [![Build Status](https://travis-ci.org/hackerspace-bootstrap/strichliste.png)](https://travis-ci.org/hackerspace-bootstrap/strichliste)
 
-backend service for the strichliste app.
+This module is the API for the strichliste app. Arbitrary clients can be implemented using this [API](#api)
+
+__Clients__:
+
+* [Web-Frontend](https://github.com/hackerspace-bootstrap/strichliste-web) ([demo](http://demo.hackerspace-bootstrap.org/strichliste-web/#/))
 
 ## setup
 
