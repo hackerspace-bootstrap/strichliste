@@ -32,19 +32,19 @@ function create2Users5TransactionsDatabase(configuration, callback) {
                     db.query('INSERT INTO users (id, name, createDate) VALUES (2, "bar", "2014-01-01 00:42:23")', [], this);
                 })
                 .par(function () {
-                    db.query('INSERT INTO transactions (userId, value, createDate) VALUES (1, 1, "2014-01-01 00:23:42")', [], this);
+                    db.query('INSERT INTO transactions (id, userId, value, createDate) VALUES (1, 1, 1, "2014-01-01 00:23:42")', [], this);
                 })
                 .par(function () {
-                    db.query('INSERT INTO transactions (userId, value, createDate) VALUES (1, 1, "2014-01-01 00:23:43")', [], this);
+                    db.query('INSERT INTO transactions (id, userId, value, createDate) VALUES (2, 1, 1, "2014-01-01 00:23:43")', [], this);
                 })
                 .par(function () {
-                    db.query('INSERT INTO transactions (userId, value, createDate) VALUES (1, 1, "2014-01-01 00:23:44")', [], this);
+                    db.query('INSERT INTO transactions (id, userId, value, createDate) VALUES (3, 1, 1, "2014-01-01 00:23:44")', [], this);
                 })
                 .par(function () {
-                    db.query('INSERT INTO transactions (userId, value, createDate) VALUES (2, 1, "2014-01-01 00:23:45")', [], this);
+                    db.query('INSERT INTO transactions (id, userId, value, createDate) VALUES (4, 2, 1, "2014-01-01 00:23:45")', [], this);
                 })
                 .par(function () {
-                    db.query('INSERT INTO transactions (userId, value, createDate) VALUES (2, 1, "2014-01-01 00:23:46")', [], this);
+                    db.query('INSERT INTO transactions (id, userId, value, createDate) VALUES (5, 2, 1, "2014-01-01 00:23:46")', [], this);
                 })
                 .seq(end.bind(null, null))
                 .catch(end);
