@@ -6,21 +6,25 @@ __Clients__:
 
 * [Web-Frontend](https://github.com/hackerspace-bootstrap/strichliste-web) ([demo](http://demo.hackerspace-bootstrap.org/strichliste-web/#/))
 
-## setup
+## First Steps
 
-### install dependencies
+### Setup
+
+#### Steps
+
+##### install dependencies
 
 ````bash
 $ make install-packages
 ````
 
-### run tests
+##### run tests
 
 ````bash
 $ make test
 ````
 
-### initialize database
+##### initialize database
 
 creates the tables in the sqlitefile
 
@@ -28,9 +32,9 @@ creates the tables in the sqlitefile
 $ make database
 ````
 
-### everything at once
+#### everything at once
 
-runs all of the above mentioned steps at once:
+For your convenience the following make target does all of the above steps at once:
 ````bash
 $ make setup
 ````
@@ -41,7 +45,7 @@ $ make setup
 $ make start
 ````
 
-## API
+## API Documentation
 
 Every API answer has the Content-Type `application/json`.
 Data that is posted to the API is always JSON as well.
