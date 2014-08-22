@@ -7,7 +7,7 @@ var database = require('../util/database');
 var appFactory = require('../../appFactory');
 var configuration = require('../../lib/configuration');
 
-describe('Integration tests', function () {
+describe('Integration creation', function () {
     var app;
     before(function (done) {
         database.createPlainDatabase(configuration.database, function (error) {
@@ -35,7 +35,7 @@ describe('Integration tests', function () {
             .get('/user')
             .expect('Content-Type', /application\/json/)
             .expect(200)
-            .expect('[]', done);
+            .expect('{"overallCount":0,"limit":null,"offset":null,"entries":[]}', done);
     });
 
     it('should create a user', function (done) {

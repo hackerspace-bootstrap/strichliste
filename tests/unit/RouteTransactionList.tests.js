@@ -5,7 +5,7 @@ var TransactionListRoute = require('../../lib/routes/TransactionList');
 var mocks = require('../util/mocks');
 
 describe('transactionListRoute', function () {
-    describe('success', function () {
+    describe('success /w limit', function () {
         var limitStatement = new LimitStatement(10, 20);
         var userLoader = mocks.createUserPersistenceMock({
             loadTransactionsByUserId: { error: null, result: [1, 2, 3] }
@@ -26,8 +26,11 @@ describe('transactionListRoute', function () {
             route.route(req, res, done);
         });
 
-        it('should call the loadTransactionsByUserId with correct parameters', function () {
+        it('should call the loadTransactionByUserId method two times', function() {
             expect(userLoader.loadTransactionsByUserId).to.be.calledTwice;
+        });
+
+        it('should call the loadTransactionsByUserId with correct parameters', function () {
             expect(userLoader.loadTransactionsByUserId).to.be.calledWith(42, limitStatement, 'fooOrderSt');
             expect(userLoader.loadTransactionsByUserId).to.be.calledWith(42, null, null);
         });
@@ -37,6 +40,52 @@ describe('transactionListRoute', function () {
                 overallCount: 3,
                 limit: 10,
                 offset: 20,
+                entries: [1, 2, 3]
+            });
+        });
+
+        it('should set the correct content type', function () {
+            expect(req.strichliste.result.contentType()).to.equal('application/json');
+        });
+
+        it('should set the correct status code', function () {
+            expect(req.strichliste.result.statusCode()).to.equal(200);
+        });
+    });
+
+    describe('success /wo limit', function () {
+        var userLoader = mocks.createUserPersistenceMock({
+            loadTransactionsByUserId: { error: null, result: [1, 2, 3] }
+        });
+
+        var route = new TransactionListRoute(userLoader);
+        var req = mocks.createRequestMock({
+            params: {userId: 42},
+            query: {},
+            strichliste: {
+                orderStatement: null,
+                limitStatement: null
+            }
+        });
+        var res = mocks.createResponseMock();
+
+        before(function (done) {
+            route.route(req, res, done);
+        });
+
+        it('should call the loadTransactionByUserId method only once', function() {
+            expect(userLoader.loadTransactionsByUserId).to.be.calledOnce;
+        });
+
+        it('should call the loadTransactionsByUserId with correct parameters', function () {
+            expect(userLoader.loadTransactionsByUserId).to.be.calledWith(42, null, null);
+        });
+
+        it('should return the transactionlist from the userLoader', function () {
+            expect(req.strichliste.result.content()).to.deep.equal({
+                overallCount: 3,
+                limit: null,
+                offset: null,
                 entries: [1, 2, 3]
             });
         });
@@ -70,7 +119,7 @@ describe('transactionListRoute', function () {
         });
 
         it('should call the loadTransactionsByUserId', function () {
-            expect(userLoader.loadTransactionsByUserId).to.be.calledTwice;
+            expect(userLoader.loadTransactionsByUserId).to.be.calledOnce;
         });
 
         it('should call next with an eror', function () {

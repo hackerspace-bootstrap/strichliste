@@ -12,10 +12,9 @@ run-integration-tests	:
 
 install-packages:
 	npm i
-	npm prune
 
 test:
-	@make install-packages
+	npm prune
 	@make run-unit-tests
 	@make run-integration-tests
 
@@ -25,6 +24,7 @@ cover:
 
 make travis:
 	npm outdated --depth=0
+	@make install-packages
 	@make test
 	@make cover
 

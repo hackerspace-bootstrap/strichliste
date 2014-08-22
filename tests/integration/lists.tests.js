@@ -27,7 +27,7 @@ describe('List tests', function () {
             .get('/user')
             .expect('Content-Type', /application\/json/)
             .expect(200)
-            .expect('[{"id":1,"name":"foo","balance":3,"lastTransaction":"2014-01-01 00:23:44"\},\{"id":2,"name":"bar","balance":2,"lastTransaction":"2014-01-01 00:23:46"}]', done);
+            .expect('{"overallCount":2,"limit":null,"offset":null,"entries":[{"id":1,"name":"foo","balance":3,"lastTransaction":"2014-01-01 00:23:44"},{"id":2,"name":"bar","balance":2,"lastTransaction":"2014-01-01 00:23:46"}]}', done);
     });
 
     it('should return a empty list b/c of limit+offset', function (done) {
@@ -35,7 +35,7 @@ describe('List tests', function () {
             .get('/user?offset=2&limit=1')
             .expect('Content-Type', /application\/json/)
             .expect(200)
-            .expect('[]', done);
+            .expect('{"overallCount":2,"limit":1,"offset":2,"entries":[]}', done);
     });
 
     it('should load a user by id', function (done) {

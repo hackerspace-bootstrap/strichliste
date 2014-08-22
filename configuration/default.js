@@ -19,7 +19,7 @@ module.exports = {
 
     boundaries: {
         account: {
-            upper: Infinity,
+            upper: 99999999,
             lower: -50
         },
         transaction: {

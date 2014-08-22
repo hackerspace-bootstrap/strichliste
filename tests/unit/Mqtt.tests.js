@@ -1,6 +1,6 @@
 var EventEmitter = require('events').EventEmitter;
 
-var expect = require('chai').expect;
+var expect = require('chai').use(require('sinon-chai')).expect;
 var sinon = require('sinon');
 var sandbox = require('sandboxed-module');
 
@@ -25,12 +25,11 @@ describe('mqtt', function () {
             });
 
             it('should call publish once', function () {
-                expect(mqttClient.publish.callCount).to.equal(1);
+                expect(mqttClient.publish).to.be.calledOnce;
             });
 
             it('should publish the correct value', function () {
-                expect(mqttClient.publish.args[0][0]).to.equal('strichliste/transactionValue');
-                expect(mqttClient.publish.args[0][1]).to.equal('1337');
+                expect(mqttClient.publish).to.be.calledWith('strichliste/transactionValue', '1337');
             });
         });
 
@@ -78,8 +77,7 @@ describe('mqtt', function () {
             });
 
             it('should invoke with the correct parameters', function () {
-                expect(mqttMock.createClient.args[0][0]).to.equal(defaultConfig.port);
-                expect(mqttMock.createClient.args[0][1]).to.equal(defaultConfig.host);
+                expect(mqttMock.createClient).to.be.calledWith(defaultConfig.port, defaultConfig.host);
             });
         });
 
@@ -111,8 +109,7 @@ describe('mqtt', function () {
             });
 
             it('should be called with correct parameters', function () {
-                expect(mqttMock.createClient.args[0][0]).to.equal(defaultConfig.port);
-                expect(mqttMock.createClient.args[0][1]).to.equal(defaultConfig.host);
+                expect(mqttMock.createClient).to.be.calledWith(defaultConfig.port, defaultConfig.host);
             });
         });
     });
