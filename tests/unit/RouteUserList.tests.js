@@ -23,7 +23,7 @@ describe('userListRoute', function () {
         var result = req.strichliste.result;
 
         it('should call the loadUserMethod', function () {
-            expect(userLoader.loadUsers).to.be.calledTwice;
+            expect(userLoader.loadUsers).to.be.calledOnce;
         });
 
         it('should return the userlist from the userLoader', function () {
