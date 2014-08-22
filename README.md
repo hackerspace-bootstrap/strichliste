@@ -161,8 +161,7 @@ Each user is described via the following data structure:
 }
 ````
 
-The parameters of the section `Pagination` can be used on this endpoint.
-The list structure of the `Pagination` section does *NOT* apply.
+The parameters and the list structure of the `Pagination` section are used in this endpoint.
 
 #### POST /user
 

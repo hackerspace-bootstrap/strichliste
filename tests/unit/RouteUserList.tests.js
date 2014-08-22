@@ -1,6 +1,7 @@
 var expect = require('chai').use(require('sinon-chai')).expect;
 var sinon = require('sinon');
 
+var LimitStatement = require('../../lib/parameters/LimitStatement');
 var UserListRoute = require('../../lib/routes/UserList');
 var mocks = require('../util/mocks');
 
@@ -22,11 +23,16 @@ describe('userListRoute', function () {
         var result = req.strichliste.result;
 
         it('should call the loadUserMethod', function () {
-            expect(userLoader.loadUsers).to.be.calledOnce;
+            expect(userLoader.loadUsers).to.be.calledTwice;
         });
 
         it('should return the userlist from the userLoader', function () {
-            expect(result.content()).to.deep.equal([1, 2, 3]);
+            expect(result.content()).to.deep.equal({
+                entries: [1,2,3],
+                limit: null,
+                offset: null,
+                overallCount: 3
+            });
         });
 
         it('should set the correct content type', function () {
@@ -50,9 +56,10 @@ describe('userListRoute', function () {
             }
         });
 
+        var limitStatement = new LimitStatement(23, 42);
         var route = new UserListRoute(userLoader);
         var req = mocks.createRequestMock({
-            strichliste: {orderStatement: null, limitStatement: 'bert'}
+            strichliste: {orderStatement: null, limitStatement: limitStatement}
         });
         var res = mocks.createResponseMock();
 
@@ -61,15 +68,20 @@ describe('userListRoute', function () {
         var result = req.strichliste.result;
 
         it('should call the loadUserMethod', function () {
-            expect(userLoader.loadUsers).to.be.calledOnce;
+            expect(userLoader.loadUsers).to.be.calledTwice;
         });
 
         it('should call the loadUserMethod with the correct parameters', function () {
-            expect(userLoader.loadUsers).to.be.calledWith('bert', null);
+            expect(userLoader.loadUsers).to.be.calledWith(limitStatement, null);
         });
 
         it('should return the userlist from the userLoader', function () {
-            expect(result.content()).to.deep.equal([1, 2, 3]);
+            expect(result.content()).to.deep.equal({
+                entries: [1,2,3],
+                limit: 23,
+                offset: 42,
+                overallCount: 3
+            });
         });
 
         it('should set the correct content type', function () {
