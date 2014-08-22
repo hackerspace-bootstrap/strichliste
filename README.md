@@ -52,6 +52,7 @@ The API server brings with it a default configuration which can be found in `/co
 The server utilizes the [configurations](https://www.npmjs.org/package/configurations) module from npm which does a staged modification of configurations. Initially the default config is loaded and then subsequent modifications are applied.
 
 You can add your own environment specific configuration by adding e.g. a `production.js` to the configurations folder. When the server is started with the node environment `NODE_ENV` set to `production`, the default config is enhanced by your production config.
+
 You also can specify an external configuration sitting on an arbitrary place in your system by assigning it via a command line parameter:
 
 ````bash
@@ -78,7 +79,7 @@ module.exports = {
         }
     },
 
-    //strichliste announces actions via mqtt i desired
+    //strichliste announces actions via mqtt if desired
     mqtt: {
         //enable mqtt broadcasting
         enabled: false,
@@ -121,8 +122,6 @@ module.exports = {
     }
 }
 ````
-
-### Details
 
 ## API Documentation
 
