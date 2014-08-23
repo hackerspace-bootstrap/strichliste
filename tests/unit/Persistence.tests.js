@@ -1,4 +1,4 @@
-var expect = require('chai').expect;
+var expect = require('chai').use(require('sinon-chai')).expect;
 
 var Persistence = require('../../lib/UserPersistence');
 var mocks = require('../util/mocks');
@@ -29,11 +29,7 @@ describe('Persistence', function () {
             });
 
             it('should execute the correct query', function () {
-                expect(db.selectMany.args[0][0]).to.equal('SELECT users.id AS "id", users.name AS "name", coalesce(sum(value),0) AS \"balance\", max(transactions.createDate) AS \"lastTransaction\" FROM users LEFT JOIN transactions ON (transactions.userId = users.id) GROUP BY users.id');
-            });
-
-            it('should assign the correct arguments', function () {
-                expect(db.selectMany.args[0][1]).to.deep.equal([]);
+                expect(db.selectMany).to.be.calledWith('SELECT users.id AS "id", users.name AS "name", coalesce(sum(value),0) AS \"balance\", max(transactions.createDate) AS \"lastTransaction\" FROM users LEFT JOIN transactions ON (transactions.userId = users.id) GROUP BY users.id', []);
             });
         });
 
@@ -58,11 +54,7 @@ describe('Persistence', function () {
             });
 
             it('should execute the correct query', function () {
-                expect(db.selectMany.args[0][0]).to.equal('SELECT users.id AS "id", users.name AS "name", coalesce(sum(value),0) AS \"balance\", max(transactions.createDate) AS \"lastTransaction\" FROM users LEFT JOIN transactions ON (transactions.userId = users.id) GROUP BY users.id LIMIT 1 OFFSET 1');
-            });
-
-            it('should assign the correct arguments', function () {
-                expect(db.selectMany.args[0][1]).to.deep.equal([]);
+                expect(db.selectMany).to.be.calledWith('SELECT users.id AS "id", users.name AS "name", coalesce(sum(value),0) AS \"balance\", max(transactions.createDate) AS \"lastTransaction\" FROM users LEFT JOIN transactions ON (transactions.userId = users.id) GROUP BY users.id LIMIT 1 OFFSET 1', []);
             });
         });
 
@@ -87,11 +79,7 @@ describe('Persistence', function () {
             });
 
             it('should execute the correct query', function () {
-                expect(db.selectMany.args[0][0]).to.equal('SELECT users.id AS "id", users.name AS "name", coalesce(sum(value),0) AS \"balance\", max(transactions.createDate) AS \"lastTransaction\" FROM users LEFT JOIN transactions ON (transactions.userId = users.id) GROUP BY users.id');
-            });
-
-            it('should assign the correct arguments', function () {
-                expect(db.selectMany.args[0][1]).to.deep.equal([]);
+                expect(db.selectMany).to.be.calledWith('SELECT users.id AS "id", users.name AS "name", coalesce(sum(value),0) AS \"balance\", max(transactions.createDate) AS \"lastTransaction\" FROM users LEFT JOIN transactions ON (transactions.userId = users.id) GROUP BY users.id', []);
             });
         });
     });
@@ -118,11 +106,7 @@ describe('Persistence', function () {
             });
 
             it('should execute the correct query', function () {
-                expect(db.selectOne.args[0][0]).to.equal('SELECT users.id AS "id", users.name AS "name", coalesce(sum(value),0) AS "balance", max(transactions.createDate) AS \"lastTransaction\" FROM users LEFT JOIN transactions ON (transactions.userId = users.id) WHERE (users.id = ?) GROUP BY users.id');
-            });
-
-            it('should assign the correct arguments', function () {
-                expect(db.selectOne.args[0][1]).to.deep.equal([42]);
+                expect(db.selectOne).to.be.calledWith('SELECT users.id AS "id", users.name AS "name", coalesce(sum(value),0) AS "balance", max(transactions.createDate) AS \"lastTransaction\" FROM users LEFT JOIN transactions ON (transactions.userId = users.id) WHERE (users.id = ?) GROUP BY users.id', [42]);
             });
         });
 
@@ -147,11 +131,7 @@ describe('Persistence', function () {
             });
 
             it('should execute the correct query', function () {
-                expect(db.selectOne.args[0][0]).to.equal('SELECT users.id AS "id", users.name AS "name", coalesce(sum(value),0) AS "balance", max(transactions.createDate) AS \"lastTransaction\" FROM users LEFT JOIN transactions ON (transactions.userId = users.id) WHERE (users.id = ?) GROUP BY users.id');
-            });
-
-            it('should assign the correct arguments', function () {
-                expect(db.selectOne.args[0][1]).to.deep.equal([42]);
+                expect(db.selectOne).to.be.calledWith('SELECT users.id AS "id", users.name AS "name", coalesce(sum(value),0) AS "balance", max(transactions.createDate) AS \"lastTransaction\" FROM users LEFT JOIN transactions ON (transactions.userId = users.id) WHERE (users.id = ?) GROUP BY users.id', [42]);
             });
         });
     });
@@ -178,11 +158,7 @@ describe('Persistence', function () {
             });
 
             it('should execute the correct query', function () {
-                expect(db.selectOne.args[0][0]).to.equal('SELECT users.id AS \"id\", users.name AS \"name\", coalesce(sum(value),0) AS \"balance\", max(transactions.createDate) AS \"lastTransaction\" FROM users LEFT JOIN transactions ON (transactions.userId = users.id) WHERE (lower(users.name) = ?) GROUP BY users.id');
-            });
-
-            it('should assign the correct arguments', function () {
-                expect(db.selectOne.args[0][1]).to.deep.equal(['bert']);
+                expect(db.selectOne).to.be.calledWith('SELECT users.id AS \"id\", users.name AS \"name\", coalesce(sum(value),0) AS \"balance\", max(transactions.createDate) AS \"lastTransaction\" FROM users LEFT JOIN transactions ON (transactions.userId = users.id) WHERE (lower(users.name) = ?) GROUP BY users.id', ['bert']);
             });
         });
 
@@ -207,11 +183,7 @@ describe('Persistence', function () {
             });
 
             it('should execute the correct query', function () {
-                expect(db.selectOne.args[0][0]).to.equal('SELECT users.id AS \"id\", users.name AS \"name\", coalesce(sum(value),0) AS \"balance\", max(transactions.createDate) AS \"lastTransaction\" FROM users LEFT JOIN transactions ON (transactions.userId = users.id) WHERE (lower(users.name) = ?) GROUP BY users.id');
-            });
-
-            it('should assign the correct arguments', function () {
-                expect(db.selectOne.args[0][1]).to.deep.equal(['bert']);
+                expect(db.selectOne).to.be.calledWith('SELECT users.id AS \"id\", users.name AS \"name\", coalesce(sum(value),0) AS \"balance\", max(transactions.createDate) AS \"lastTransaction\" FROM users LEFT JOIN transactions ON (transactions.userId = users.id) WHERE (lower(users.name) = ?) GROUP BY users.id', ['bert']);
             });
         });
     });
@@ -238,11 +210,7 @@ describe('Persistence', function () {
             });
 
             it('should execute the correct query', function () {
-                expect(db.query.args[0][0]).to.equal("INSERT INTO users (name) VALUES (?)");
-            });
-
-            it('should assign the correct arguments', function () {
-                expect(db.query.args[0][1]).to.deep.equal(['bert']);
+                expect(db.query).to.be.calledWith('INSERT INTO users (name) VALUES (?)', ['bert']);
             });
         });
 
@@ -267,11 +235,7 @@ describe('Persistence', function () {
             });
 
             it('should execute the correct query', function () {
-                expect(db.query.args[0][0]).to.equal("INSERT INTO users (name) VALUES (?)");
-            });
-
-            it('should assign the correct arguments', function () {
-                expect(db.query.args[0][1]).to.deep.equal(['bert']);
+                expect(db.query).to.be.calledWith('INSERT INTO users (name) VALUES (?)', ['bert']);
             });
         });
     });
@@ -298,11 +262,7 @@ describe('Persistence', function () {
             });
 
             it('should execute the correct query', function () {
-                expect(db.query.args[0][0]).to.equal("INSERT INTO transactions (userId, value) VALUES (?, ?)");
-            });
-
-            it('should assign the correct arguments', function () {
-                expect(db.query.args[0][1]).to.deep.equal([42, 1337]);
+                expect(db.query).to.be.calledWith("INSERT INTO transactions (userId, value) VALUES (?, ?)", [42, 1337]);
             });
         });
 
@@ -327,11 +287,7 @@ describe('Persistence', function () {
             });
 
             it('should execute the correct query', function () {
-                expect(db.query.args[0][0]).to.equal("INSERT INTO transactions (userId, value) VALUES (?, ?)");
-            });
-
-            it('should assign the correct arguments', function () {
-                expect(db.query.args[0][1]).to.deep.equal([42, 1337]);
+                expect(db.query).to.be.calledWith("INSERT INTO transactions (userId, value) VALUES (?, ?)", [42, 1337]);
             });
         });
     });
@@ -358,11 +314,7 @@ describe('Persistence', function () {
             });
 
             it('should execute the correct query', function () {
-                expect(db.selectOne.args[0][0]).to.equal("SELECT id, userId, createDate, value FROM transactions WHERE (id = ?) ORDER BY id DESC");
-            });
-
-            it('should assign the correct arguments', function () {
-                expect(db.selectOne.args[0][1]).to.deep.equal([1337]);
+                expect(db.selectOne).to.be.calledWith("SELECT id, userId, createDate, value FROM transactions WHERE (id = ?) ORDER BY id DESC", [1337]);
             });
         });
 
@@ -387,11 +339,7 @@ describe('Persistence', function () {
             });
 
             it('should execute the correct query', function () {
-                expect(db.selectOne.args[0][0]).to.equal("SELECT id, userId, createDate, value FROM transactions WHERE (id = ?) ORDER BY id DESC");
-            });
-
-            it('should assign the correct arguments', function () {
-                expect(db.selectOne.args[0][1]).to.deep.equal([1337]);
+                expect(db.selectOne).to.be.calledWith("SELECT id, userId, createDate, value FROM transactions WHERE (id = ?) ORDER BY id DESC", [1337]);
             });
         });
     });
@@ -418,11 +366,7 @@ describe('Persistence', function () {
             });
 
             it('should execute the correct query', function () {
-                expect(db.selectMany.args[0][0]).to.equal("SELECT id, userId, createDate, value FROM transactions WHERE (userId = ?) ORDER BY id DESC LIMIT 1 OFFSET 2");
-            });
-
-            it('should assign the correct arguments', function () {
-                expect(db.selectMany.args[0][1]).to.deep.equal([1337]);
+                expect(db.selectMany).to.be.calledWith("SELECT id, userId, createDate, value FROM transactions WHERE (userId = ?) ORDER BY id DESC LIMIT 1 OFFSET 2", [1337]);
             });
         });
 
@@ -447,11 +391,7 @@ describe('Persistence', function () {
             });
 
             it('should execute the correct query', function () {
-                expect(db.selectMany.args[0][0]).to.equal("SELECT id, userId, createDate, value FROM transactions WHERE (userId = ?) ORDER BY id DESC");
-            });
-
-            it('should assign the correct arguments', function () {
-                expect(db.selectMany.args[0][1]).to.deep.equal([1337]);
+                expect(db.selectMany).to.be.calledWith("SELECT id, userId, createDate, value FROM transactions WHERE (userId = ?) ORDER BY id DESC", [1337]);
             });
         });
 
@@ -476,11 +416,7 @@ describe('Persistence', function () {
             });
 
             it('should execute the correct query', function () {
-                expect(db.selectMany.args[0][0]).to.equal("SELECT id, userId, createDate, value FROM transactions WHERE (userId = ?) ORDER BY id DESC LIMIT 11 OFFSET 10");
-            });
-
-            it('should assign the correct arguments', function () {
-                expect(db.selectMany.args[0][1]).to.deep.equal([1337]);
+                expect(db.selectMany).to.be.calledWith("SELECT id, userId, createDate, value FROM transactions WHERE (userId = ?) ORDER BY id DESC LIMIT 11 OFFSET 10", [1337]);
             });
         });
 
@@ -505,11 +441,7 @@ describe('Persistence', function () {
             });
 
             it('should execute the correct query', function () {
-                expect(db.selectMany.args[0][0]).to.equal("SELECT id, userId, createDate, value FROM transactions WHERE (userId = ?) ORDER BY id DESC LIMIT 1 OFFSET 2");
-            });
-
-            it('should assign the correct arguments', function () {
-                expect(db.selectMany.args[0][1]).to.deep.equal([1337]);
+                expect(db.selectMany).to.be.calledWith("SELECT id, userId, createDate, value FROM transactions WHERE (userId = ?) ORDER BY id DESC LIMIT 1 OFFSET 2", [1337]);
             });
         });
     });
