@@ -563,6 +563,7 @@ describe('Persistence', function () {
                 expect(db.selectOne).to.be.calledWith('select sum(value) as overallBalance from transactions', []);
                 expect(db.selectOne).to.be.calledWith('select count(*) as countUsers from users', []);
                 expect(db.selectOne).to.be.calledWith('select avg(userBalance) as avgBalance from (select sum(value) as userBalance from transactions group by userId) as ghoti', []);
+                expect(db.selectMany).to.be.calledWith('select date(createDate) as date, count(*) as overallNumber,count(distinct userid) as distinctUsers,sum(value) as dayBalance,sum(max(value, 0)) as dayBalancePositive,sum(min(value, 0)) as dayBalanceNegative from transactions where createDate >=  date("now", "-30 day") group by date(createDate);');
             });
         });
 
@@ -603,17 +604,19 @@ describe('Persistence', function () {
             });
 
             it('should query several times', function () {
-                expect(db.selectOne).to.be.callCount(3);
+                expect(db.selectOne).to.be.callCount(4);
             });
 
             it('should not query', function () {
-                expect(db.selectMany).not.to.be.called;
+                expect(db.selectMany).to.be.calledOnce;
             });
 
             it('should execute the correct queries', function () {
                 expect(db.selectOne).to.be.calledWith('select count(*) as countTransactions from transactions', []);
                 expect(db.selectOne).to.be.calledWith('select sum(value) as overallBalance from transactions', []);
                 expect(db.selectOne).to.be.calledWith('select count(*) as countUsers from users', []);
+                expect(db.selectOne).to.be.calledWith('select avg(userBalance) as avgBalance from (select sum(value) as userBalance from transactions group by userId) as ghoti', []);
+                expect(db.selectMany).to.be.calledWith('select date(createDate) as date, count(*) as overallNumber,count(distinct userid) as distinctUsers,sum(value) as dayBalance,sum(max(value, 0)) as dayBalancePositive,sum(min(value, 0)) as dayBalanceNegative from transactions where createDate >=  date("now", "-30 day") group by date(createDate);');
             });
         });
     })

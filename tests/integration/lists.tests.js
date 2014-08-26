@@ -91,6 +91,18 @@ describe('Integration lists', function () {
             .get('/metrics')
             .expect('Content-Type', /application\/json/)
             .expect(200)
-            .expect('{"countTransactions":5,"overallBalance":5,"countUsers":2,"avgBalance":2.5,"days":[]}', done);
+            .end(function (error, result) {
+                if (error) throw error;
+
+                expect(result.body).to.deep.equal({
+                    countTransactions: 5,
+                    overallBalance: 5,
+                    countUsers: 2,
+                    avgBalance: 2.5,
+                    days: []
+                });
+
+                done();
+            });
     });
 });
