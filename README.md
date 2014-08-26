@@ -51,7 +51,7 @@ $ make start
 The API server brings with it a default configuration which can be found in `/configuration/default.js`. This default can be used to setup your own configuration.
 The server utilizes the [configurations](https://www.npmjs.org/package/configurations) module from npm which does a staged modification of configurations. Initially the default config is loaded and then subsequent modifications are applied.
 
-You can add your own environment specific configuration by adding e.g. a `production.js` to the configurations folder. When the server is started with the node environment `NODE_ENV` set to `production`, the default config is enhanced by your production config.
+You can add your own environment specific configuration by adding e.g. a `production.js` to the configurations folder. When the server is started with the node environment `NODE_ENV` set to `production`, the default config is enhanced by your production config. You don't have to specify each and every key from `default.js`, the defaults are retained.
 
 You also can specify an external configuration sitting on an arbitrary place in your system by assigning it via a command line parameter:
 
