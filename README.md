@@ -130,7 +130,7 @@ Data that is posted to the API is always JSON as well.
 
 ### Pagination
 
-At some endpoints, the following parameters can be assigned to control pagination of lists:
+At some endpoints the following queryparameters can be used to control the pagination of lists:
 
 * `limit`: the number of items to show
 * `offset`: the number of the first item in the list
@@ -172,7 +172,7 @@ To create a new user a name has to be assigned via the following data structure:
 { "name": <string> }
 ````
 
-Returns the status code 201 if a user was successfully created.
+Returns the status code 201 and the created user if the creation was successfull.
 
 ##### Errors
 
