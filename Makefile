@@ -1,19 +1,34 @@
 start:
-	@node server.js
+	node server.js
 
 database:
-	@node createDatabase.js
+	node createDatabase.js
 
 run-unit-tests:
-	@NODE_ENV=test mocha $(shell find tests/unit -name "*.tests.js")
+	NODE_ENV=test mocha --timeout 10000 --R dot $(shell find tests/unit -name "*.tests.js")
 
-run-integration-tests: testprepare
-	@NODE_ENV=test mocha $(shell find tests/integration -name "*.tests.js")
+run-integration-tests	:
+	NODE_ENV=test mocha --timeout 10000 --R dot $(shell find tests/integration -name "*.tests.js")
 
-testprepare:
-	@rm -f testdata.sqlite
-	@node createDatabase.js --filename=testdata.sqlite
+install-packages:
+	npm i
 
 test:
-	make run-unit-tests
-	make run-integration-tests
+	npm prune
+	@make run-unit-tests
+	@make run-integration-tests
+
+cover:
+	NODE_ENV=test ./node_modules/.bin/istanbul cover ./node_modules/.bin/_mocha -- tests/unit/*.tests.js --timeout 10000 --R dot
+	NODE_ENV=test ./node_modules/.bin/istanbul cover ./node_modules/.bin/_mocha -- tests/integration/*.tests.js --timeout 10000 --R dot
+
+make travis:
+	npm outdated --depth=0
+	@make install-packages
+	@make test
+	@make cover
+
+setup:
+	@make install-packages
+	@make test
+	@make database

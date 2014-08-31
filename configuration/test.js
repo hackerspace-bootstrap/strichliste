@@ -1,8 +1,10 @@
+var path = require('path');
+
 module.exports = {
     database: {
         type: 'SQLITE',
         options: {
-            filename: 'testdata.sqlite'
+            filename: path.join(process.cwd(), 'testdata.sqlite')
         }
     },
     boundaries: {
@@ -14,5 +16,9 @@ module.exports = {
             upper: 9999,
             lower: -9999
         }
+    },
+
+    logging: {
+        active: false
     }
 };

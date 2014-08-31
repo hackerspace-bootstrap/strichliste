@@ -34,7 +34,7 @@ describe('userRoute', function () {
         });
 
         it('should call next', function () {
-            expect(spy.callCount).to.equal(1);
+            expect(spy).to.be.calledOnce;
         });
 
         it('should ask the userPersistence for userId 1 (userLoad)', function () {

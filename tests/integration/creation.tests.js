@@ -2,16 +2,32 @@ var expect = require('chai').expect;
 var request = require('supertest');
 var express = require('express');
 
+var database = require('../util/database');
+
 var appFactory = require('../../appFactory');
 var configuration = require('../../lib/configuration');
 
-describe('Integration tests', function () {
+describe('Integration creation', function () {
     var app;
     before(function (done) {
-        appFactory.create(function (error, _app) {
-            app = _app;
-            done();
+        database.createPlainDatabase(configuration.database, function (error) {
+            if (error) throw error;
+
+            appFactory.create(function (error, _app) {
+                if (error) throw error;
+
+                app = _app;
+                done();
+            });
         });
+    });
+
+    it('should return the app settings', function (done) {
+        request(app)
+            .get('/settings')
+            .expect('Content-Type', /application\/json/)
+            .expect(200)
+            .expect('{"boundaries":{"upper":42,"lower":-23}}', done);
     });
 
     it('should return an empty list', function (done) {
@@ -19,7 +35,7 @@ describe('Integration tests', function () {
             .get('/user')
             .expect('Content-Type', /application\/json/)
             .expect(200)
-            .expect('[]', done);
+            .expect('{"overallCount":0,"limit":null,"offset":null,"entries":[]}', done);
     });
 
     it('should create a user', function (done) {
@@ -29,22 +45,6 @@ describe('Integration tests', function () {
             .expect('Content-Type', /application\/json/)
             .expect(201)
             .expect('{"id":1,"name":"bert","balance":0,"lastTransaction":null}', done);
-    });
-
-    it('should return a list with one entry', function (done) {
-        request(app)
-            .get('/user')
-            .expect('Content-Type', /application\/json/)
-            .expect(200)
-            .expect('[{"id":1,"name":"bert","balance":0,"lastTransaction":null}]', done);
-    });
-
-    it('should return a empty list b/c of limit+offset', function (done) {
-        request(app)
-            .get('/user?offset=1&limit=1')
-            .expect('Content-Type', /application\/json/)
-            .expect(200)
-            .expect('[]', done);
     });
 
     it('create should fail without a name', function (done) {
@@ -64,28 +64,12 @@ describe('Integration tests', function () {
             .expect('{"message":"user bert already exists"}', done);
     });
 
-    it('should load a user by id', function (done) {
-        request(app)
-            .get('/user/1')
-            .expect('Content-Type', /application\/json/)
-            .expect(200)
-            .expect('{"id":1,"name":"bert","balance":0,"lastTransaction":null,"transactions":[]}', done);
-    });
-
-    it('should return a failure when user does not exist', function (done) {
-        request(app)
-            .get('/user/10')
-            .expect('Content-Type', /application\/json/)
-            .expect(404)
-            .expect('{"message":"user 10 not found"}', done);
-    });
-
     it('should return a empty list of transactions', function (done) {
         request(app)
             .get('/user/1/transaction')
             .expect('Content-Type', /application\/json/)
             .expect(200)
-            .expect('[]', done);
+            .expect('{"overallCount":0,"limit":null,"offset":null,"entries":[]}', done);
     });
 
     it('transaction create should fail when value is not a number', function (done) {
@@ -115,22 +99,6 @@ describe('Integration tests', function () {
             .expect(/{"id":1,"userId":1,"createDate":"(.*)","value":11}/, done);
     });
 
-    it('should load the list of transactions', function (done) {
-        request(app)
-            .get('/user/1/transaction')
-            .expect('Content-Type', /application\/json/)
-            .expect(200)
-            .expect(/\[{"id":1,"userId":1,"createDate":"(.*)","value":11}\]/, done);
-    });
-
-    it('should load a single transaction', function (done) {
-        request(app)
-            .get('/user/1/transaction/1')
-            .expect('Content-Type', /application\/json/)
-            .expect(200)
-            .expect(/{"id":1,"userId":1,"createDate":"(.*)","value":11}/, done);
-    });
-
     it('should create a second transaction', function (done) {
         request(app)
             .post('/user/1/transaction')
@@ -138,14 +106,6 @@ describe('Integration tests', function () {
             .expect('Content-Type', /application\/json/)
             .expect(201)
             .expect(/{"id":2,"userId":1,"createDate":"(.*)","value":11}/, done);
-    });
-
-    it('should return the complete list of transactions', function (done) {
-        request(app)
-            .get('/user/1/transaction')
-            .expect('Content-Type', /application\/json/)
-            .expect(200)
-            .expect(/\[\{"id":2,"userId":1,"createDate":"(.*)","value":11\},\{"id":1,"userId":1,"createDate":"(.*)","value":11\}\]/, done);
     });
 
     it('should fail the transaction creation with 403 (lower account boundary error)', function (done) {
@@ -182,35 +142,5 @@ describe('Integration tests', function () {
             .expect('Content-Type', /application\/json/)
             .expect(403)
             .expect('{"message":"transaction value of -99999 falls below the transaction minimum of -9999"}', done);
-    });
-
-    it('should return a restricted list of transactions (limit=1)', function (done) {
-        request(app)
-            .get('/user/1/transaction?limit=1')
-            .expect('Content-Type', /application\/json/)
-            .expect(200)
-            .expect(/\[\{"id":2,"userId":1,"createDate":"(.*)","value":11\}\]/, done);
-    });
-
-    it('should return a restricted list of transactions (offset=1&limit=1)', function (done) {
-        request(app)
-            .get('/user/1/transaction?limit=1&offset=1')
-            .expect('Content-Type', /application\/json/)
-            .expect(200)
-            .expect(/\[\{"id":1,"userId":1,"createDate":"(.*)","value":11\}\]/, done);
-    });
-
-    it('should return the metrics', function (done) {
-        request(app)
-            .get('/metrics')
-            .expect('Content-Type', /application\/json/)
-            .expect(200)
-            .end(function(err, res){
-                if (err) return done(err);
-
-                expect(res.res.body).to.deep.equal({countTransactions: 2, countUsers: 1, avgBalance: 22, overallBalance: 22});
-
-                done()
-            });
     });
 });

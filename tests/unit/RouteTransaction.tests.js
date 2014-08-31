@@ -24,8 +24,8 @@ describe('transactionListRoute', function () {
         var result = req.strichliste.result;
 
         it('should call loadTransaction', function () {
-            expect(userLoader.loadTransaction.callCount).to.equal(1);
-            expect(userLoader.loadTransaction.args[0][0]).to.equal(23);
+            expect(userLoader.loadTransaction).to.be.calledOnce;
+            expect(userLoader.loadTransaction).to.be.calledWith(23);
         });
 
         it('should return the transactionlist from the userLoader', function () {
@@ -65,7 +65,7 @@ describe('transactionListRoute', function () {
         });
 
         it('should call loadTransaction', function () {
-            expect(userLoader.loadTransaction.callCount).to.equal(1);
+            expect(userLoader.loadTransaction).to.be.calledOnce;
         });
 
         it('should call next with an eror', function () {

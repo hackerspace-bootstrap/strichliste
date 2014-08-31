@@ -224,14 +224,13 @@ describe('transactionCreateRoute', function () {
         });
 
         it('should call createUser', function () {
-            expect(userLoader.createTransaction.callCount).to.equal(1);
-            expect(userLoader.createTransaction.args[0][0]).to.equal(1000);
-            expect(userLoader.createTransaction.args[0][1]).to.equal(1337);
+            expect(userLoader.createTransaction).to.be.calledOnce;
+            expect(userLoader.createTransaction).to.be.calledWith(1000, 1337);
         });
 
         it('should reload the user', function () {
-            expect(userLoader.loadTransaction.callCount).to.equal(1);
-            expect(userLoader.loadTransaction.args[0][0]).to.equal(1337);
+            expect(userLoader.loadTransaction).to.be.calledOnce;
+            expect(userLoader.loadTransaction).to.be.calledWith(1337);
         });
     });
 
@@ -272,19 +271,18 @@ describe('transactionCreateRoute', function () {
         });
 
         it('should call createTransaction', function () {
-            expect(userLoader.createTransaction.callCount).to.equal(1);
-            expect(userLoader.createTransaction.args[0][0]).to.equal(100);
-            expect(userLoader.createTransaction.args[0][1]).to.equal(42.1);
+            expect(userLoader.createTransaction).to.be.calledOnce;
+            expect(userLoader.createTransaction).to.be.calledWith(100, 42.1);
         });
 
         it('should reload the transaction', function () {
-            expect(userLoader.loadTransaction.callCount).to.equal(1);
-            expect(userLoader.loadTransaction.args[0][0]).to.equal(1337);
+            expect(userLoader.loadTransaction).to.be.calledOnce;
+            expect(userLoader.loadTransaction).to.be.calledWith(1337);
         });
 
         it('should send an transaction value through mqtt', function () {
-            expect(mqttWrapper.publishTransactionValue.callCount).to.equal(1);
-            expect(mqttWrapper.publishTransactionValue.args[0][0]).to.equal(42.1);
+            expect(mqttWrapper.publishTransactionValue).to.be.calledOnce;
+            expect(mqttWrapper.publishTransactionValue).to.be.calledWith(42.1);
         })
     });
 });
