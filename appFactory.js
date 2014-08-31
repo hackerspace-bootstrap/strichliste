@@ -5,7 +5,7 @@ var cors = require('cors');
 var configuration = require('./lib/configuration');
 var bootstrap = require('./lib/bootstrap');
 
-module.exports.create = function(callback) {
+function createApp(callback) {
     var app = express();
 
     app.use(cors());
@@ -16,4 +16,6 @@ module.exports.create = function(callback) {
 
         callback(null, app);
     });
-};
+}
+
+module.exports = createApp;
