@@ -18,4 +18,4 @@ function createApp(callback) {
     });
 }
 
-module.exports = createApp;
+module.exports.create = createApp;
