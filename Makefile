@@ -5,10 +5,10 @@ database:
 	node createDatabase.js
 
 run-unit-tests:
-	NODE_ENV=test mocha --timeout 10000 --R dot $(shell find tests/unit -name "*.tests.js")
+	NODE_ENV=test mocha --timeout 10000 --reporter dot $(shell find tests/unit -name "*.tests.js")
 
 run-integration-tests	:
-	NODE_ENV=test mocha --timeout 10000 --R dot $(shell find tests/integration -name "*.tests.js")
+	NODE_ENV=test mocha --timeout 10000 --reporter dot $(shell find tests/integration -name "*.tests.js")
 
 install-packages:
 	npm i
