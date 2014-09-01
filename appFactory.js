@@ -1,4 +1,5 @@
 var express = require('express');
+var morgan = require('morgan');
 var bodyParser = require('body-parser');
 var cors = require('cors');
 
@@ -10,6 +11,10 @@ function createApp(callback) {
 
     app.use(cors());
     app.use(bodyParser.json());
+
+    if (configuration.logging.active) {
+        app.use(morgan('short'));
+    }
 
     bootstrap.bootstrap(app, configuration, function(error) {
         if (error) return callback(error);
