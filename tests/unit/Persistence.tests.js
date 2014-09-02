@@ -14,11 +14,14 @@ describe('Persistence', function () {
             });
 
             var error, result;
-            new Persistence(db)
-                .loadUsers(null, null, function (_error, _result) {
-                    error = _error;
-                    result = _result;
-                });
+            before(function (done) {
+                new Persistence(db)
+                    .loadUsers(null, null, function (_error, _result) {
+                        error = _error;
+                        result = _result;
+                        done();
+                    });
+            });
 
             it('should not return an error', function () {
                 expect(error).to.be.null;
@@ -39,11 +42,14 @@ describe('Persistence', function () {
             });
 
             var error, result;
-            new Persistence(db)
-                .loadUsers(new LimitStatement(1, 1), null, function (_error, _result) {
-                    error = _error;
-                    result = _result;
-                });
+            before(function (done) {
+                new Persistence(db)
+                    .loadUsers(new LimitStatement(1, 1), null, function (_error, _result) {
+                        error = _error;
+                        result = _result;
+                        done();
+                    });
+            });
 
             it('should not return an error', function () {
                 expect(error).to.be.null;
@@ -64,11 +70,14 @@ describe('Persistence', function () {
             });
 
             var error, result;
-            new Persistence(db)
-                .loadUsers(null, null, function (_error, _result) {
-                    error = _error;
-                    result = _result;
-                });
+            before(function (done) {
+                new Persistence(db)
+                    .loadUsers(null, null, function (_error, _result) {
+                        error = _error;
+                        result = _result;
+                        done();
+                    });
+            });
 
             it('should return an error', function () {
                 expect(error.message).to.equal('Caboom');
@@ -91,11 +100,14 @@ describe('Persistence', function () {
             });
 
             var error, result;
-            new Persistence(db)
-                .loadUserById(42, function (_error, _result) {
-                    error = _error;
-                    result = _result;
-                });
+            before(function (done) {
+                new Persistence(db)
+                    .loadUserById(42, function (_error, _result) {
+                        error = _error;
+                        result = _result;
+                        done();
+                    });
+            });
 
             it('should not return an error', function () {
                 expect(error).to.be.null;
@@ -116,11 +128,14 @@ describe('Persistence', function () {
             });
 
             var error, result;
-            new Persistence(db)
-                .loadUserById(42, function (_error, _result) {
-                    error = _error;
-                    result = _result;
-                });
+            before(function (done) {
+                new Persistence(db)
+                    .loadUserById(42, function (_error, _result) {
+                        error = _error;
+                        result = _result;
+                        done();
+                    });
+            });
 
             it('should return an error', function () {
                 expect(error.message).to.equal('Caboom');
@@ -143,11 +158,14 @@ describe('Persistence', function () {
             });
 
             var error, result;
-            new Persistence(db)
-                .loadUserByName('bert', function (_error, _result) {
-                    error = _error;
-                    result = _result;
-                });
+            before(function (done) {
+                new Persistence(db)
+                    .loadUserByName('bert', function (_error, _result) {
+                        error = _error;
+                        result = _result;
+                        done();
+                    });
+            });
 
             it('should not return an error', function () {
                 expect(error).to.be.null;
@@ -168,11 +186,14 @@ describe('Persistence', function () {
             });
 
             var error, result;
-            new Persistence(db)
-                .loadUserByName('bert', function (_error, _result) {
-                    error = _error;
-                    result = _result;
-                });
+            before(function (done) {
+                new Persistence(db)
+                    .loadUserByName('bert', function (_error, _result) {
+                        error = _error;
+                        result = _result;
+                        done();
+                    });
+            });
 
             it('should return an error', function () {
                 expect(error.message).to.equal('Caboom');
@@ -195,11 +216,14 @@ describe('Persistence', function () {
             });
 
             var error, result;
-            new Persistence(db)
-                .createUser('bert', function (_error, _result) {
-                    error = _error;
-                    result = _result;
-                });
+            before(function (done) {
+                new Persistence(db)
+                    .createUser('bert', function (_error, _result) {
+                        error = _error;
+                        result = _result;
+                        done();
+                    });
+            });
 
             it('should not return an error', function () {
                 expect(error).to.be.null;
@@ -220,11 +244,14 @@ describe('Persistence', function () {
             });
 
             var error, result;
-            new Persistence(db)
-                .createUser('bert', function (_error, _result) {
-                    error = _error;
-                    result = _result;
-                });
+            before(function (done) {
+                new Persistence(db)
+                    .createUser('bert', function (_error, _result) {
+                        error = _error;
+                        result = _result;
+                        done();
+                    });
+            });
 
             it('should return an error', function () {
                 expect(error.message).to.equal('Caboom');
@@ -247,11 +274,14 @@ describe('Persistence', function () {
             });
 
             var error, result;
-            new Persistence(db)
-                .createTransaction(42, 1337, function (_error, _result) {
-                    error = _error;
-                    result = _result;
-                });
+            before(function (done) {
+                new Persistence(db)
+                    .createTransaction(42, 1337, function (_error, _result) {
+                        error = _error;
+                        result = _result;
+                        done();
+                    });
+            });
 
             it('should not return an error', function () {
                 expect(error).to.be.null;
@@ -272,11 +302,14 @@ describe('Persistence', function () {
             });
 
             var error, result;
-            new Persistence(db)
-                .createTransaction(42, 1337, function (_error, _result) {
-                    error = _error;
-                    result = _result;
-                });
+            before(function (done) {
+                new Persistence(db)
+                    .createTransaction(42, 1337, function (_error, _result) {
+                        error = _error;
+                        result = _result;
+                        done();
+                    });
+            });
 
             it('should return an error', function () {
                 expect(error.message).to.equal('Caboom');
@@ -299,11 +332,14 @@ describe('Persistence', function () {
             });
 
             var error, result;
-            new Persistence(db)
-                .loadTransaction(1337, function (_error, _result) {
-                    error = _error;
-                    result = _result;
-                });
+            before(function (done) {
+                new Persistence(db)
+                    .loadTransaction(1337, function (_error, _result) {
+                        error = _error;
+                        result = _result;
+                        done();
+                    });
+            });
 
             it('should not return an error', function () {
                 expect(error).to.be.null;
@@ -324,11 +360,14 @@ describe('Persistence', function () {
             });
 
             var error, result;
-            new Persistence(db)
-                .loadTransaction(1337, function (_error, _result) {
-                    error = _error;
-                    result = _result;
-                });
+            before(function (done) {
+                new Persistence(db)
+                    .loadTransaction(1337, function (_error, _result) {
+                        error = _error;
+                        result = _result;
+                        done();
+                    });
+            });
 
             it('should return an error', function () {
                 expect(error.message).to.equal('Caboom');
@@ -351,11 +390,14 @@ describe('Persistence', function () {
             });
 
             var error, result;
-            new Persistence(db)
-                .loadTransactionsByUserId(1337, new LimitStatement(1, 2), null, function (_error, _result) {
-                    error = _error;
-                    result = _result;
-                });
+            before(function (done) {
+                new Persistence(db)
+                    .loadTransactionsByUserId(1337, new LimitStatement(1, 2), null, function (_error, _result) {
+                        error = _error;
+                        result = _result;
+                        done();
+                    });
+            });
 
             it('should not return an error', function () {
                 expect(error).to.be.null;
@@ -376,11 +418,14 @@ describe('Persistence', function () {
             });
 
             var error, result;
-            new Persistence(db)
-                .loadTransactionsByUserId(1337, null, null, function (_error, _result) {
-                    error = _error;
-                    result = _result;
-                });
+            before(function (done) {
+                new Persistence(db)
+                    .loadTransactionsByUserId(1337, null, null, function (_error, _result) {
+                        error = _error;
+                        result = _result;
+                        done();
+                    });
+            });
 
             it('should not return an error', function () {
                 expect(error).to.be.null;
@@ -401,11 +446,14 @@ describe('Persistence', function () {
             });
 
             var error, result;
-            new Persistence(db)
-                .loadTransactionsByUserId(1337, new LimitStatement(11, 10), null, function (_error, _result) {
-                    error = _error;
-                    result = _result;
-                });
+            before(function (done) {
+                new Persistence(db)
+                    .loadTransactionsByUserId(1337, new LimitStatement(11, 10), null, function (_error, _result) {
+                        error = _error;
+                        result = _result;
+                        done();
+                    });
+            });
 
             it('should not return an error', function () {
                 expect(error).to.be.null;
@@ -426,11 +474,14 @@ describe('Persistence', function () {
             });
 
             var error, result;
-            new Persistence(db)
-                .loadTransactionsByUserId(1337, new LimitStatement(1, 2), null, function (_error, _result) {
-                    error = _error;
-                    result = _result;
-                });
+            before(function (done) {
+                new Persistence(db)
+                    .loadTransactionsByUserId(1337, new LimitStatement(1, 2), null, function (_error, _result) {
+                        error = _error;
+                        result = _result;
+                        done();
+                    });
+            });
 
             it('should return an error', function () {
                 expect(error.message).to.equal('Caboom');
