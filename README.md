@@ -6,6 +6,12 @@ __Clients__:
 
 * [Web-Frontend](https://github.com/hackerspace-bootstrap/strichliste-web) ([demo](http://demo.hackerspace-bootstrap.org/strichliste-web/#/))
 
+## TOC
+
+* [First Steps](#first-steps)
+* [Configuration](#configuration)
+* [API Documentation](#api-documentation)
+
 ## First Steps
 
 ### Setup
