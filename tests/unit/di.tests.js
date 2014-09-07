@@ -4,9 +4,8 @@ var sinon = require('sinon');
 var Injector = require('../../lib/util/di/Injector');
 var Pool = require('../../lib/util/di/Pool');
 
-function Problematic(problematic) {
-
-}
+function Problematic(problematic) {}
+function Problematic2(notFound) {}
 
 function Foo(bar) {
     this._bar = bar;
@@ -111,6 +110,23 @@ describe('di', function () {
             expect(function() {
                 created = i.create('problematic');
             }).to.throw('circular dependency detected');
+        });
+    });
+
+    describe('unmet dependency', function() {
+        var i, p, created;
+
+        before(function() {
+            p = new Pool();
+            p.register('problematic2', Problematic2);
+
+            i = new Injector(p);
+        });
+
+        it('should only create once', function() {
+            expect(function() {
+                created = i.create('problematic');
+            }).to.throw('unmet dependency: problematic');
         });
     });
 });
