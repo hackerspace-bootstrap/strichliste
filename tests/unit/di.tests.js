@@ -129,4 +129,24 @@ describe('di', function () {
             }).to.throw('unmet dependency: problematic');
         });
     });
+
+    describe('equip', function() {
+        var i, p, created;
+
+        before(function() {
+            p = new Pool();
+            p.register('a', {foo: 'bar'});
+
+            i = new Injector(p);
+            created = i.equip(Bar);
+        });
+
+        it('should be instance of Bar', function() {
+            expect(created).to.be.instanceof(Bar);
+        });
+
+        it('should be equipped', function() {
+            expect(created.get()).to.deep.equal({foo: 'bar'});
+        });
+    });
 });
