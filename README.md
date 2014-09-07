@@ -47,7 +47,7 @@ $ make setup
 
 #### start api server
 
-Consider editing the configuration before starting the api server (see the [configuration](#configuration)] section).
+Consider editing the configuration before starting the api server (see the [configuration](#configuration) section).
 ````bash
 $ make start
 ````
