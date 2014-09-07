@@ -6,7 +6,7 @@ var mocks = require('../util/mocks');
 
 describe('userListRoute', function () {
     describe('sucess', function () {
-        var route = new SettingsRoute();
+        var route = new SettingsRoute({boundaries: {account: {upper: 42, lower: -42}}});
         var req = mocks.createRequestMock();
         var res = mocks.createResponseMock();
 
@@ -15,7 +15,7 @@ describe('userListRoute', function () {
         var result = req.strichliste.result;
 
         it('should set the correct content type', function () {
-            expect(result.content()).to.deep.equal({boundaries: {upper: 42, lower: -23}});
+            expect(result.content()).to.deep.equal({boundaries: {upper: 42, lower: -42}});
         });
 
         it('should set the correct content type', function () {
