@@ -1,57 +1,70 @@
-var expect = require('chai').expect;
+var path = require('path');
 
-var Routes = require('../../lib/routing/Routes');
+var expect = require('chai').use(require('sinon-chai')).expect;
+
+var Injector = require('../../lib/util/di/Injector');
+var RoutesLoader = require('../../lib/routing/RoutesLoader');
 var mocks = require('../util/mocks');
 
-function createRouteMock (path, pred) {
-    return {
-        mountPoint: function () {
-            return {
-                path: function () {
-                    return path;
-                },
-                predecessors: function () {
-                    return pred || []
-                },
-                method: function () {
-                    return 'get';
-                }
-            };
-        },
-        route: {
-            bind: function () {
-                return 'route to "' + path + '"';
-            }
-        }
-    };
-}
+describe('routing', function() {
+    describe('loadRoutes', function() {
+        var i, appMock, rl;
 
-describe('Routing', function () {
-    it('should bind the correct routes with the correct predecessor', function () {
-        var r1 = createRouteMock('fooPath', ['bar']);
-        var r2 = createRouteMock('barPath');
-        var a = new Routes();
+        before(function() {
+            i = new Injector();
+            i.register('foo', 'fooValue');
+            i.register('bar', 'barValue');
+            appMock = mocks.createAppMock();
 
-        a.addRoute('foo', r1);
-        a.addRoute('bar', r2);
+            rl = new RoutesLoader(path.join(__dirname, '../testdata/routes'), i)
+                .load()
+                .mount(appMock);
+        });
 
-        var appMock = mocks.createAppMock();
-        a.mount(appMock);
+        it('should', function() {
+            expect(appMock.get).to.be.calledWithExactly('/route2', 'route to route1', 'route to route2');
+            expect(appMock.get).to.be.calledWithExactly('/route1', 'route to route1');
+        });
 
-        expect(appMock.get).to.be.calledWithExactly('fooPath', 'route to "barPath"', 'route to "fooPath"');
-        expect(appMock.get).to.be.calledWithExactly('barPath', 'route to "barPath"');
+        it('should have the correct dependencies injected', function() {
+            expect(rl._routes.Route1._foo).to.equal('fooValue');
+            expect(rl._routes.Route2._bar).to.equal('barValue');
+        });
     });
 
-    it('should crash if an invalid predecessor has been specified', function () {
-        var r1 = createRouteMock('fooPath', ['caboom!']);
-        var a = new Routes();
+    describe('loadRoutes /w damaged dependencies', function() {
+        var i, appMock, rl;
 
-        a.addRoute('foo', r1);
+        before(function() {
+            i = new Injector();
+            appMock = mocks.createAppMock();
 
-        var appMock = mocks.createAppMock();
+            rl = new RoutesLoader(path.join(__dirname, '../testdata/routes'), i);
+        });
 
-        expect(function () {
-            a.mount(appMock);
-        }).to.throw(/could not load predecessor: caboom!/);
+        it('should throw on unmet dependency', function() {
+            expect(function() {
+                rl.load();
+            }).to.throw('unmet dependency: foo');
+        });
+    });
+
+    describe('loadRoutes with predecessor error', function() {
+        var i, appMock, rl;
+
+        before(function() {
+            i = new Injector();
+            i.register('foo', 'fooValue');
+            i.register('bar', 'barValue');
+            appMock = mocks.createAppMock();
+            rl = new RoutesLoader(path.join(__dirname, '../testdata/routesFaulty'), i)
+                .load();
+        });
+
+        it('should throw', function() {
+            expect(function() {
+                rl.mount(appMock);
+            }).to.throw('could not load predecessor: perkins');
+        });
     });
 });
