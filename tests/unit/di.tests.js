@@ -2,7 +2,6 @@ var expect = require('chai').use(require('sinon-chai')).expect;
 var sinon = require('sinon');
 
 var Injector = require('../../lib/util/di/Injector');
-var Pool = require('../../lib/util/di/Pool');
 
 function Problematic(problematic) {}
 function Problematic2(notFound) {}
@@ -26,14 +25,12 @@ Bar.prototype.get = function() {
 
 describe('di', function () {
     describe('injector simple', function() {
-        var i, p, created;
+        var i, created;
 
         before(function() {
-            p = new Pool();
-            p.register('a', {foo: 'bar'});
-            p.register('bar', Bar);
-
-            i = new Injector(p);
+            i = new Injector();
+            i.register('a', {foo: 'bar'});
+            i.register('bar', Bar);
 
             created = i.create('bar');
         });
@@ -48,15 +45,13 @@ describe('di', function () {
     });
 
     describe('injector nested', function() {
-        var i, p, created;
+        var i, created;
 
         before(function() {
-            p = new Pool();
-            p.register('foo', Foo);
-            p.register('bar', Bar);
-            p.register('a', {foo: 'bar'});
-
-            i = new Injector(p);
+            i = new Injector();
+            i.register('foo', Foo);
+            i.register('bar', Bar);
+            i.register('a', {foo: 'bar'});
 
             created = i.create('foo');
         });
@@ -75,14 +70,12 @@ describe('di', function () {
     });
 
     describe('injector cache', function() {
-        var i, p, created;
+        var i, created;
 
         before(function() {
-            p = new Pool();
-            p.register('bar', Bar);
-            p.register('a', {foo: 'bar'});
-
-            i = new Injector(p);
+            i = new Injector();
+            i.register('bar', Bar);
+            i.register('a', {foo: 'bar'});
 
             sinon.spy(i, '_createEntity');
 
@@ -97,13 +90,11 @@ describe('di', function () {
     });
 
     describe('circular', function() {
-        var i, p, created;
+        var i, created;
 
         before(function() {
-            p = new Pool();
-            p.register('problematic', Problematic);
-
-            i = new Injector(p);
+            i = new Injector();
+            i.register('problematic', Problematic);
         });
 
         it('should only create once', function() {
@@ -114,13 +105,11 @@ describe('di', function () {
     });
 
     describe('unmet dependency', function() {
-        var i, p, created;
+        var i, created;
 
         before(function() {
-            p = new Pool();
-            p.register('problematic2', Problematic2);
-
-            i = new Injector(p);
+            i = new Injector();
+            i.register('problematic2', Problematic2);
         });
 
         it('should only create once', function() {
@@ -131,13 +120,12 @@ describe('di', function () {
     });
 
     describe('equip', function() {
-        var i, p, created;
+        var i, created;
 
         before(function() {
-            p = new Pool();
-            p.register('a', {foo: 'bar'});
+            i = new Injector();
+            i.register('a', {foo: 'bar'});
 
-            i = new Injector(p);
             created = i.equip(Bar);
         });
 
