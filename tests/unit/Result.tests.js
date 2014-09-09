@@ -1,7 +1,7 @@
 var expect = require('chai').expect;
 
-var Result = require('../../lib/Result');
-var List = require('../../lib/List');
+var Result = require('../../lib/result/Result');
+var List = require('../../lib/result/List');
 var LimitStatement = require('../../lib/parameters/LimitStatement');
 
 describe('list', function () {
