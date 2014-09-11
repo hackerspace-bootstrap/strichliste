@@ -41,7 +41,7 @@ function createResponseMock () {
     }
 }
 
-function createUserPersistenceMock (options) {
+function createPersistenceMock (options) {
     options = options || {};
 
     return {
@@ -125,7 +125,7 @@ module.exports = {
     createResultMock: createResultMock,
     createRequestMock: createRequestMock,
     createResponseMock: createResponseMock,
-    createUserPersistenceMock: createUserPersistenceMock,
+    createPersistenceMock: createPersistenceMock,
     createDBMock: createDBMock,
     createMqttWrapperMock: createMqttWrapperMock,
     createMqttClientMock: createMqttClientMock,

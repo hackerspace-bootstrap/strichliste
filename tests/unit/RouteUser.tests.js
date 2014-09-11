@@ -6,12 +6,12 @@ var mocks = require('../util/mocks');
 
 describe('userRoute', function () {
     describe('sucess', function () {
-        var userLoader = mocks.createUserPersistenceMock({
+        var persistence = mocks.createPersistenceMock({
             loadUserById: { error: null, result: {name: 'bert'} },
             loadTransactionsByUserId: { error: null, result: [1, 2, 3]}
         });
 
-        var route = new UserRoute(userLoader);
+        var route = new UserRoute(persistence);
         var req = mocks.createRequestMock({
             params: {userId: 1}
         });
@@ -21,7 +21,7 @@ describe('userRoute', function () {
         route.route(req, res, spy);
         var result = req.strichliste.result;
 
-        it('should return the user from the userLoader', function () {
+        it('should return the user from the persistence', function () {
             expect(result.content()).to.deep.equal({name: 'bert', transactions: [1, 2, 3]});
         });
 
@@ -37,22 +37,22 @@ describe('userRoute', function () {
             expect(spy).to.be.calledOnce;
         });
 
-        it('should ask the userPersistence for userId 1 (userLoad)', function () {
-            expect(userLoader.loadUserById).to.be.calledWith(1);
+        it('should ask the Persistence for userId 1 (userLoad)', function () {
+            expect(persistence.loadUserById).to.be.calledWith(1);
         });
 
-        it('should ask the userPersistence for userId 1 (transactionLoad)', function () {
-            expect(userLoader.loadTransactionsByUserId).to.be.calledWith(1);
+        it('should ask the Persistence for userId 1 (transactionLoad)', function () {
+            expect(persistence.loadTransactionsByUserId).to.be.calledWith(1);
         });
     });
 
     describe('loadTransaction fails', function () {
-        var userLoader = mocks.createUserPersistenceMock({
+        var persistence = mocks.createPersistenceMock({
             loadUserById: { error: null, result: {name: 'bert'} },
             loadTransactionsByUserId: { error: new Error('caboom!'), result: null}
         });
 
-        var route = new UserRoute(userLoader);
+        var route = new UserRoute(persistence);
         var req = mocks.createRequestMock({
             params: {userId: 1}
         });
@@ -72,21 +72,21 @@ describe('userRoute', function () {
             expect(res._end).to.be.null;
         });
 
-        it('should ask the userPersistence with id 1', function () {
-            expect(userLoader.loadUserById).to.be.calledWith(1);
+        it('should ask the Persistence with id 1', function () {
+            expect(persistence.loadUserById).to.be.calledWith(1);
         });
 
-        it('should ask the userPersistence for userId 1 (transactionLoad)', function () {
-            expect(userLoader.loadTransactionsByUserId).to.be.calledWith(1);
+        it('should ask the Persistence for userId 1 (transactionLoad)', function () {
+            expect(persistence.loadTransactionsByUserId).to.be.calledWith(1);
         });
     });
 
     describe('not found', function () {
-        var userLoader = mocks.createUserPersistenceMock({
+        var persistence = mocks.createPersistenceMock({
             loadUserById: { error: null, result: null }
         });
 
-        var route = new UserRoute(userLoader);
+        var route = new UserRoute(persistence);
         var req = mocks.createRequestMock({
             params: {userId: 1}
         });
@@ -106,17 +106,17 @@ describe('userRoute', function () {
             expect(res._end).to.be.null;
         });
 
-        it('should ask the userPersistence with id 1', function () {
-            expect(userLoader.loadUserById).to.be.calledWith(1);
+        it('should ask the Persistence with id 1', function () {
+            expect(persistence.loadUserById).to.be.calledWith(1);
         });
     });
 
     describe('fail', function () {
-        var userLoader = mocks.createUserPersistenceMock({
+        var persistence = mocks.createPersistenceMock({
             loadUserById: { error: new Error('caboom'), result: null }
         });
 
-        var route = new UserRoute(userLoader);
+        var route = new UserRoute(persistence);
         var req = mocks.createRequestMock({
             params: {userId: 1}
         });
@@ -136,8 +136,8 @@ describe('userRoute', function () {
             expect(res._end).to.be.null;
         });
 
-        it('should ask the userPersistence with id 1', function () {
-            expect(userLoader.loadUserById).to.be.calledWith(1);
+        it('should ask the Persistence with id 1', function () {
+            expect(persistence.loadUserById).to.be.calledWith(1);
         });
     });
 });

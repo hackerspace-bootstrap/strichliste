@@ -156,12 +156,12 @@ describe('transactionCreateRoute', function () {
     });
 
     describe('creation fails', function () {
-        var userLoader = mocks.createUserPersistenceMock({
+        var persistence = mocks.createPersistenceMock({
             loadUserById: { error: null, result: {name: 'bert'} },
             createTransaction: {error: new Error('caboom'), result: null}
         });
 
-        var route = new TransactionCreate(userLoader, null);
+        var route = new TransactionCreate(persistence, null);
         var req = mocks.createRequestMock({
             body: {value: 42},
             params: {userId: 100},
@@ -187,19 +187,19 @@ describe('transactionCreateRoute', function () {
         });
 
         it('should call creatTransaction with the correct parameters', function () {
-            expect(userLoader.createTransaction).to.be.calledOnce;
-            expect(userLoader.createTransaction).to.be.calledWith(100, 42);
+            expect(persistence.createTransaction).to.be.calledOnce;
+            expect(persistence.createTransaction).to.be.calledWith(100, 42);
         });
     });
 
     describe('reload fails', function () {
-        var userLoader = mocks.createUserPersistenceMock({
+        var persistence = mocks.createPersistenceMock({
             loadUserById: { error: null, result: {name: 'bert'} },
             createTransaction: {error: null, result: 1337},
             loadTransaction: {error: new Error('caboomsel'), result: null}
         });
 
-        var route = new TransactionCreate(userLoader);
+        var route = new TransactionCreate(persistence);
         var req = mocks.createRequestMock({
             body: {value: 1337},
             params: {userId: 1000},
@@ -224,18 +224,18 @@ describe('transactionCreateRoute', function () {
         });
 
         it('should call createUser', function () {
-            expect(userLoader.createTransaction).to.be.calledOnce;
-            expect(userLoader.createTransaction).to.be.calledWith(1000, 1337);
+            expect(persistence.createTransaction).to.be.calledOnce;
+            expect(persistence.createTransaction).to.be.calledWith(1000, 1337);
         });
 
         it('should reload the user', function () {
-            expect(userLoader.loadTransaction).to.be.calledOnce;
-            expect(userLoader.loadTransaction).to.be.calledWith(1337);
+            expect(persistence.loadTransaction).to.be.calledOnce;
+            expect(persistence.loadTransaction).to.be.calledWith(1337);
         });
     });
 
     describe('success', function () {
-        var userLoader = mocks.createUserPersistenceMock({
+        var persistence = mocks.createPersistenceMock({
             loadUserById: { error: null, result: {name: 'bert'} },
             createTransaction: {error: null, result: 1337},
             loadTransaction: {error: null, result: {value: 123}}
@@ -243,7 +243,7 @@ describe('transactionCreateRoute', function () {
 
         var mqttWrapper = mocks.createMqttWrapperMock();
 
-        var route = new TransactionCreate(userLoader, mqttWrapper);
+        var route = new TransactionCreate(persistence, mqttWrapper);
         var req = mocks.createRequestMock({
             body: {value: 42.1},
             params: {userId: 100},
@@ -271,13 +271,13 @@ describe('transactionCreateRoute', function () {
         });
 
         it('should call createTransaction', function () {
-            expect(userLoader.createTransaction).to.be.calledOnce;
-            expect(userLoader.createTransaction).to.be.calledWith(100, 42.1);
+            expect(persistence.createTransaction).to.be.calledOnce;
+            expect(persistence.createTransaction).to.be.calledWith(100, 42.1);
         });
 
         it('should reload the transaction', function () {
-            expect(userLoader.loadTransaction).to.be.calledOnce;
-            expect(userLoader.loadTransaction).to.be.calledWith(1337);
+            expect(persistence.loadTransaction).to.be.calledOnce;
+            expect(persistence.loadTransaction).to.be.calledWith(1337);
         });
 
         it('should send an transaction value through mqtt', function () {

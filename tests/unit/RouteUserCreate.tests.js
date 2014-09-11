@@ -27,11 +27,11 @@ describe('userCreateRoute', function () {
     });
 
     describe('user check fails', function () {
-        var userLoader = mocks.createUserPersistenceMock({
+        var persistence = mocks.createPersistenceMock({
             loadUserByName: { error: new Error('caboom'), result: null }
         });
 
-        var route = new UserCreateRoute(userLoader);
+        var route = new UserCreateRoute(persistence);
         var req = mocks.createRequestMock({
             body: {name: 'bert'}
         });
@@ -51,17 +51,17 @@ describe('userCreateRoute', function () {
             expect(res._end).to.be.null;
         });
 
-        it('should ask the userLoader', function () {
-            expect(userLoader.loadUserByName).to.be.calledOnce;
+        it('should ask the persistence', function () {
+            expect(persistence.loadUserByName).to.be.calledOnce;
         });
     });
 
     describe('user exists', function () {
-        var userLoader = mocks.createUserPersistenceMock({
+        var persistence = mocks.createPersistenceMock({
             loadUserByName: { error: null, result: {name: 'bert'} }
         });
 
-        var route = new UserCreateRoute(userLoader);
+        var route = new UserCreateRoute(persistence);
         var req = mocks.createRequestMock({
             body: {name: 'bert'}
         });
@@ -81,18 +81,18 @@ describe('userCreateRoute', function () {
             expect(res._end).to.be.null;
         });
 
-        it('should ask the userLoader', function () {
-            expect(userLoader.loadUserByName).to.be.calledOnce;
+        it('should ask the persistence', function () {
+            expect(persistence.loadUserByName).to.be.calledOnce;
         });
     });
 
     describe('creation fails', function () {
-        var userLoader = mocks.createUserPersistenceMock({
+        var persistence = mocks.createPersistenceMock({
             loadUserByName: { error: null, result: null },
             createUser: {error: new Error('caboom'), result: null}
         });
 
-        var route = new UserCreateRoute(userLoader);
+        var route = new UserCreateRoute(persistence);
         var req = mocks.createRequestMock({
             body: {name: 'bert'}
         });
@@ -112,24 +112,24 @@ describe('userCreateRoute', function () {
             expect(res._end).to.be.null;
         });
 
-        it('should ask the userLoader for the name', function () {
-            expect(userLoader.loadUserByName).to.be.calledOnce;
+        it('should ask the persistence for the name', function () {
+            expect(persistence.loadUserByName).to.be.calledOnce;
         });
 
         it('should call createUser', function () {
-            expect(userLoader.createUser).to.be.calledOnce;
-            expect(userLoader.createUser).to.be.calledWith('bert');
+            expect(persistence.createUser).to.be.calledOnce;
+            expect(persistence.createUser).to.be.calledWith('bert');
         });
     });
 
     describe('aaa', function () {
-        var userLoader = mocks.createUserPersistenceMock({
+        var persistence = mocks.createPersistenceMock({
             loadUserByName: { error: null, result: null },
             createUser: {error: null, result: 1337},
             loadUserById: {error: new Error('caboomsel'), result: null}
         });
 
-        var route = new UserCreateRoute(userLoader);
+        var route = new UserCreateRoute(persistence);
         var req = mocks.createRequestMock({
             body: {name: 'bert'}
         });
@@ -149,29 +149,29 @@ describe('userCreateRoute', function () {
             expect(res._end).to.be.null;
         });
 
-        it('should ask the userLoader for the name', function () {
-            expect(userLoader.loadUserByName).to.be.calledOnce;
+        it('should ask the persistence for the name', function () {
+            expect(persistence.loadUserByName).to.be.calledOnce;
         });
 
         it('should call createUser', function () {
-            expect(userLoader.createUser).to.be.calledOnce;
-            expect(userLoader.createUser).to.be.calledWith('bert');
+            expect(persistence.createUser).to.be.calledOnce;
+            expect(persistence.createUser).to.be.calledWith('bert');
         });
 
         it('should reload the user', function () {
-            expect(userLoader.loadUserById).to.be.calledOnce;
-            expect(userLoader.loadUserById).to.be.calledWith(1337);
+            expect(persistence.loadUserById).to.be.calledOnce;
+            expect(persistence.loadUserById).to.be.calledWith(1337);
         });
     });
 
     describe('success', function () {
-        var userLoader = mocks.createUserPersistenceMock({
+        var persistence = mocks.createPersistenceMock({
             loadUserByName: { error: null, result: null },
             createUser: {error: null, result: 1337},
             loadUserById: {error: null, result: {name: 'bert'}}
         });
 
-        var route = new UserCreateRoute(userLoader);
+        var route = new UserCreateRoute(persistence);
         var req = mocks.createRequestMock({
             body: {name: 'bert'}
         });
@@ -194,30 +194,30 @@ describe('userCreateRoute', function () {
             expect(result.statusCode()).to.equal(201);
         });
 
-        it('should ask the userLoader for the name', function () {
-            expect(userLoader.loadUserByName).to.be.calledOnce;
-            expect(userLoader.loadUserByName).to.be.calledWith('bert');
+        it('should ask the persistence for the name', function () {
+            expect(persistence.loadUserByName).to.be.calledOnce;
+            expect(persistence.loadUserByName).to.be.calledWith('bert');
         });
 
         it('should call createUser', function () {
-            expect(userLoader.createUser).to.be.calledOnce;
-            expect(userLoader.createUser).to.be.calledWith('bert');
+            expect(persistence.createUser).to.be.calledOnce;
+            expect(persistence.createUser).to.be.calledWith('bert');
         });
 
         it('should reload the user', function () {
-            expect(userLoader.loadUserById).to.be.calledOnce;
-            expect(userLoader.loadUserById).to.be.calledWith(1337);
+            expect(persistence.loadUserById).to.be.calledOnce;
+            expect(persistence.loadUserById).to.be.calledWith(1337);
         });
     });
 
     describe('success, name special case (number)', function () {
-        var userLoader = mocks.createUserPersistenceMock({
+        var persistence = mocks.createPersistenceMock({
             loadUserByName: { error: null, result: null },
             createUser: {error: null, result: 1337},
             loadUserById: {error: null, result: {name: 'bert'}}
         });
 
-        var route = new UserCreateRoute(userLoader);
+        var route = new UserCreateRoute(persistence);
         var req = mocks.createRequestMock({
             body: {name: 10}
         });
@@ -240,30 +240,30 @@ describe('userCreateRoute', function () {
             expect(result.statusCode()).to.equal(201);
         });
 
-        it('should ask the userLoader for the name', function () {
-            expect(userLoader.loadUserByName).to.be.calledOnce;
-            expect(userLoader.loadUserByName).to.be.calledWith('10');
+        it('should ask the persistence for the name', function () {
+            expect(persistence.loadUserByName).to.be.calledOnce;
+            expect(persistence.loadUserByName).to.be.calledWith('10');
         });
 
         it('should call createUser', function () {
-            expect(userLoader.createUser).to.be.calledOnce;
-            expect(userLoader.createUser).to.be.calledWith('10');
+            expect(persistence.createUser).to.be.calledOnce;
+            expect(persistence.createUser).to.be.calledWith('10');
         });
 
         it('should reload the user', function () {
-            expect(userLoader.loadUserById).to.be.calledOnce;
-            expect(userLoader.loadUserById).to.be.calledWith(1337);
+            expect(persistence.loadUserById).to.be.calledOnce;
+            expect(persistence.loadUserById).to.be.calledWith(1337);
         });
     });
 
     describe('success, name special case (\')', function () {
-        var userLoader = mocks.createUserPersistenceMock({
+        var persistence = mocks.createPersistenceMock({
             loadUserByName: { error: null, result: null },
             createUser: {error: null, result: 1337},
             loadUserById: {error: null, result: {name: 'bert'}}
         });
 
-        var route = new UserCreateRoute(userLoader);
+        var route = new UserCreateRoute(persistence);
         var req = mocks.createRequestMock({
             body: {name: '\''}
         });
@@ -286,19 +286,19 @@ describe('userCreateRoute', function () {
             expect(result.statusCode()).to.equal(201);
         });
 
-        it('should ask the userLoader for the name', function () {
-            expect(userLoader.loadUserByName).to.be.calledOnce;
-            expect(userLoader.loadUserByName).to.be.calledWith('\'');
+        it('should ask the persistence for the name', function () {
+            expect(persistence.loadUserByName).to.be.calledOnce;
+            expect(persistence.loadUserByName).to.be.calledWith('\'');
         });
 
         it('should call createUser', function () {
-            expect(userLoader.createUser).to.be.calledOnce;
-            expect(userLoader.createUser).to.be.calledWith('\'');
+            expect(persistence.createUser).to.be.calledOnce;
+            expect(persistence.createUser).to.be.calledWith('\'');
         });
 
         it('should reload the user', function () {
-            expect(userLoader.loadUserById).to.be.calledOnce;
-            expect(userLoader.loadUserById).to.be.calledWith(1337);
+            expect(persistence.loadUserById).to.be.calledOnce;
+            expect(persistence.loadUserById).to.be.calledWith(1337);
         });
     });
 });
