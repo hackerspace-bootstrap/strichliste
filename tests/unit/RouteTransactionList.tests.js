@@ -26,7 +26,7 @@ describe('transactionListRoute', function () {
             route.route(req, res, done);
         });
 
-        it('should call the loadTransactionByUserId method two times', function() {
+        it('should call the loadTransactionByUserId method two times', function () {
             expect(userLoader.loadTransactionsByUserId).to.be.calledTwice;
         });
 
@@ -73,7 +73,7 @@ describe('transactionListRoute', function () {
             route.route(req, res, done);
         });
 
-        it('should call the loadTransactionByUserId method only once', function() {
+        it('should call the loadTransactionByUserId method only once', function () {
             expect(userLoader.loadTransactionsByUserId).to.be.calledOnce;
         });
 

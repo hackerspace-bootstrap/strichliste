@@ -28,7 +28,7 @@ describe('userListRoute', function () {
 
         it('should return the userlist from the userLoader', function () {
             expect(result.content()).to.deep.equal({
-                entries: [1,2,3],
+                entries: [1, 2, 3],
                 limit: null,
                 offset: null,
                 overallCount: 3
@@ -77,7 +77,7 @@ describe('userListRoute', function () {
 
         it('should return the userlist from the userLoader', function () {
             expect(result.content()).to.deep.equal({
-                entries: [1,2,3],
+                entries: [1, 2, 3],
                 limit: 23,
                 offset: 42,
                 overallCount: 3
