@@ -30,5 +30,9 @@ module.exports = {
 
     logging: {
         active: true
+    },
+
+    caching: {
+        enabled: false
     }
 };
