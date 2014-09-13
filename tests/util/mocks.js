@@ -97,21 +97,21 @@ function createDBMock (options) {
 
     var i = 0;
     return {
-        selectOne: sinon.spy(function (query, arguments, callback) {
+        selectOne: sinon.spy(function (query, parameters, callback) {
             var error = Array.isArray(options.selectOne.error) ? options.selectOne.error[i] : options.selectOne.error;
             var result = Array.isArray(options.selectOne.result) ? options.selectOne.result[i] : options.selectOne.result;
             i++;
 
             callback(error, result);
         }),
-        selectMany: sinon.spy(function (query, arguments, callback) {
+        selectMany: sinon.spy(function (query, parameters, callback) {
             var error = Array.isArray(options.selectMany.error) ? options.selectMany.error[i] : options.selectMany.error;
             var result = Array.isArray(options.selectMany.result) ? options.selectMany.result[i] : options.selectMany.result;
             i++;
 
             callback(error, result);
         }),
-        query: sinon.spy(function (query, arguments, callback) {
+        query: sinon.spy(function (query, parameters, callback) {
             var error = Array.isArray(options.query.error) ? options.query.error[i] : options.query.error;
             var result = Array.isArray(options.query.result) ? options.query.result[i] : options.query.result;
             i++;
