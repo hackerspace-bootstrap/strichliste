@@ -6,14 +6,14 @@ var mocks = require('../util/mocks');
 
 describe('metricsRoute', function () {
     describe('sucess', function () {
-        var userLoader = mocks.createUserPersistenceMock({
+        var persistence = mocks.createPersistenceMock({
             loadMetrics: {
                 error: null,
                 result: {value: 42}
             }
         });
 
-        var route = new MetricsRoute(userLoader);
+        var route = new MetricsRoute(persistence);
         var req = mocks.createRequestMock();
         var res = mocks.createResponseMock();
 
@@ -22,7 +22,7 @@ describe('metricsRoute', function () {
         var result = req.strichliste.result;
 
         it('should call loadMetrics', function () {
-            expect(userLoader.loadMetrics).to.be.calledOnce;
+            expect(persistence.loadMetrics).to.be.calledOnce;
         });
 
         it('should return the metrics from persistence', function () {
@@ -43,7 +43,7 @@ describe('metricsRoute', function () {
     });
 
     describe('fail', function () {
-        var userLoader = mocks.createUserPersistenceMock({
+        var persistence = mocks.createPersistenceMock({
             loadMetrics: {
                 error: new Error('caboom'),
                 result: null
@@ -52,7 +52,7 @@ describe('metricsRoute', function () {
 
         var error;
         before(function (done) {
-            var route = new MetricsRoute(userLoader);
+            var route = new MetricsRoute(persistence);
             var req = mocks.createRequestMock();
             var res = mocks.createResponseMock();
 
@@ -63,7 +63,7 @@ describe('metricsRoute', function () {
         });
 
         it('should call loadMetrics', function () {
-            expect(userLoader.loadMetrics).to.be.calledOnce;
+            expect(persistence.loadMetrics).to.be.calledOnce;
         });
 
         it('should call next with an eror', function () {

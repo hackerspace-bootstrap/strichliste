@@ -1,6 +1,6 @@
 var expect = require('chai').use(require('sinon-chai')).expect;
 
-var Persistence = require('../../lib/UserPersistence');
+var Persistence = require('../../lib/Persistence');
 var mocks = require('../util/mocks');
 
 var OrderStatement = require('../../lib/parameters/OrderStatement');

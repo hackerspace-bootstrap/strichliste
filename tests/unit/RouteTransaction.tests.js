@@ -6,14 +6,14 @@ var mocks = require('../util/mocks');
 
 describe('transactionListRoute', function () {
     describe('sucess', function () {
-        var userLoader = mocks.createUserPersistenceMock({
+        var persistence = mocks.createPersistenceMock({
             loadTransaction: {
                 error: null,
                 result: {value: 42}
             }
         });
 
-        var route = new TransactionRoute(userLoader);
+        var route = new TransactionRoute(persistence);
         var req = mocks.createRequestMock({
             params: {transactionId: 23}
         });
@@ -24,11 +24,11 @@ describe('transactionListRoute', function () {
         var result = req.strichliste.result;
 
         it('should call loadTransaction', function () {
-            expect(userLoader.loadTransaction).to.be.calledOnce;
-            expect(userLoader.loadTransaction).to.be.calledWith(23);
+            expect(persistence.loadTransaction).to.be.calledOnce;
+            expect(persistence.loadTransaction).to.be.calledWith(23);
         });
 
-        it('should return the transactionlist from the userLoader', function () {
+        it('should return the transactionlist from the persistence', function () {
             expect(result.content()).to.deep.equal({value: 42});
         });
 
@@ -46,14 +46,14 @@ describe('transactionListRoute', function () {
     });
 
     describe('fail', function () {
-        var userLoader = mocks.createUserPersistenceMock({
+        var persistence = mocks.createPersistenceMock({
             loadTransaction: {
                 error: new Error('caboom'),
                 result: null
             }
         });
 
-        var route = new TransactionRoute(userLoader);
+        var route = new TransactionRoute(persistence);
         var req = mocks.createRequestMock({
             params: {transactionId: 23}
         });
@@ -65,7 +65,7 @@ describe('transactionListRoute', function () {
         });
 
         it('should call loadTransaction', function () {
-            expect(userLoader.loadTransaction).to.be.calledOnce;
+            expect(persistence.loadTransaction).to.be.calledOnce;
         });
 
         it('should call next with an eror', function () {

@@ -7,11 +7,11 @@ var mocks = require('../util/mocks');
 describe('transactionListRoute', function () {
     describe('success /w limit', function () {
         var limitStatement = new LimitStatement(10, 20);
-        var userLoader = mocks.createUserPersistenceMock({
+        var persistence = mocks.createPersistenceMock({
             loadTransactionsByUserId: { error: null, result: [1, 2, 3] }
         });
 
-        var route = new TransactionListRoute(userLoader);
+        var route = new TransactionListRoute(persistence);
         var req = mocks.createRequestMock({
             params: {userId: 42},
             query: {},
@@ -26,16 +26,16 @@ describe('transactionListRoute', function () {
             route.route(req, res, done);
         });
 
-        it('should call the loadTransactionByUserId method two times', function() {
-            expect(userLoader.loadTransactionsByUserId).to.be.calledTwice;
+        it('should call the loadTransactionByUserId method two times', function () {
+            expect(persistence.loadTransactionsByUserId).to.be.calledTwice;
         });
 
         it('should call the loadTransactionsByUserId with correct parameters', function () {
-            expect(userLoader.loadTransactionsByUserId).to.be.calledWith(42, limitStatement, 'fooOrderSt');
-            expect(userLoader.loadTransactionsByUserId).to.be.calledWith(42, null, null);
+            expect(persistence.loadTransactionsByUserId).to.be.calledWith(42, limitStatement, 'fooOrderSt');
+            expect(persistence.loadTransactionsByUserId).to.be.calledWith(42, null, null);
         });
 
-        it('should return the transactionlist from the userLoader', function () {
+        it('should return the transactionlist from the persistence', function () {
             expect(req.strichliste.result.content()).to.deep.equal({
                 overallCount: 3,
                 limit: 10,
@@ -54,11 +54,11 @@ describe('transactionListRoute', function () {
     });
 
     describe('success /wo limit', function () {
-        var userLoader = mocks.createUserPersistenceMock({
+        var persistence = mocks.createPersistenceMock({
             loadTransactionsByUserId: { error: null, result: [1, 2, 3] }
         });
 
-        var route = new TransactionListRoute(userLoader);
+        var route = new TransactionListRoute(persistence);
         var req = mocks.createRequestMock({
             params: {userId: 42},
             query: {},
@@ -73,15 +73,15 @@ describe('transactionListRoute', function () {
             route.route(req, res, done);
         });
 
-        it('should call the loadTransactionByUserId method only once', function() {
-            expect(userLoader.loadTransactionsByUserId).to.be.calledOnce;
+        it('should call the loadTransactionByUserId method only once', function () {
+            expect(persistence.loadTransactionsByUserId).to.be.calledOnce;
         });
 
         it('should call the loadTransactionsByUserId with correct parameters', function () {
-            expect(userLoader.loadTransactionsByUserId).to.be.calledWith(42, null, null);
+            expect(persistence.loadTransactionsByUserId).to.be.calledWith(42, null, null);
         });
 
-        it('should return the transactionlist from the userLoader', function () {
+        it('should return the transactionlist from the persistence', function () {
             expect(req.strichliste.result.content()).to.deep.equal({
                 overallCount: 3,
                 limit: null,
@@ -100,14 +100,14 @@ describe('transactionListRoute', function () {
     });
 
     describe('fail', function () {
-        var userLoader = mocks.createUserPersistenceMock({
+        var persistence = mocks.createPersistenceMock({
             loadTransactionsByUserId: {
                 error: new Error('caboom'),
                 result: null
             }
         });
 
-        var route = new TransactionListRoute(userLoader);
+        var route = new TransactionListRoute(persistence);
         var req = mocks.createRequestMock({
             query: {}
         });
@@ -119,7 +119,7 @@ describe('transactionListRoute', function () {
         });
 
         it('should call the loadTransactionsByUserId', function () {
-            expect(userLoader.loadTransactionsByUserId).to.be.calledOnce;
+            expect(persistence.loadTransactionsByUserId).to.be.calledOnce;
         });
 
         it('should call next with an eror', function () {

@@ -7,14 +7,14 @@ var mocks = require('../util/mocks');
 
 describe('userListRoute', function () {
     describe('sucess', function () {
-        var userLoader = mocks.createUserPersistenceMock({
+        var persistence = mocks.createPersistenceMock({
             loadUsers: {
                 error: null,
                 result: [1, 2, 3]
             }
         });
 
-        var route = new UserListRoute(userLoader);
+        var route = new UserListRoute(persistence);
         var req = mocks.createRequestMock();
         var res = mocks.createResponseMock();
 
@@ -23,12 +23,12 @@ describe('userListRoute', function () {
         var result = req.strichliste.result;
 
         it('should call the loadUserMethod', function () {
-            expect(userLoader.loadUsers).to.be.calledOnce;
+            expect(persistence.loadUsers).to.be.calledOnce;
         });
 
-        it('should return the userlist from the userLoader', function () {
+        it('should return the userlist from the persistence', function () {
             expect(result.content()).to.deep.equal({
-                entries: [1,2,3],
+                entries: [1, 2, 3],
                 limit: null,
                 offset: null,
                 overallCount: 3
@@ -49,7 +49,7 @@ describe('userListRoute', function () {
     });
 
     describe('sucess with limitStatement', function () {
-        var userLoader = mocks.createUserPersistenceMock({
+        var persistence = mocks.createPersistenceMock({
             loadUsers: {
                 error: null,
                 result: [1, 2, 3]
@@ -57,7 +57,7 @@ describe('userListRoute', function () {
         });
 
         var limitStatement = new LimitStatement(23, 42);
-        var route = new UserListRoute(userLoader);
+        var route = new UserListRoute(persistence);
         var req = mocks.createRequestMock({
             strichliste: {orderStatement: null, limitStatement: limitStatement}
         });
@@ -68,16 +68,16 @@ describe('userListRoute', function () {
         var result = req.strichliste.result;
 
         it('should call the loadUserMethod', function () {
-            expect(userLoader.loadUsers).to.be.calledTwice;
+            expect(persistence.loadUsers).to.be.calledTwice;
         });
 
         it('should call the loadUserMethod with the correct parameters', function () {
-            expect(userLoader.loadUsers).to.be.calledWith(limitStatement, null);
+            expect(persistence.loadUsers).to.be.calledWith(limitStatement, null);
         });
 
-        it('should return the userlist from the userLoader', function () {
+        it('should return the userlist from the persistence', function () {
             expect(result.content()).to.deep.equal({
-                entries: [1,2,3],
+                entries: [1, 2, 3],
                 limit: 23,
                 offset: 42,
                 overallCount: 3
@@ -98,14 +98,14 @@ describe('userListRoute', function () {
     });
 
     describe('fail', function () {
-        var userLoader = mocks.createUserPersistenceMock({
+        var persistence = mocks.createPersistenceMock({
             loadUsers: {
                 error: new Error('caboom'),
                 result: null
             }
         });
 
-        var route = new UserListRoute(userLoader);
+        var route = new UserListRoute(persistence);
         var req = mocks.createRequestMock();
         var res = mocks.createResponseMock();
 
@@ -115,7 +115,7 @@ describe('userListRoute', function () {
         });
 
         it('should call the loadUserMethod', function () {
-            expect(userLoader.loadUsers).to.be.calledOnce;
+            expect(persistence.loadUsers).to.be.calledOnce;
         });
 
         it('should call next with an eror', function () {

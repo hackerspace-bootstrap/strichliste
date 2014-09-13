@@ -4,12 +4,12 @@ var once = require('once');
 var createDatabase = require('../../lib/util/createDatabase');
 var DBFactory = require('../../lib/database/Factory');
 
-function createPlainDatabase(configuration, callback) {
+function createPlainDatabase (configuration, callback) {
     createDatabase(configuration, callback);
 }
 
-function create2Users5TransactionsDatabase(configuration, callback) {
-    createDatabase(configuration, function(error) {
+function create2Users5TransactionsDatabase (configuration, callback) {
+    createDatabase(configuration, function (error) {
         if (error) return callback(error);
 
         DBFactory.create(configuration, function (error, db) {
