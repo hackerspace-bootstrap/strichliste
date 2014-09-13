@@ -383,6 +383,120 @@ describe('Persistence', function () {
         });
     });
 
+    describe('loadTransactions', function () {
+        describe('success', function () {
+            var db = mocks.createDBMock({
+                selectMany: {error: null, result: {value: 123}}
+            });
+
+            var error, result;
+            before(function (done) {
+                new Persistence(db)
+                    .loadTransactions(new LimitStatement(1, 2), null, function (_error, _result) {
+                        error = _error;
+                        result = _result;
+                        done();
+                    });
+            });
+
+            it('should not return an error', function () {
+                expect(error).to.be.null;
+            });
+
+            it('should return the result', function () {
+                expect(result).to.deep.equal({value: 123});
+            });
+
+            it('should execute the correct query', function () {
+                expect(db.selectMany).to.be.calledWith("SELECT id, userId, createDate, value FROM transactions ORDER BY id DESC LIMIT 1 OFFSET 2", []);
+            });
+        });
+
+        describe('success without offset/limit', function () {
+            var db = mocks.createDBMock({
+                selectMany: {error: null, result: {value: 123}}
+            });
+
+            var error, result;
+            before(function (done) {
+                new Persistence(db)
+                    .loadTransactions(null, null, function (_error, _result) {
+                        error = _error;
+                        result = _result;
+                        done();
+                    });
+            });
+
+            it('should not return an error', function () {
+                expect(error).to.be.null;
+            });
+
+            it('should return the result', function () {
+                expect(result).to.deep.equal({value: 123});
+            });
+
+            it('should execute the correct query', function () {
+                expect(db.selectMany).to.be.calledWith("SELECT id, userId, createDate, value FROM transactions ORDER BY id DESC", []);
+            });
+        });
+
+        describe('success without offset/limit', function () {
+            var db = mocks.createDBMock({
+                selectMany: {error: null, result: {value: 123}}
+            });
+
+            var error, result;
+            before(function (done) {
+                new Persistence(db)
+                    .loadTransactions(new LimitStatement(11, 10), null, function (_error, _result) {
+                        error = _error;
+                        result = _result;
+                        done();
+                    });
+            });
+
+            it('should not return an error', function () {
+                expect(error).to.be.null;
+            });
+
+            it('should return the result', function () {
+                expect(result).to.deep.equal({value: 123});
+            });
+
+            it('should execute the correct query', function () {
+                expect(db.selectMany).to.be.calledWith("SELECT id, userId, createDate, value FROM transactions ORDER BY id DESC LIMIT 11 OFFSET 10", []);
+            });
+        });
+
+        describe('fail', function () {
+            var db = mocks.createDBMock({
+                selectMany: {error: new Error('Caboom'), result: null}
+            });
+
+            var error, result;
+            before(function (done) {
+                new Persistence(db)
+                    .loadTransactions(new LimitStatement(1, 2), null, function (_error, _result) {
+                        error = _error;
+                        result = _result;
+                        done();
+                    });
+            });
+
+            it('should return an error', function () {
+                expect(error.message).to.equal('Caboom');
+            });
+
+            it('should return no result', function () {
+                expect(result).to.be.null;
+            });
+
+            it('should execute the correct query', function () {
+                expect(db.selectMany).to.be.calledWith("SELECT id, userId, createDate, value FROM transactions ORDER BY id DESC LIMIT 1 OFFSET 2", []);
+            });
+        });
+    });
+
     describe('loadTransactionsByUserId', function () {
         describe('success', function () {
             var db = mocks.createDBMock({

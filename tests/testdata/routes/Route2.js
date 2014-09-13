@@ -16,6 +16,6 @@ Route2.prototype.route.bind = function (req, res, next) {
     return 'route to route2';
 };
 
-Route2.name = 'Route2';
+Route2.routeName = 'Route2';
 
 module.exports = Route2;

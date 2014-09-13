@@ -2,7 +2,7 @@ var expect = require('chai').use(require('sinon-chai')).expect;
 var sinon = require('sinon');
 
 var LimitStatement = require('../../lib/parameters/LimitStatement');
-var UserListRoute = require('../../lib/routes/UserList');
+var UserListRoute = require('../../lib/routes/User.get');
 var mocks = require('../util/mocks');
 
 describe('userListRoute', function () {

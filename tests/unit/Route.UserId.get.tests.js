@@ -1,7 +1,7 @@
 var expect = require('chai').use(require('sinon-chai')).expect;
 var sinon = require('sinon');
 
-var UserRoute = require('../../lib/routes/User');
+var UserRoute = require('../../lib/routes/UserId.get');
 var mocks = require('../util/mocks');
 
 describe('userRoute', function () {

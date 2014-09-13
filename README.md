@@ -180,6 +180,21 @@ To create a new user a name has to be assigned via the following data structure:
 
 Returns the status code 201 and the created user if the creation was successfull.
 
+#### GET /transaction
+
+Lists the latest transactions.
+Each transaction has the following data structure:
+````
+{
+  id: <int>,
+  userId: <int>,
+  createDate: <DateTime>,
+  value: <float>
+}
+````
+
+Use the parameters and the list structure of the `Pagination` section to specify the list's structure.
+
 ##### Errors
 
 * 409: If a user already exists
@@ -197,15 +212,7 @@ The returned data structure correlates with the /user endpoint, additionally a l
 #### GET /user/:userId/transaction
 
 Returns a list of transactions belonging to the user with the id :userId.
-Each transaction has the following data structure:
-````
-{
-  id: <int>,
-  userId: <int>,
-  createDate: <DateTime>,
-  value: <float>
-}
-````
+The structure of the transactions object corresponds to the definiton of the '/transaction' route
 
 The parameters and the list structure of the `Pagination` section are used in this endpoint.
 

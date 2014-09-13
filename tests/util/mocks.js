@@ -63,6 +63,9 @@ function createPersistenceMock (options) {
         loadTransaction: sinon.spy(function (transactionId, callback) {
             callback(options.loadTransaction.error, options.loadTransaction.result);
         }),
+        loadTransactions: sinon.spy(function (limit, order, callback) {
+            callback(options.loadTransactions.error, options.loadTransactions.result);
+        }),
         loadTransactionsByUserId: sinon.spy(function (transactionId, offset, limit, callback) {
             callback(options.loadTransactionsByUserId.error, options.loadTransactionsByUserId.result);
         }),

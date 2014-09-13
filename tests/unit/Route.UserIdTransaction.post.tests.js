@@ -1,6 +1,6 @@
 var expect = require('chai').use(require('sinon-chai')).expect;
 
-var TransactionCreate = require('../../lib/routes/TransactionCreate');
+var TransactionCreate = require('../../lib/routes/UserIdTransaction.post');
 var mocks = require('../util/mocks');
 
 describe('transactionCreateRoute', function () {

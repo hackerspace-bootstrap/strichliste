@@ -54,6 +54,22 @@ describe('List tests', function () {
             .expect('{"message":"user 10 not found"}', done);
     });
 
+    it('should load the list of transactions, user idependent', function (done) {
+        request(app)
+            .get('/transaction')
+            .expect('Content-Type', /application\/json/)
+            .expect(200)
+            .expect('{"overallCount":5,"limit":null,"offset":null,"entries":[{"id":5,"userId":2,"createDate":"2014-01-01 00:23:46","value":1},{"id":4,"userId":2,"createDate":"2014-01-01 00:23:45","value":1},{"id":3,"userId":1,"createDate":"2014-01-01 00:23:44","value":1},{"id":2,"userId":1,"createDate":"2014-01-01 00:23:43","value":1},{"id":1,"userId":1,"createDate":"2014-01-01 00:23:42","value":1}]}', done);
+    });
+
+    it('should load the list of user independent transactions, restricted by offset and limit', function (done) {
+        request(app)
+            .get('/transaction?limit=1&offset=1')
+            .expect('Content-Type', /application\/json/)
+            .expect(200)
+            .expect('{"overallCount":5,"limit":1,"offset":1,"entries":[{"id":4,"userId":2,"createDate":"2014-01-01 00:23:45","value":1}]}', done);
+    });
+
     it('should load the list of transactions', function (done) {
         request(app)
             .get('/user/1/transaction')
