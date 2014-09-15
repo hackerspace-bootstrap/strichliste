@@ -18,6 +18,8 @@ __Clients__:
 
 #### Steps
 
+##### Grap the latest [release](https://github.com/hackerspace-bootstrap/strichliste/releases)
+
 ##### install dependencies
 
 ````bash
