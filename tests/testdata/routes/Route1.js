@@ -1,8 +1,15 @@
+var util = require('util');
+
+var Route = require('../../../lib/routing/Route');
 var MountPoint = require('../../../lib/routing/MountPoint');
 
 function Route1 (foo) {
+    Route.call(this);
+
     this._foo = foo;
 }
+
+util.inherits(Route1, Route);
 
 Route1.prototype.mountPoint = function () {
     return new MountPoint('get', '/route1', []);

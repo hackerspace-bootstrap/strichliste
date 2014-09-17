@@ -32,6 +32,23 @@ describe('routing', function () {
         });
     });
 
+    describe('loadRoutes route is not a Route', function () {
+        var i, appMock, rl;
+
+        before(function () {
+            i = new Injector();
+            appMock = mocks.createAppMock();
+
+            rl = new RoutesLoader(path.join(__dirname, '../testdata/routeNotInstance'), i);
+        });
+
+        it('should throw on unmet dependency', function () {
+            expect(function () {
+                rl.load();
+            }).to.throw('route has to inherit from Route: Route1');
+        });
+    });
+
     describe('loadRoutes /w damaged dependencies', function () {
         var i, appMock, rl;
 
