@@ -25,6 +25,8 @@ Bar.prototype.get = function () {
     return this._a;
 };
 
+function IHavNoDeps() {}
+
 describe('di', function () {
     describe('injector simple', function () {
         var i, created;
@@ -43,6 +45,20 @@ describe('di', function () {
 
         it('should inject correctly', function () {
             expect(created.get()).to.deep.equal({foo: 'bar'});
+        });
+    });
+
+    describe('injector no deps', function () {
+        var i, created;
+
+        before(function () {
+            i = new Injector();
+
+            created = i.equip(IHavNoDeps);
+        });
+
+        it('should return a instance of Bar', function () {
+            expect(created).to.be.an.instanceof(IHavNoDeps);
         });
     });
 
