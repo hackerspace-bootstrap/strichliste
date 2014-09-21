@@ -1,8 +1,8 @@
 var path = require('path');
 
 var expect = require('chai').use(require('sinon-chai')).expect;
+var Injector = require('furg');
 
-var Injector = require('../../lib/util/di/Injector');
 var RoutesLoader = require('../../lib/routing/RoutesLoader');
 var mocks = require('../util/mocks');
 
