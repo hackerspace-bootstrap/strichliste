@@ -1,6 +1,5 @@
 var expect = require('chai').expect;
 var request = require('supertest');
-var express = require('express');
 
 var database = require('../util/database');
 
