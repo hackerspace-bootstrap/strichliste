@@ -20,5 +20,9 @@ module.exports = {
 
     logging: {
         active: false
+    },
+
+    metrics: {
+        timespan: 3
     }
 };

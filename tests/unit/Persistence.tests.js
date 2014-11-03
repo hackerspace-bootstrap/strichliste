@@ -632,7 +632,7 @@ describe('Persistence', function () {
             var error, result;
             before(function (done) {
                 new Persistence(db)
-                    .loadMetrics(function (_error, _result) {
+                    .loadMetrics('2014-01-01', function (_error, _result) {
                         error = _error;
                         result = _result;
                         done();
@@ -660,7 +660,7 @@ describe('Persistence', function () {
                 expect(db.selectOne).to.be.calledWith('select sum(value) as overallBalance from transactions', []);
                 expect(db.selectOne).to.be.calledWith('select count(*) as countUsers from users', []);
                 expect(db.selectOne).to.be.calledWith('select avg(userBalance) as avgBalance from (select sum(value) as userBalance from transactions group by userId) as ghoti', []);
-                expect(db.selectMany).to.be.calledWith('select date(createDate) as date, count(*) as overallNumber,count(distinct userid) as distinctUsers,sum(value) as dayBalance,sum(max(value, 0)) as dayBalancePositive,sum(min(value, 0)) as dayBalanceNegative from transactions where createDate >=  date("now", "-30 day") group by date(createDate);');
+                expect(db.selectMany).to.be.calledWith('select date(createDate) as date, count(*) as overallNumber, count(distinct userid) as distinctUsers, sum(value) as dayBalance, sum(max(value, 0)) as dayBalancePositive, sum(min(value, 0)) as dayBalanceNegative from transactions where createDate >= ? group by date(createDate);', ['2014-01-01']);
             });
         });
 
@@ -678,14 +678,14 @@ describe('Persistence', function () {
                 },
                 selectMany: {
                     error: null,
-                    result: {balls: 'eggs'}
+                    result: {balls: 'eggs', days: []}
                 }
             });
 
             var error, result;
             before(function (done) {
                 new Persistence(db)
-                    .loadMetrics(function (_error, _result) {
+                    .loadMetrics('2014-01-01', function (_error, _result) {
                         error = _error;
                         result = _result;
                         done();
@@ -713,7 +713,7 @@ describe('Persistence', function () {
                 expect(db.selectOne).to.be.calledWith('select sum(value) as overallBalance from transactions', []);
                 expect(db.selectOne).to.be.calledWith('select count(*) as countUsers from users', []);
                 expect(db.selectOne).to.be.calledWith('select avg(userBalance) as avgBalance from (select sum(value) as userBalance from transactions group by userId) as ghoti', []);
-                expect(db.selectMany).to.be.calledWith('select date(createDate) as date, count(*) as overallNumber,count(distinct userid) as distinctUsers,sum(value) as dayBalance,sum(max(value, 0)) as dayBalancePositive,sum(min(value, 0)) as dayBalanceNegative from transactions where createDate >=  date("now", "-30 day") group by date(createDate);');
+                expect(db.selectMany).to.be.calledWith('select date(createDate) as date, count(*) as overallNumber, count(distinct userid) as distinctUsers, sum(value) as dayBalance, sum(max(value, 0)) as dayBalancePositive, sum(min(value, 0)) as dayBalanceNegative from transactions where createDate >= ? group by date(createDate);', ['2014-01-01']);
             });
         });
     })

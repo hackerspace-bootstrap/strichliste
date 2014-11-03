@@ -1,6 +1,5 @@
 var expect = require('chai').expect;
 var request = require('supertest');
-var express = require('express');
 
 var database = require('../util/database');
 
@@ -115,7 +114,37 @@ describe('List tests', function () {
                     overallBalance: 5,
                     countUsers: 2,
                     avgBalance: 2.5,
-                    days: []
+                    days: [
+                        {
+                            date: '2014-10-31',
+                            overallNumber: 0,
+                            distinctUsers: 0,
+                            dayBalance: 0,
+                            dayBalancePositive: 0,
+                            dayBalanceNegative: 0
+                        }, {
+                            date: '2014-11-01',
+                            overallNumber: 0,
+                            distinctUsers: 0,
+                            dayBalance: 0,
+                            dayBalancePositive: 0,
+                            dayBalanceNegative: 0
+                        }, {
+                            date: '2014-11-02',
+                            overallNumber: 0,
+                            distinctUsers: 0,
+                            dayBalance: 0,
+                            dayBalancePositive: 0,
+                            dayBalanceNegative: 0
+                        }, {
+                            date: '2014-11-03',
+                            overallNumber: 0,
+                            distinctUsers: 0,
+                            dayBalance: 0,
+                            dayBalancePositive: 0,
+                            dayBalanceNegative: 0
+                        }
+                    ]
                 });
 
                 done();

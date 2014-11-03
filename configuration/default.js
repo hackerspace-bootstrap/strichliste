@@ -34,5 +34,9 @@ module.exports = {
 
     caching: {
         enabled: false
+    },
+
+    metrics: {
+        timespan: 30
     }
 };
