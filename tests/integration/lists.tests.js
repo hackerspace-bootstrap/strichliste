@@ -1,5 +1,6 @@
 var expect = require('chai').expect;
 var request = require('supertest');
+var sinon = require('sinon');
 
 var database = require('../util/database');
 
@@ -7,8 +8,11 @@ var appFactory = require('../../appFactory');
 var configuration = require('../../lib/configuration');
 
 describe('List tests', function () {
-    var app;
+    var app, clock;
+
     before(function (done) {
+        clock = sinon.useFakeTimers();
+
         database.create2Users5TransactionsDatabase(configuration.database, function (error) {
             if (error) throw error;
 
@@ -19,6 +23,10 @@ describe('List tests', function () {
                 done();
             });
         });
+    });
+
+    after(function() {
+        clock.restore();
     });
 
     it('should return two users', function (done) {
@@ -116,28 +124,28 @@ describe('List tests', function () {
                     avgBalance: 2.5,
                     days: [
                         {
-                            date: '2014-10-31',
+                            date: '1969-12-29',
                             overallNumber: 0,
                             distinctUsers: 0,
                             dayBalance: 0,
                             dayBalancePositive: 0,
                             dayBalanceNegative: 0
                         }, {
-                            date: '2014-11-01',
+                            date: '1969-12-30',
                             overallNumber: 0,
                             distinctUsers: 0,
                             dayBalance: 0,
                             dayBalancePositive: 0,
                             dayBalanceNegative: 0
                         }, {
-                            date: '2014-11-02',
+                            date: '1969-12-31',
                             overallNumber: 0,
                             distinctUsers: 0,
                             dayBalance: 0,
                             dayBalancePositive: 0,
                             dayBalanceNegative: 0
                         }, {
-                            date: '2014-11-03',
+                            date: '1970-01-01',
                             overallNumber: 0,
                             distinctUsers: 0,
                             dayBalance: 0,
