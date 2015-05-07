@@ -9,7 +9,7 @@ console.log(figlet.textSync('Strichliste v' + version));
 appFactory.create(function(error, app) {
     if (error) return console.log('could not launch the server: ' + error.message);
 
-    app.listen(configuration.port, function() {
-        console.log('running on port ' + configuration.port);
+    app.listen(configuration.port, configuration.host, function() {
+        console.log('running on port ' + configuration.host + ':' + configuration.port);
     });
 });
