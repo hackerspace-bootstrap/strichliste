@@ -4,7 +4,7 @@ This module is the API for the strichliste app. Arbitrary clients can be impleme
 
 __Clients__:
 
-* [Web-Frontend](https://github.com/hackerspace-bootstrap/strichliste-web) ([demo](http://demo.hackerspace-bootstrap.org/strichliste-web/#/))
+* [Web-Frontend](https://github.com/hackerspace-bootstrap/strichliste-web) ([demo](http://demo.strichliste.org/))
 
 ## TOC
 
