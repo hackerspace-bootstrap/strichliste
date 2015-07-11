@@ -207,7 +207,7 @@ Returns one specific user.
 The returned data structure correlates with the /user endpoint, additionally a list of the five last transactions is sent.
 (See the /user/transaction section for a reference to the transaction data structure)
 
-#### Errors
+##### Errors
 
 * 404: If the user could not be found
 
@@ -218,7 +218,7 @@ The structure of the transactions object corresponds to the definiton of the '/t
 
 The parameters and the list structure of the `Pagination` section are used in this endpoint.
 
-#### Errors
+##### Errors
 
 * 404: If the user could not be found
 
@@ -233,7 +233,7 @@ The following data structure describes the transaction:
 
 Returns the status code 201 if a transaction was successfully created.
 
-#### Errors
+##### Errors
 
 * 400: If a transaction value is not a number or is zero.
 * 403: If a transaction value is above or below a certain border (configurable) or the resulting user balance would exceed a certain border (configurable).
@@ -245,7 +245,7 @@ Returns the status code 201 if a transaction was successfully created.
 Returns a certain transaction.
 The data structure corresponds to that of the `/user/:userId/transaction` section.
 
-#### Errors
+##### Errors
 
 * 404: If the user or the transaction could not be found
 
