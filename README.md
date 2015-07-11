@@ -182,6 +182,10 @@ To create a new user a name has to be assigned via the following data structure:
 
 Returns the status code 201 and the created user if the creation was successfull.
 
+##### Errors
+
+* 409: If a user already exists
+
 #### GET /transaction
 
 Lists the latest transactions.
@@ -196,10 +200,6 @@ Each transaction has the following data structure:
 ````
 
 Use the parameters and the list structure of the `Pagination` section to specify the list's structure.
-
-##### Errors
-
-* 409: If a user already exists
 
 #### GET /user/:userId
 
