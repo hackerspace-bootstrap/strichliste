@@ -182,6 +182,10 @@ To create a new user a name has to be assigned via the following data structure:
 
 Returns the status code 201 and the created user if the creation was successfull.
 
+##### Errors
+
+* 409: If a user already exists
+
 #### GET /transaction
 
 Lists the latest transactions.
@@ -197,17 +201,13 @@ Each transaction has the following data structure:
 
 Use the parameters and the list structure of the `Pagination` section to specify the list's structure.
 
-##### Errors
-
-* 409: If a user already exists
-
 #### GET /user/:userId
 
 Returns one specific user.
 The returned data structure correlates with the /user endpoint, additionally a list of the five last transactions is sent.
 (See the /user/transaction section for a reference to the transaction data structure)
 
-#### Errors
+##### Errors
 
 * 404: If the user could not be found
 
@@ -218,7 +218,7 @@ The structure of the transactions object corresponds to the definiton of the '/t
 
 The parameters and the list structure of the `Pagination` section are used in this endpoint.
 
-#### Errors
+##### Errors
 
 * 404: If the user could not be found
 
@@ -228,12 +228,12 @@ Creates a new transaction for the user with the id `:userId`.
 The following data structure describes the transaction:
 
 ````
-{ value: <int> }
+{ value: <float> }
 ````
 
 Returns the status code 201 if a transaction was successfully created.
 
-#### Errors
+##### Errors
 
 * 400: If a transaction value is not a number or is zero.
 * 403: If a transaction value is above or below a certain border (configurable) or the resulting user balance would exceed a certain border (configurable).
@@ -245,7 +245,7 @@ Returns the status code 201 if a transaction was successfully created.
 Returns a certain transaction.
 The data structure corresponds to that of the `/user/:userId/transaction` section.
 
-#### Errors
+##### Errors
 
 * 404: If the user or the transaction could not be found
 
