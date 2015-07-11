@@ -228,7 +228,7 @@ Creates a new transaction for the user with the id `:userId`.
 The following data structure describes the transaction:
 
 ````
-{ value: <int> }
+{ value: <float> }
 ````
 
 Returns the status code 201 if a transaction was successfully created.
