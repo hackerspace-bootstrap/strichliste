@@ -142,4 +142,14 @@ describe('Integration creation', function () {
             .expect(403)
             .expect('{"message":"transaction value of -99999 falls below the transaction minimum of -9999"}', done);
     });
+
+    it('should not fail when invalid json is posted to the api', function (done) {
+        request(app)
+            .post('/user/1/transaction')
+            .set('Content-Type', 'application/json')
+            .send('{"name": }')
+            .expect('Content-Type', /application\/json/)
+            .expect(400)
+            .expect('{"message":"Unexpected token }"}', done);
+    });
 });
