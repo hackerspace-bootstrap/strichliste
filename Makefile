@@ -18,15 +18,10 @@ test:
 	@make run-unit-tests
 	@make run-integration-tests
 
-cover:
-	NODE_ENV=test ./node_modules/.bin/istanbul cover ./node_modules/.bin/_mocha -- tests/unit/*.tests.js --timeout 10000 --reporter dot
-	NODE_ENV=test ./node_modules/.bin/istanbul cover ./node_modules/.bin/_mocha -- tests/integration/*.tests.js --timeout 10000 --reporter dot
-
 make travis:
 	npm outdated --depth=0
 	@make install-packages
 	@make test
-	@make cover
 
 setup:
 	@make install-packages
