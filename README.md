@@ -1,4 +1,8 @@
-# strichliste [![Build Status](https://travis-ci.org/hackerspace-bootstrap/strichliste.png)](https://travis-ci.org/hackerspace-bootstrap/strichliste)
+# strichliste 
+
+[![Build Status](https://travis-ci.org/hackerspace-bootstrap/strichliste.png)](https://travis-ci.org/hackerspace-bootstrap/strichliste)
+[![Dependency Status](https://david-dm.org/hackerspace-bootstrap/strichliste/master.svg)](https://david-dm.org/hackerspace-bootstrap/strichliste/master)
+[![devDependency Status](https://david-dm.org/hackerspace-bootstrap/strichliste/master/dev-status.svg)](https://david-dm.org/hackerspace-bootstrap/strichliste/master#info=devDependencies)
 
 This module is the API for the strichliste app. Arbitrary clients can be implemented using this [API](#api)
 
