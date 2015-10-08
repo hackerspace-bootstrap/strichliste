@@ -29,7 +29,7 @@
     "sandboxed-module": "1.0.3",
     "sinon": "1.17.1",
     "sinon-chai": "2.8.0",
-    "supertest": "0.13.0"
+    "supertest": "1.1.0"
   },
   "dependencies": {
     "body-parser": "1.14.1",
