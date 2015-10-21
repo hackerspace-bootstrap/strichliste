@@ -24,7 +24,7 @@
     "url": "https://github.com/hackerspace-bootstrap/strichliste/issues"
   },
   "devDependencies": {
-    "chai": "1.10.0",
+    "chai": "3.4.0",
     "mocha": "1.21.5",
     "sandboxed-module": "1.0.3",
     "sinon": "1.17.1",
