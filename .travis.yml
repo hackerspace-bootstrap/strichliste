@@ -7,4 +7,6 @@ node_js:
    - "iojs-v3"
    - "4.0"
    - "4.1"
+   - "5"
+   - "5.1"
 script: make travis
