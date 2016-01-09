@@ -3,7 +3,6 @@ var expect = require('chai').use(require('sinon-chai')).expect;
 var Persistence = require('../../lib/Persistence');
 var mocks = require('../util/mocks');
 
-var OrderStatement = require('../../lib/parameters/OrderStatement');
 var LimitStatement = require('../../lib/parameters/LimitStatement');
 
 describe('Persistence', function () {
@@ -32,7 +31,7 @@ describe('Persistence', function () {
             });
 
             it('should execute the correct query', function () {
-                expect(db.selectMany).to.be.calledWith('SELECT users.id AS "id", users.name AS "name", coalesce(sum(value),0) AS \"balance\", max(transactions.createDate) AS \"lastTransaction\" FROM users LEFT JOIN transactions ON (transactions.userId = users.id) GROUP BY users.id', []);
+                expect(db.selectMany).to.be.calledWith('SELECT users.id AS "id", users.name AS "name", users.mailAddress AS "mailAddress", coalesce(sum(value),0) AS \"balance\", max(transactions.createDate) AS \"lastTransaction\" FROM users LEFT JOIN transactions ON (transactions.userId = users.id) GROUP BY users.id', []);
             });
         });
 
@@ -60,7 +59,7 @@ describe('Persistence', function () {
             });
 
             it('should execute the correct query', function () {
-                expect(db.selectMany).to.be.calledWith('SELECT users.id AS "id", users.name AS "name", coalesce(sum(value),0) AS \"balance\", max(transactions.createDate) AS \"lastTransaction\" FROM users LEFT JOIN transactions ON (transactions.userId = users.id) GROUP BY users.id LIMIT 1 OFFSET 1', []);
+                expect(db.selectMany).to.be.calledWith('SELECT users.id AS "id", users.name AS "name", users.mailAddress AS "mailAddress", coalesce(sum(value),0) AS \"balance\", max(transactions.createDate) AS \"lastTransaction\" FROM users LEFT JOIN transactions ON (transactions.userId = users.id) GROUP BY users.id LIMIT 1 OFFSET 1', []);
             });
         });
 
@@ -88,7 +87,7 @@ describe('Persistence', function () {
             });
 
             it('should execute the correct query', function () {
-                expect(db.selectMany).to.be.calledWith('SELECT users.id AS "id", users.name AS "name", coalesce(sum(value),0) AS \"balance\", max(transactions.createDate) AS \"lastTransaction\" FROM users LEFT JOIN transactions ON (transactions.userId = users.id) GROUP BY users.id', []);
+                expect(db.selectMany).to.be.calledWith('SELECT users.id AS "id", users.name AS "name", users.mailAddress AS "mailAddress", coalesce(sum(value),0) AS \"balance\", max(transactions.createDate) AS \"lastTransaction\" FROM users LEFT JOIN transactions ON (transactions.userId = users.id) GROUP BY users.id', []);
             });
         });
     });
@@ -118,7 +117,7 @@ describe('Persistence', function () {
             });
 
             it('should execute the correct query', function () {
-                expect(db.selectOne).to.be.calledWith('SELECT users.id AS "id", users.name AS "name", coalesce(sum(value),0) AS "balance", max(transactions.createDate) AS \"lastTransaction\" FROM users LEFT JOIN transactions ON (transactions.userId = users.id) WHERE (users.id = ?) GROUP BY users.id', [42]);
+                expect(db.selectOne).to.be.calledWith('SELECT users.id AS "id", users.name AS "name", users.mailAddress AS "mailAddress", coalesce(sum(value),0) AS "balance", max(transactions.createDate) AS \"lastTransaction\" FROM users LEFT JOIN transactions ON (transactions.userId = users.id) WHERE (users.id = ?) GROUP BY users.id', [42]);
             });
         });
 
@@ -146,7 +145,7 @@ describe('Persistence', function () {
             });
 
             it('should execute the correct query', function () {
-                expect(db.selectOne).to.be.calledWith('SELECT users.id AS "id", users.name AS "name", coalesce(sum(value),0) AS "balance", max(transactions.createDate) AS \"lastTransaction\" FROM users LEFT JOIN transactions ON (transactions.userId = users.id) WHERE (users.id = ?) GROUP BY users.id', [42]);
+                expect(db.selectOne).to.be.calledWith('SELECT users.id AS "id", users.name AS "name", users.mailAddress AS "mailAddress", coalesce(sum(value),0) AS "balance", max(transactions.createDate) AS \"lastTransaction\" FROM users LEFT JOIN transactions ON (transactions.userId = users.id) WHERE (users.id = ?) GROUP BY users.id', [42]);
             });
         });
     });
@@ -176,7 +175,7 @@ describe('Persistence', function () {
             });
 
             it('should execute the correct query', function () {
-                expect(db.selectOne).to.be.calledWith('SELECT users.id AS \"id\", users.name AS \"name\", coalesce(sum(value),0) AS \"balance\", max(transactions.createDate) AS \"lastTransaction\" FROM users LEFT JOIN transactions ON (transactions.userId = users.id) WHERE (lower(users.name) = ?) GROUP BY users.id', ['bert']);
+                expect(db.selectOne).to.be.calledWith('SELECT users.id AS \"id\", users.name AS \"name\", users.mailAddress AS "mailAddress", coalesce(sum(value),0) AS \"balance\", max(transactions.createDate) AS \"lastTransaction\" FROM users LEFT JOIN transactions ON (transactions.userId = users.id) WHERE (lower(users.name) = ?) GROUP BY users.id', ['bert']);
             });
         });
 
@@ -204,7 +203,7 @@ describe('Persistence', function () {
             });
 
             it('should execute the correct query', function () {
-                expect(db.selectOne).to.be.calledWith('SELECT users.id AS \"id\", users.name AS \"name\", coalesce(sum(value),0) AS \"balance\", max(transactions.createDate) AS \"lastTransaction\" FROM users LEFT JOIN transactions ON (transactions.userId = users.id) WHERE (lower(users.name) = ?) GROUP BY users.id', ['bert']);
+                expect(db.selectOne).to.be.calledWith('SELECT users.id AS \"id\", users.name AS \"name\", users.mailAddress AS "mailAddress", coalesce(sum(value),0) AS \"balance\", max(transactions.createDate) AS \"lastTransaction\" FROM users LEFT JOIN transactions ON (transactions.userId = users.id) WHERE (lower(users.name) = ?) GROUP BY users.id', ['bert']);
             });
         });
     });
@@ -218,7 +217,7 @@ describe('Persistence', function () {
             var error, result;
             before(function (done) {
                 new Persistence(db)
-                    .createUser('bert', function (_error, _result) {
+                    .createUser('bert', 'bertMail', function (_error, _result) {
                         error = _error;
                         result = _result;
                         done();
@@ -234,7 +233,7 @@ describe('Persistence', function () {
             });
 
             it('should execute the correct query', function () {
-                expect(db.query).to.be.calledWith('INSERT INTO users (name) VALUES (?)', ['bert']);
+                expect(db.query).to.be.calledWith('INSERT INTO users (name, mailAddress) VALUES (?, ?)', ['bert', 'bertMail']);
             });
         });
 
@@ -246,7 +245,7 @@ describe('Persistence', function () {
             var error, result;
             before(function (done) {
                 new Persistence(db)
-                    .createUser('bert', function (_error, _result) {
+                    .createUser('bert', 'bertMail', function (_error, _result) {
                         error = _error;
                         result = _result;
                         done();
@@ -262,7 +261,7 @@ describe('Persistence', function () {
             });
 
             it('should execute the correct query', function () {
-                expect(db.query).to.be.calledWith('INSERT INTO users (name) VALUES (?)', ['bert']);
+                expect(db.query).to.be.calledWith('INSERT INTO users (name, mailAddress) VALUES (?, ?)', ['bert', 'bertMail']);
             });
         });
     });
