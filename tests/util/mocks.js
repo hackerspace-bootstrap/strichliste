@@ -54,7 +54,7 @@ function createPersistenceMock (options) {
         loadUserByName: sinon.spy(function (name, callback) {
             callback(options.loadUserByName.error, options.loadUserByName.result);
         }),
-        createUser: sinon.spy(function (name, callback) {
+        createUser: sinon.spy(function (name, mailAddress, callback) {
             callback(options.createUser.error, options.createUser.result);
         }),
         createTransaction: sinon.spy(function (userId, value, callback) {

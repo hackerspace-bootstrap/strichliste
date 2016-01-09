@@ -168,12 +168,12 @@ describe('userCreateRoute', function () {
         var persistence = mocks.createPersistenceMock({
             loadUserByName: { error: null, result: null },
             createUser: {error: null, result: 1337},
-            loadUserById: {error: null, result: {name: 'bert'}}
+            loadUserById: {error: null, result: {name: 'bert', mailAddress: 'bertMail'}}
         });
 
         var route = new UserCreateRoute(persistence);
         var req = mocks.createRequestMock({
-            body: {name: 'bert'}
+            body: {name: 'bert', mailAddress: 'bertMail'}
         });
         var res = mocks.createResponseMock();
 
@@ -183,7 +183,7 @@ describe('userCreateRoute', function () {
         });
 
         it('should send a body', function () {
-            expect(result.content()).to.deep.equal({"name": "bert"});
+            expect(result.content()).to.deep.equal({"name": "bert", "mailAddress": "bertMail"});
         });
 
         it('should set the correct content type', function () {
@@ -201,7 +201,7 @@ describe('userCreateRoute', function () {
 
         it('should call createUser', function () {
             expect(persistence.createUser).to.be.calledOnce;
-            expect(persistence.createUser).to.be.calledWith('bert');
+            expect(persistence.createUser).to.be.calledWith('bert', 'bertMail');
         });
 
         it('should reload the user', function () {
@@ -214,12 +214,12 @@ describe('userCreateRoute', function () {
         var persistence = mocks.createPersistenceMock({
             loadUserByName: { error: null, result: null },
             createUser: {error: null, result: 1337},
-            loadUserById: {error: null, result: {name: 'bert'}}
+            loadUserById: {error: null, result: {name: 'bert', 'mailAddress': 'bertMail'}}
         });
 
         var route = new UserCreateRoute(persistence);
         var req = mocks.createRequestMock({
-            body: {name: 10}
+            body: {name: 10, mailAddress: 'bertMail'}
         });
         var res = mocks.createResponseMock();
 
@@ -229,7 +229,7 @@ describe('userCreateRoute', function () {
         });
 
         it('should send a body', function () {
-            expect(result.content()).to.deep.equal({"name": "bert"});
+            expect(result.content()).to.deep.equal({"name": "bert", "mailAddress": "bertMail"});
         });
 
         it('should set the correct content type', function () {
@@ -247,7 +247,7 @@ describe('userCreateRoute', function () {
 
         it('should call createUser', function () {
             expect(persistence.createUser).to.be.calledOnce;
-            expect(persistence.createUser).to.be.calledWith('10');
+            expect(persistence.createUser).to.be.calledWith('10', 'bertMail');
         });
 
         it('should reload the user', function () {
@@ -260,12 +260,12 @@ describe('userCreateRoute', function () {
         var persistence = mocks.createPersistenceMock({
             loadUserByName: { error: null, result: null },
             createUser: {error: null, result: 1337},
-            loadUserById: {error: null, result: {name: 'bert'}}
+            loadUserById: {error: null, result: {name: 'bert', mailAddress: 'bertMail'}}
         });
 
         var route = new UserCreateRoute(persistence);
         var req = mocks.createRequestMock({
-            body: {name: '\''}
+            body: {name: '\'', mailAddress: 'bertMail'}
         });
         var res = mocks.createResponseMock();
 
@@ -275,7 +275,7 @@ describe('userCreateRoute', function () {
         });
 
         it('should send a body', function () {
-            expect(result.content()).to.deep.equal({"name": "bert"});
+            expect(result.content()).to.deep.equal({"name": "bert", "mailAddress": "bertMail"});
         });
 
         it('should set the correct content type', function () {
@@ -293,7 +293,7 @@ describe('userCreateRoute', function () {
 
         it('should call createUser', function () {
             expect(persistence.createUser).to.be.calledOnce;
-            expect(persistence.createUser).to.be.calledWith('\'');
+            expect(persistence.createUser).to.be.calledWith('\'', 'bertMail');
         });
 
         it('should reload the user', function () {
