@@ -168,6 +168,7 @@ Each user is described via the following data structure:
 {
   "id": <int>,
   "name": <string>,
+  "mailAddress": <string>,
   "balance": <float>,
   "lastTransaction": <dateTime>
 }
@@ -178,10 +179,13 @@ The parameters and the list structure of the `Pagination` section are used in th
 #### POST /user
 
 Creates a new user.
-To create a new user a name has to be assigned via the following data structure:
+To create a new user a name and an optional mailAddress has to be assigned via the following data structure.
 
 ````
-{ "name": <string> }
+{
+    "name": <string>,
+    "mailAddress": <string>
+}
 ````
 
 Returns the status code 201 and the created user if the creation was successfull.
