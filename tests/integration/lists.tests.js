@@ -4,29 +4,36 @@ var sinon = require('sinon');
 
 var database = require('../util/database');
 
+var dbFactory = require('../../lib/database/Factory');
 var appFactory = require('../../appFactory');
 var configuration = require('../../lib/configuration');
 
-describe('List tests', function () {
-    var app, clock;
+describe('Integration Lists', function () {
+    var app, clock, db;
 
     before(function (done) {
         clock = sinon.useFakeTimers();
 
-        database.create2Users5TransactionsDatabase(configuration.database, function (error) {
+        dbFactory.create(configuration.database, function (error, _db) {
             if (error) throw error;
 
-            appFactory.create(function (error, _app) {
+            db = _db;
+            database.create2Users5TransactionsDatabase(db, function (error) {
                 if (error) throw error;
 
-                app = _app;
-                done();
+                appFactory.create(function (error, _app) {
+                    if (error) throw error;
+
+                    app = _app;
+                    done();
+                });
             });
         });
     });
 
-    after(function() {
+    after(function (done) {
         clock.restore();
+        database.clearTables(db, done);
     });
 
     it('should return two users', function (done) {
@@ -34,7 +41,7 @@ describe('List tests', function () {
             .get('/user')
             .expect('Content-Type', /application\/json/)
             .expect(200)
-            .expect('{"overallCount":2,"limit":null,"offset":null,"entries":[{"id":1,"name":"foo","balance":3,"lastTransaction":"2014-01-01 00:23:44"},{"id":2,"name":"bar","balance":2,"lastTransaction":"2014-01-01 00:23:46"}]}', done);
+            .expect('{"overallCount":2,"limit":null,"offset":null,"entries":[{"id":1,"name":"foo","mailAddress":"fooMail","balance":3,"lastTransaction":"2014-01-01 00:23:44"},{"id":2,"name":"bar","mailAddress":"barMail","balance":2,"lastTransaction":"2014-01-01 00:23:46"}]}', done);
     });
 
     it('should return a empty list b/c of limit+offset', function (done) {
@@ -50,7 +57,7 @@ describe('List tests', function () {
             .get('/user/1')
             .expect('Content-Type', /application\/json/)
             .expect(200)
-            .expect('{"id":1,"name":"foo","balance":3,"lastTransaction":"2014-01-01 00:23:44","transactions":[{"id":3,"userId":1,"createDate":"2014-01-01 00:23:44","value":1},{"id":2,"userId":1,"createDate":"2014-01-01 00:23:43","value":1},{"id":1,"userId":1,"createDate":"2014-01-01 00:23:42","value":1}]}', done);
+            .expect('{"id":1,"name":"foo","mailAddress":"fooMail","balance":3,"lastTransaction":"2014-01-01 00:23:44","transactions":[{"id":3,"userId":1,"createDate":"2014-01-01 00:23:44","value":1},{"id":2,"userId":1,"createDate":"2014-01-01 00:23:43","value":1},{"id":1,"userId":1,"createDate":"2014-01-01 00:23:42","value":1}]}', done);
     });
 
     it('should return a failure when user does not exist', function (done) {
