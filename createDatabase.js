@@ -14,5 +14,5 @@ if (fileName) {
 createDatabase(dbOptions, function(error) {
     if (error) return console.log(error.message);
 
-    console.log('database ' + dbOptions.options.filename + ' created');
+    console.log('database ' + dbOptions.options.filename + ' created/updated');
 });
