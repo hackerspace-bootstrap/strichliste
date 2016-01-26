@@ -35,7 +35,7 @@
     "body-parser": "1.14.2",
     "configurations": "1.1.0",
     "cors": "2.7.1",
-    "express": "4.13.3",
+    "express": "4.13.4",
     "figlet": "1.1.1",
     "furg": "1.0.2",
     "hoek": "2.16.3",
