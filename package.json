@@ -27,7 +27,7 @@
     "chai": "3.5.0",
     "mocha": "2.5.3",
     "sandboxed-module": "1.0.3",
-    "sinon": "1.17.3",
+    "sinon": "1.17.4",
     "sinon-chai": "2.8.0",
     "supertest": "1.2.0"
   },
