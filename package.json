@@ -33,7 +33,7 @@
   },
   "dependencies": {
     "body-parser": "1.15.1",
-    "configurations": "1.1.0",
+    "configurations": "2.0.0",
     "cors": "2.7.1",
     "express": "4.13.4",
     "figlet": "1.1.2",
