@@ -15,6 +15,7 @@ install-packages:
 
 test:
 	npm prune
+	rm testdata.sqlite
 	@make run-unit-tests
 	@make run-integration-tests
 
