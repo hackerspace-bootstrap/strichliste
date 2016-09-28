@@ -36,7 +36,7 @@
     "configurations": "2.0.0",
     "cors": "2.7.1",
     "express": "4.14.0",
-    "figlet": "1.1.2",
+    "figlet": "1.2.0",
     "furg": "1.0.2",
     "hoek": "4.0.2",
     "moment": "2.14.1",
