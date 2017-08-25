@@ -34,7 +34,7 @@ describe('List tests', function () {
             .get('/user')
             .expect('Content-Type', /application\/json/)
             .expect(200)
-            .expect('{"overallCount":2,"limit":null,"offset":null,"entries":[{"id":1,"name":"foo","balance":3,"lastTransaction":"2014-01-01 00:23:44"},{"id":2,"name":"bar","balance":2,"lastTransaction":"2014-01-01 00:23:46"}]}', done);
+            .expect('{"overallCount":2,"limit":null,"offset":null,"entries":[{"id":1,"name":"foo","balance":3,"lastTransaction":"2014-01-01 00:23:44","countOfTransactions":3,"weightedCountOfPurchases":0,"activeDays":1},{"id":2,"name":"bar","balance":2,"lastTransaction":"2014-01-01 00:23:46","countOfTransactions":2,"weightedCountOfPurchases":0,"activeDays":1}]}', done);
     });
 
     it('should return a empty list b/c of limit+offset', function (done) {
@@ -50,7 +50,7 @@ describe('List tests', function () {
             .get('/user/1')
             .expect('Content-Type', /application\/json/)
             .expect(200)
-            .expect('{"id":1,"name":"foo","balance":3,"lastTransaction":"2014-01-01 00:23:44","transactions":[{"id":3,"userId":1,"createDate":"2014-01-01 00:23:44","value":1},{"id":2,"userId":1,"createDate":"2014-01-01 00:23:43","value":1},{"id":1,"userId":1,"createDate":"2014-01-01 00:23:42","value":1}]}', done);
+            .expect('{"id":1,"name":"foo","balance":3,"lastTransaction":"2014-01-01 00:23:44","countOfTransactions":3,"weightedCountOfPurchases":0,"activeDays":1,"transactions":[{"id":3,"userId":1,"createDate":"2014-01-01 00:23:44","value":1,"comment":null},{"id":2,"userId":1,"createDate":"2014-01-01 00:23:43","value":1,"comment":null},{"id":1,"userId":1,"createDate":"2014-01-01 00:23:42","value":1,"comment":null}]}', done);
     });
 
     it('should return a failure when user does not exist', function (done) {
@@ -66,7 +66,7 @@ describe('List tests', function () {
             .get('/transaction')
             .expect('Content-Type', /application\/json/)
             .expect(200)
-            .expect('{"overallCount":5,"limit":null,"offset":null,"entries":[{"id":5,"userId":2,"createDate":"2014-01-01 00:23:46","value":1},{"id":4,"userId":2,"createDate":"2014-01-01 00:23:45","value":1},{"id":3,"userId":1,"createDate":"2014-01-01 00:23:44","value":1},{"id":2,"userId":1,"createDate":"2014-01-01 00:23:43","value":1},{"id":1,"userId":1,"createDate":"2014-01-01 00:23:42","value":1}]}', done);
+            .expect('{"overallCount":5,"limit":null,"offset":null,"entries":[{"id":5,"userId":2,"createDate":"2014-01-01 00:23:46","value":1,"comment":null},{"id":4,"userId":2,"createDate":"2014-01-01 00:23:45","value":1,"comment":null},{"id":3,"userId":1,"createDate":"2014-01-01 00:23:44","value":1,"comment":null},{"id":2,"userId":1,"createDate":"2014-01-01 00:23:43","value":1,"comment":null},{"id":1,"userId":1,"createDate":"2014-01-01 00:23:42","value":1,"comment":null}]}', done);
     });
 
     it('should load the list of user independent transactions, restricted by offset and limit', function (done) {
@@ -74,7 +74,7 @@ describe('List tests', function () {
             .get('/transaction?limit=1&offset=1')
             .expect('Content-Type', /application\/json/)
             .expect(200)
-            .expect('{"overallCount":5,"limit":1,"offset":1,"entries":[{"id":4,"userId":2,"createDate":"2014-01-01 00:23:45","value":1}]}', done);
+            .expect('{"overallCount":5,"limit":1,"offset":1,"entries":[{"id":4,"userId":2,"createDate":"2014-01-01 00:23:45","value":1,"comment":null}]}', done);
     });
 
     it('should load the list of transactions', function (done) {
@@ -82,7 +82,7 @@ describe('List tests', function () {
             .get('/user/1/transaction')
             .expect('Content-Type', /application\/json/)
             .expect(200)
-            .expect('{"overallCount":3,"limit":null,"offset":null,"entries":[{"id":3,"userId":1,"createDate":"2014-01-01 00:23:44","value":1},{"id":2,"userId":1,"createDate":"2014-01-01 00:23:43","value":1},{"id":1,"userId":1,"createDate":"2014-01-01 00:23:42","value":1}]}', done);
+            .expect('{"overallCount":3,"limit":null,"offset":null,"entries":[{"id":3,"userId":1,"createDate":"2014-01-01 00:23:44","value":1,"comment":null},{"id":2,"userId":1,"createDate":"2014-01-01 00:23:43","value":1,"comment":null},{"id":1,"userId":1,"createDate":"2014-01-01 00:23:42","value":1,"comment":null}]}', done);
     });
 
     it('should load a single transaction', function (done) {
@@ -90,7 +90,7 @@ describe('List tests', function () {
             .get('/user/1/transaction/1')
             .expect('Content-Type', /application\/json/)
             .expect(200)
-            .expect('{"id":1,"userId":1,"createDate":"2014-01-01 00:23:42","value":1}', done);
+            .expect('{"id":1,"userId":1,"createDate":"2014-01-01 00:23:42","value":1,"comment":null}', done);
     });
 
     it('should return a restricted list of transactions (limit=1)', function (done) {
@@ -98,7 +98,7 @@ describe('List tests', function () {
             .get('/user/1/transaction?limit=1')
             .expect('Content-Type', /application\/json/)
             .expect(200)
-            .expect('{"overallCount":3,"limit":1,"offset":0,"entries":[{"id":3,"userId":1,"createDate":"2014-01-01 00:23:44","value":1}]}', done);
+            .expect('{"overallCount":3,"limit":1,"offset":0,"entries":[{"id":3,"userId":1,"createDate":"2014-01-01 00:23:44","value":1,"comment":null}]}', done);
     });
 
     it('should return a restricted list of transactions (offset=1&limit=1)', function (done) {
@@ -106,7 +106,7 @@ describe('List tests', function () {
             .get('/user/1/transaction?limit=1&offset=1')
             .expect('Content-Type', /application\/json/)
             .expect(200)
-            .expect('{"overallCount":3,"limit":1,"offset":1,"entries":[{"id":2,"userId":1,"createDate":"2014-01-01 00:23:43","value":1}]}', done);
+            .expect('{"overallCount":3,"limit":1,"offset":1,"entries":[{"id":2,"userId":1,"createDate":"2014-01-01 00:23:43","value":1,"comment":null}]}', done);
     });
 
     it('should report metrics', function (done) {
