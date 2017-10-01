@@ -20,7 +20,6 @@ test:
 	@make run-integration-tests
 
 make travis:
-	npm outdated --depth=0
 	@make install-packages
 	@make test
 
