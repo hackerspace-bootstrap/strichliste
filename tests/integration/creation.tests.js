@@ -53,7 +53,7 @@ describe('Integration creation', function () {
             .send({name: 'bert', mailAddress: 'bertMail'})
             .expect('Content-Type', /application\/json/)
             .expect(201)
-            .expect('{"id":1,"name":"bert","mailAddress":"bertMail","balance":0,"lastTransaction":null}', done);
+            .expect('{"id":1,"name":"bert","mailAddress":"bertMail","balance":0,"lastTransaction":null,"countOfTransactions":0,"weightedCountOfPurchases":null,"activeDays":0}', done);
     });
 
     it('create should fail without a name', function (done) {
@@ -105,7 +105,7 @@ describe('Integration creation', function () {
             .send({value: 11})
             .expect('Content-Type', /application\/json/)
             .expect(201)
-            .expect(/{"id":1,"userId":1,"createDate":"(.*)","value":11}/, done);
+            .expect(/{"id":1,"userId":1,"createDate":"(.*)","value":11,"comment":null}/, done);
     });
 
     it('should create a second transaction', function (done) {
@@ -114,7 +114,7 @@ describe('Integration creation', function () {
             .send({value: 11})
             .expect('Content-Type', /application\/json/)
             .expect(201)
-            .expect(/{"id":2,"userId":1,"createDate":"(.*)","value":11}/, done);
+            .expect(/{"id":2,"userId":1,"createDate":"(.*)","value":11,"comment":null}/, done);
     });
 
     it('should fail the transaction creation with 403 (lower account boundary error)', function (done) {
