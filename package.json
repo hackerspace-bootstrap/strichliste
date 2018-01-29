@@ -4,7 +4,14 @@
   "description": "keep track of your balance",
   "main": "server.js",
   "scripts": {
-    "test": "make test"
+    "start": "node server.js",
+    "setup": "npm run setup:dependencies && npm run test && npm run database",
+    "setup:database": "node createDatabase.js",
+    "setup:dependencies": "npm i",
+    "test": "rm -f testdata.sqlite && npm run test:unit && npm run test:integration",
+    "test:unit": "NODE_ENV=test mocha --reporter dot tests/unit",
+    "test:integration": "NODE_ENV=test mocha --reporter dot --timeout 10000 tests/integration",
+    "travis": "npm run setup:dependencies && npm run test"
   },
   "repository": {
     "type": "git",
@@ -38,13 +45,13 @@
     "express": "^4.16.2",
     "figlet": "^1.2.0",
     "furg": "^1.1.1",
-    "hoek": "^5.0.2",
+    "hoek": "^4.0.2",
     "moment": "^2.20.1",
     "morgan": "^1.9.0",
     "mqtt": "^2.15.0",
     "once": "^1.4.0",
-    "seq": "*",
-    "sqlite3": "*",
+    "seq": "^0.3.5",
+    "sqlite3": "^3.1.13",
     "squel": "^5.12.0",
     "yargs": "^10.1.0"
   }
