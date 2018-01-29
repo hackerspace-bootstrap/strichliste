@@ -27,13 +27,13 @@ __Clients__:
 ##### install dependencies
 
 ````bash
-$ make install-packages
+$ npm i
 ````
 
 ##### run tests
 
 ````bash
-$ make test
+$ npm run test
 ````
 
 ##### initialize database
@@ -41,21 +41,21 @@ $ make test
 creates the tables in the sqlitefile
 
 ````bash
-$ make database
+$ npm run setup:database
 ````
 
 #### everything at once
 
-For your convenience the following make target does all of the above steps at once:
+For your convenience the following npm script does all of the above steps at once:
 ````bash
-$ make setup
+$ npm run setup
 ````
 
 #### start api server
 
 Consider editing the configuration before starting the api server (see the [configuration](#configuration) section).
 ````bash
-$ make start
+$ npm run start
 ````
 
 ## Configuration
