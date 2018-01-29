@@ -159,7 +159,6 @@ describe('Integration creation', function () {
             .set('Content-Type', 'application/json')
             .send('{"name": }')
             .expect('Content-Type', /application\/json/)
-            .expect(400)
-            .expect('{"message":"Unexpected token }"}', done);
+            .expect(400, done);
     });
 });
