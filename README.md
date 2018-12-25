@@ -4,6 +4,9 @@
 [![Dependency Status](https://david-dm.org/hackerspace-bootstrap/strichliste/master.svg)](https://david-dm.org/hackerspace-bootstrap/strichliste/master)
 [![devDependency Status](https://david-dm.org/hackerspace-bootstrap/strichliste/master/dev-status.svg)](https://david-dm.org/hackerspace-bootstrap/strichliste/master#info=devDependencies)
 
+# DEPRECATED
+strichliste1 has been replaced by strichliste2. See https://github.com/strichliste for the new version!
+
 This module is the API for the strichliste app. Arbitrary clients can be implemented using this [API](#api-documentation)
 
 __Clients__:
